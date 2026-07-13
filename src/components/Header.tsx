@@ -52,9 +52,9 @@ export default function Header() {
           animate={{
             width: scrolled ? '75%' : '95%',
             borderRadius: scrolled ? '9999px' : '0px',
-            backgroundColor: scrolled ? 'rgba(9, 9, 11, 0.75)' : 'rgba(9, 9, 11, 0)',
-            borderColor: scrolled ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0)',
-            boxShadow: scrolled ? '0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 136, 0.02)' : 'none',
+            backgroundColor: scrolled ? 'rgba(9, 9, 11, 0.6)' : 'rgba(9, 9, 11, 0)',
+            borderColor: scrolled ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0)',
+            boxShadow: scrolled ? '0 8px 32px rgba(0, 0, 0, 0.4)' : 'none',
             scale: scrolled ? 0.98 : 1,
             y: scrolled ? 4 : 0
           }}
@@ -63,8 +63,8 @@ export default function Header() {
             maxWidth: '1200px',
             borderWidth: '1px',
             borderStyle: 'solid',
-            backdropFilter: scrolled ? 'blur(16px)' : 'none',
-            WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
+            backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
+            WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -87,7 +87,7 @@ export default function Header() {
 
           {/* CENTER: Navigation Links */}
           <nav className="desktop-links" aria-label="Primary navigation" style={{ display: 'flex', alignItems: 'center' }}>
-            <ul style={{ display: 'flex', alignItems: 'center', gap: scrolled ? '1.15rem' : '1.5rem', listStyle: 'none', margin: 0, padding: 0, transition: 'gap 0.4s' }}>
+            <ul style={{ display: 'flex', alignItems: 'center', gap: scrolled ? '0.35rem' : '0.6rem', listStyle: 'none', margin: 0, padding: 0, transition: 'gap 0.4s' }}>
               {NAV_ITEMS.map(({ href, label }) => {
                 const isActive = pathname === href;
                 return (
@@ -95,38 +95,44 @@ export default function Header() {
                     <Link
                       href={href}
                       style={{
-                        color: isActive ? '#00ff88' : 'rgba(226, 232, 240, 0.6)',
+                        color: isActive ? '#fafafa' : 'rgba(226, 232, 240, 0.55)',
                         fontSize: '0.82rem',
-                        fontWeight: 650,
+                        fontWeight: 550,
                         textDecoration: 'none',
-                        transition: 'color 0.25s',
-                        padding: '0.45rem 0.25rem',
-                        display: 'block',
-                        textShadow: isActive ? '0 0 8px rgba(0, 255, 136, 0.25)' : 'none'
+                        transition: 'color 0.25s, background 0.25s',
+                        padding: '0.4rem 0.7rem',
+                        borderRadius: '0.5rem',
+                        display: 'block'
                       }}
                       onMouseEnter={e => {
-                        if (!isActive) e.currentTarget.style.color = '#00ff88';
+                        if (!isActive) {
+                          e.currentTarget.style.color = '#fafafa';
+                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                        }
                       }}
                       onMouseLeave={e => {
-                        if (!isActive) e.currentTarget.style.color = 'rgba(226, 232, 240, 0.6)';
+                        if (!isActive) {
+                          e.currentTarget.style.color = 'rgba(226, 232, 240, 0.55)';
+                          e.currentTarget.style.background = 'transparent';
+                        }
                       }}
                     >
                       {label}
                     </Link>
-                    
-                    {/* Sliding underline active highlight */}
+
+                    {/* Sliding underline active highlight — soft, low glow */}
                     {isActive && (
                       <motion.div
                         layoutId="activeUnderline"
                         style={{
                           position: 'absolute',
-                          bottom: '-2px',
-                          left: '0.25rem',
-                          right: '0.25rem',
+                          bottom: '-4px',
+                          left: '0.7rem',
+                          right: '0.7rem',
                           height: '2px',
                           background: '#00ff88',
                           borderRadius: '2px',
-                          boxShadow: '0 0 8px rgba(0, 255, 136, 0.7)'
+                          boxShadow: '0 0 6px rgba(0, 255, 136, 0.35)'
                         }}
                         transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       />
@@ -183,20 +189,19 @@ export default function Header() {
               style={{
                 padding: '0.4rem 1.1rem',
                 borderRadius: '9999px',
-                border: '1px solid rgba(0, 229, 255, 0.4)',
+                border: '1px solid rgba(0, 229, 255, 0.22)',
                 color: '#00e5ff',
                 fontSize: '0.78rem',
-                fontWeight: 750,
+                fontWeight: 600,
                 background: 'rgba(0, 229, 255, 0.02)',
                 cursor: 'pointer',
-                boxShadow: '0 0 10px rgba(0, 229, 255, 0.05)',
                 transition: 'all 0.2s',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.35rem'
               }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(0, 229, 255, 0.1)'; e.currentTarget.style.borderColor = 'rgba(0, 229, 255, 0.8)'; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(0, 229, 255, 0.02)'; e.currentTarget.style.borderColor = 'rgba(0, 229, 255, 0.4)'; }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(0, 229, 255, 0.08)'; e.currentTarget.style.borderColor = 'rgba(0, 229, 255, 0.45)'; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(0, 229, 255, 0.02)'; e.currentTarget.style.borderColor = 'rgba(0, 229, 255, 0.22)'; }}
             >
               <FileText size={13} />
               Resume
@@ -356,13 +361,13 @@ export default function Header() {
           .header-nav-pill {
             width: 95% !important;
             border-radius: 9999px !important;
-            background-color: rgba(9, 9, 11, 0.85) !important;
-            border-color: rgba(255, 255, 255, 0.08) !important;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+            background-color: rgba(9, 9, 11, 0.7) !important;
+            border-color: rgba(255, 255, 255, 0.05) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
             height: 52px !important;
             padding: 0 1.25rem !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
+            backdrop-filter: blur(20px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
             margin-top: 4px !important;
           }
         }
