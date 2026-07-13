@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles can be added below this line */
+
+body {
+    @apply bg-gray-50 text-gray-800;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-bold;
+}
+
+a {
+    @apply text-blue-600 hover:text-blue-800;
+}
+
+button {
+    @apply bg-blue-600 text-white font-semibold py-2 px-4 rounded;
+}
+
+.container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+}

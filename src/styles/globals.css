@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #09090b;
+  --surface: #111111;
+  --surface-2: #161616;
+  --accent: #00e5ff;
+  --secondary: #6366f1;
+  --border: rgba(255, 255, 255, 0.07);
+  --text: #e2e8f0;
+  --text-muted: #64748b;
+}
+
+.dark { --background: oklch(0 0 0); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Prevent FallingPattern canvas from bleeding through form controls ── */
+input, textarea, select, button[type="submit"] {
+  position: relative;
+  isolation: isolate;
+  background-color: rgba(9, 9, 11, 0.96) !important;
+}
+
+/* Make section cards opaque enough to block the canvas behind text */
+section {
+  position: relative;
+  isolation: isolate;
+}
+::selection { background: rgba(0,229,255,0.18); color: #fff; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 4px; }
+
+.gradient-text {
+  background: linear-gradient(135deg, #00e5ff 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 1rem;
+}
+
+.glow-accent {
+  box-shadow: 0 0 30px rgba(0,229,255,0.12), 0 0 60px rgba(0,229,255,0.04);
+}
+
+.section-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+}
