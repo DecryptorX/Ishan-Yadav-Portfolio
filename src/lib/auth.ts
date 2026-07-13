@@ -35,15 +35,14 @@ function isRealValue(val: string | undefined): boolean {
 
 // Print a clean, anonymous server-side diagnostic
 function logDiagnostics() {
-  const check = (val: string | undefined) => (isRealValue(val) ? 'present' : 'missing');
+  const check = (val: string | undefined) => (isRealValue(val) ? '✅' : '❌');
   
   console.log('\n┌─ Auth Environment Diagnostics ──────────────');
-  console.log(`AUTH_SECRET: ${check(process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET)} (len: ${process.env.AUTH_SECRET?.length || process.env.NEXTAUTH_SECRET?.length || 0})`);
-  console.log(`AUTH_URL: ${check(process.env.AUTH_URL || process.env.NEXTAUTH_URL)} (len: ${process.env.AUTH_URL?.length || process.env.NEXTAUTH_URL?.length || 0})`);
-  console.log(`LINKEDIN_CLIENT_ID: ${check(process.env.LINKEDIN_CLIENT_ID)} (len: ${process.env.LINKEDIN_CLIENT_ID?.length || 0})`);
-  console.log(`LINKEDIN_CLIENT_SECRET: ${check(process.env.LINKEDIN_CLIENT_SECRET)} (len: ${process.env.LINKEDIN_CLIENT_SECRET?.length || 0})`);
-  console.log(`ADMIN_LINKEDIN_ID: ${check(process.env.ADMIN_LINKEDIN_ID)} (len: ${process.env.ADMIN_LINKEDIN_ID?.length || 0})`);
-  console.log(`RAW LINKEDIN_CLIENT_ID: "${process.env.LINKEDIN_CLIENT_ID || ''}"`);
+  console.log(`AUTH_SECRET ${check(process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET)}`);
+  console.log(`AUTH_URL ${check(process.env.AUTH_URL || process.env.NEXTAUTH_URL)}`);
+  console.log(`LINKEDIN_CLIENT_ID ${check(process.env.LINKEDIN_CLIENT_ID)}`);
+  console.log(`LINKEDIN_CLIENT_SECRET ${check(process.env.LINKEDIN_CLIENT_SECRET)}`);
+  console.log(`ADMIN_LINKEDIN_ID ${check(process.env.ADMIN_LINKEDIN_ID)}`);
   console.log('└─────────────────────────────────────────────\n');
 }
 
