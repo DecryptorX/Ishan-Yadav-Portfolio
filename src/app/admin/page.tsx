@@ -15,7 +15,7 @@ export default async function AdminPage() {
   }
 
   // If authenticated but not whitelisted owner/administrator
-  if (!isOwner(session.user.id, session.user.email)) {
+  if (!isOwner(session.user.id)) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem', background: '#09090b', position: 'relative', overflow: 'hidden' }}>
         {/* Background glows */}
