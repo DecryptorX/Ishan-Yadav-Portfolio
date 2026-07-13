@@ -14,7 +14,7 @@ declare module "next-auth" {
 }
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || 'super-secret-fallback-key-for-preview-builds-development-mode-987654321',
   providers: [
     LinkedInProvider({
       clientId: process.env.LINKEDIN_CLIENT_ID || 'mock',
