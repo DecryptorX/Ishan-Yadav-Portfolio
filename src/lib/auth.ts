@@ -146,6 +146,15 @@ export function getAuthOptions(): NextAuthOptions {
           if (account) {
             token.linkedinId = account.providerAccountId ?? undefined;
             token.id = account.providerAccountId || user?.id;
+
+            // ── TEMPORARY: Log provider ID for admin setup ──
+            console.log('\n╔══════════════════════════════════════════╗');
+            console.log('║  LinkedIn Provider ID:                   ║');
+            console.log(`║  ${account.providerAccountId}`);
+            console.log(`║  profile.sub: ${(profile as any)?.sub ?? 'N/A'}`);
+            console.log(`║  user.id: ${user?.id ?? 'N/A'}`);
+            console.log('╚══════════════════════════════════════════╝\n');
+            // ── END TEMPORARY ──
           }
           if (user?.id && !token.linkedinId) {
             token.linkedinId = user.id;
