@@ -138,7 +138,7 @@ export default function JourneyPage() {
   }, []);
 
   return (
-    <div ref={containerRef} style={{ minHeight: '100vh', padding: '8rem 2rem 8rem', background: 'var(--bg)', position: 'relative' }}>
+    <div ref={containerRef} className="journey-page-container" style={{ minHeight: '100vh', background: 'var(--bg)', position: 'relative' }}>
       
       {/* Background Year Indicator (Cinematic, Large) */}
       <div 
@@ -178,7 +178,7 @@ export default function JourneyPage() {
         </motion.div>
 
         {/* Scroll Progress Timeline */}
-        <div style={{ display: 'flex', gap: '3rem', position: 'relative' }}>
+        <div className="timeline-flex-container" style={{ display: 'flex', gap: '3rem', position: 'relative' }}>
           
           {/* Left Side: Sticky Timeline Indicator */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative', width: '20px' }}>
@@ -237,13 +237,12 @@ export default function JourneyPage() {
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <div style={{
+                  <div className="timeline-card" style={{
                     background: 'rgba(255, 255, 255, 0.02)',
                     backdropFilter: 'blur(20px)',
                     WebkitBackdropFilter: 'blur(20px)',
                     border: '1px solid rgba(255, 255, 255, 0.06)',
                     borderRadius: '1.5rem',
-                    padding: '2.5rem',
                     boxShadow: '0 20px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.02)',
                     position: 'relative',
                     overflow: 'hidden'
@@ -338,6 +337,26 @@ export default function JourneyPage() {
             Let's Write the Next Chapter →
           </Link>
         </motion.div>
+
+        <style>{`
+          .journey-page-container {
+            padding: 8rem 2rem 8rem;
+          }
+          .timeline-card {
+            padding: 2.5rem;
+          }
+          @media (max-width: 640px) {
+            .journey-page-container {
+              padding: 5rem 1rem 5rem !important;
+            }
+            .timeline-flex-container {
+              gap: 1.25rem !important;
+            }
+            .timeline-card {
+              padding: 1.5rem 1.25rem !important;
+            }
+          }
+        `}</style>
 
       </div>
     </div>

@@ -36,7 +36,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="home" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', overflow: 'hidden', padding: '7rem 2rem 4rem' }}>
+    <section id="home" className="hero-section" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
       
       {/* Ambient glassmorphic glow mesh */}
       <div aria-hidden style={{ position: 'absolute', top: '15%', left: '5%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0, 255, 136, 0.045) 0%, transparent 70%)', filter: 'blur(30px)', pointerEvents: 'none' }} />
@@ -195,6 +195,14 @@ export default function Hero() {
       </div>
 
       <style>{`
+        .hero-section {
+          padding: 7rem 2rem 4rem;
+        }
+        @media (max-width: 640px) {
+          .hero-section {
+            padding: 5rem 1.25rem 3rem !important;
+          }
+        }
         @keyframes hpulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.85)} }
         @keyframes hero-float {
           0%, 100% { transform: translateY(0); }

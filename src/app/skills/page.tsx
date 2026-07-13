@@ -73,7 +73,7 @@ export default function SkillsPage() {
   const [groupColor, setGroupColor] = useState<string>(SKILL_GROUPS[0].color);
 
   return (
-    <div style={{ minHeight: '100vh', padding: '8rem 2rem 6rem', background: 'var(--bg)' }}>
+    <div className="skills-page-container" style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         
         {/* Header */}
@@ -205,6 +205,16 @@ export default function SkillsPage() {
         </div>
 
       </div>
+        <style>{`
+          .skills-page-container {
+            padding: 8rem 2rem 6rem;
+          }
+          @media (max-width: 640px) {
+            .skills-page-container {
+              padding: 5rem 1rem 4rem !important;
+            }
+          }
+        `}</style>
     </div>
   );
 }
