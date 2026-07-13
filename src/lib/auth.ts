@@ -88,6 +88,16 @@ export function getAuthOptions(): NextAuthOptions {
         authorization: {
           params: { scope: 'openid profile email' },
         },
+        // LinkedIn OIDC returns { sub, name, email, picture } instead of
+        // the legacy { id, localizedFirstName, ... }. Map sub → id.
+        profile(profile: any) {
+          return {
+            id: profile.sub,
+            name: profile.name,
+            email: profile.email,
+            image: profile.picture,
+          };
+        },
       })
     );
   } else if (process.env.NODE_ENV === 'production') {
