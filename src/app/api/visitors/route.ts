@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions, isOwner } from '../../../lib/auth';
+import { getAuthOptions, isOwner } from '../../../lib/auth';
 import { saveVisitor, getVisitorById, getAllVisitors, getStats } from '../../../lib/store';
 
 function parseUserAgent(ua: string) {
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(getAuthOptions());
   if (!session?.user || !isOwner(session.user.id)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }

@@ -1,13 +1,13 @@
 import React from 'react';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { authOptions, isOwner } from '../../lib/auth';
+import { getAuthOptions, isOwner } from '../../lib/auth';
 import { getAllVisitors, getStats } from '../../lib/store';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(getAuthOptions());
 
   // If not authenticated, redirect to login page
   if (!session?.user) {
