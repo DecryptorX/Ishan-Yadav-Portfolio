@@ -7,6 +7,7 @@ declare module 'next-auth' {
     user: {
       id: string;
       role: string;
+      isAdmin: boolean;
     } & DefaultSession['user'];
   }
 }
@@ -33,19 +34,6 @@ function isRealValue(val: string | undefined): boolean {
   return true;
 }
 
-// Print a clean, anonymous server-side diagnostic
-function logDiagnostics() {
-  const check = (val: string | undefined) => (isRealValue(val) ? '✅' : '❌');
-  
-  console.log('\n┌─ Auth Environment Diagnostics ──────────────');
-  console.log(`AUTH_SECRET ${check(process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET)}`);
-  console.log(`AUTH_URL ${check(process.env.AUTH_URL || process.env.NEXTAUTH_URL)}`);
-  console.log(`LINKEDIN_CLIENT_ID ${check(process.env.LINKEDIN_CLIENT_ID)}`);
-  console.log(`LINKEDIN_CLIENT_SECRET ${check(process.env.LINKEDIN_CLIENT_SECRET)}`);
-  console.log(`ADMIN_LINKEDIN_ID ${check(process.env.ADMIN_LINKEDIN_ID)}`);
-  console.log('└─────────────────────────────────────────────\n');
-}
-
 export function isLinkedinConfigured(): boolean {
   return isRealValue(process.env.LINKEDIN_CLIENT_ID) && isRealValue(process.env.LINKEDIN_CLIENT_SECRET);
 }
@@ -56,7 +44,7 @@ export function isAuthConfigured(): boolean {
 
 // ─── Dynamic Config Generator ──────────────────────────────────────────────
 export function getAuthOptions(): NextAuthOptions {
-  // Always bridge Auth.js v5 naming to NextAuth v4 internally
+  // Bridge Auth.js v5 naming to NextAuth v4 internally
   if (!process.env.NEXTAUTH_URL && process.env.AUTH_URL) {
     process.env.NEXTAUTH_URL = process.env.AUTH_URL;
   }
@@ -68,9 +56,6 @@ export function getAuthOptions(): NextAuthOptions {
   const linkedinClientSecret = process.env.LINKEDIN_CLIENT_SECRET;
   const adminLinkedinId = process.env.ADMIN_LINKEDIN_ID;
   const authSecret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
-
-  // Log startup check on every options request on the server
-  logDiagnostics();
 
   const isConfigured = isLinkedinConfigured();
   const providers: NextAuthOptions['providers'] = [];
@@ -99,10 +84,6 @@ export function getAuthOptions(): NextAuthOptions {
           };
         },
       })
-    );
-  } else if (process.env.NODE_ENV === 'production') {
-    console.error(
-      '⚠️  CRITICAL CONFIGURATION ERROR: LinkedIn OAuth client credentials are not configured or contain placeholder values!'
     );
   }
 
@@ -134,71 +115,34 @@ export function getAuthOptions(): NextAuthOptions {
     providers,
     session: { strategy: 'jwt' },
     callbacks: {
-      async jwt({ token, account, user, profile }) {
-        try {
-          console.log('[next-auth][debug] jwt callback input:', {
-            token: token ? { id: token.id, role: token.role, sub: token.sub } : null,
-            account: account ? { provider: account.provider, type: account.type, providerAccountId: account.providerAccountId } : null,
-            user: user ? { id: user.id, name: user.name, email: user.email } : null,
-            profile: profile ? { sub: (profile as any).sub, name: (profile as any).name, email: (profile as any).email } : null
-          });
-
-          if (account) {
-            token.linkedinId = account.providerAccountId ?? undefined;
-            token.id = account.providerAccountId || user?.id;
-            // TEMPORARY: pass profile.sub for debug page
-            token.profileSub = (profile as any)?.sub ?? undefined;
-          }
-          if (user?.id && !token.linkedinId) {
-            token.linkedinId = user.id;
-            token.id = user.id;
-          }
-
-          // Match admin role by LinkedIn providerAccountId
-          const lId = (token.linkedinId as string | undefined) ?? '';
-          if (adminLinkedinId && lId && lId === adminLinkedinId) {
-            token.role = 'admin';
-          } else {
-            token.role = 'user';
-          }
-
-          console.log('[next-auth][debug] jwt callback output token:', {
-            id: token.id,
-            role: token.role,
-            linkedinId: token.linkedinId
-          });
-
-          return token;
-        } catch (err) {
-          console.error('[next-auth][error] Exception in jwt callback:', err);
-          throw err;
+      async jwt({ token, account, user }) {
+        if (account) {
+          token.linkedinId = account.providerAccountId ?? undefined;
+          token.id = account.providerAccountId || user?.id;
         }
+        if (user?.id && !token.linkedinId) {
+          token.linkedinId = user.id;
+          token.id = user.id;
+        }
+
+        // Assign admin role by matching LinkedIn providerAccountId
+        const lId = (token.linkedinId as string | undefined) ?? '';
+        if (adminLinkedinId && lId && lId === adminLinkedinId) {
+          token.role = 'admin';
+        } else {
+          token.role = 'user';
+        }
+
+        return token;
       },
 
       async session({ session, token }) {
-        try {
-          console.log('[next-auth][debug] session callback input:', {
-            session: session ? { expires: session.expires, user: session.user ? { name: session.user.name, email: session.user.email } : null } : null,
-            token: token ? { id: token.id, role: token.role, linkedinId: token.linkedinId } : null
-          });
-
-          if (session.user) {
-            session.user.id = (token.linkedinId || token.id || token.sub || '') as string;
-            session.user.role = (token.role as string) || 'user';
-            // TEMPORARY: expose profileSub for debug page
-            (session.user as any).profileSub = (token.profileSub as string) ?? '';
-          }
-
-          console.log('[next-auth][debug] session callback output:', {
-            id: session.user?.id,
-            role: session.user?.role
-          });
-
-          return session;
-        } catch (err) {
-          console.error('[next-auth][error] Exception in session callback:', err);
-          throw err;
+        if (session.user) {
+          session.user.id = (token.linkedinId || token.id || token.sub || '') as string;
+          session.user.role = (token.role as string) || 'user';
+          session.user.isAdmin = token.role === 'admin';
         }
+        return session;
       },
 
       async redirect({ url, baseUrl }) {

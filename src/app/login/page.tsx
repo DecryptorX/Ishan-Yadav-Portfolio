@@ -22,10 +22,10 @@ const cardStyle: React.CSSProperties = {
 };
 
 function LoginCard() {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/debug-auth'; // TEMPORARY: was '/'
+  const callbackUrl = searchParams.get('callbackUrl') || '/';
   const authError = searchParams.get('error');
 
   const [providers, setProviders] = useState<Record<string, unknown> | null>(null);
@@ -52,9 +52,14 @@ function LoginCard() {
   // Redirect if already authenticated
   useEffect(() => {
     if (status === 'authenticated') {
-      router.push(callbackUrl);
+      const isAdmin = session?.user?.role === 'admin' || (session?.user as any)?.isAdmin;
+      if (isAdmin) {
+        router.push('/admin');
+      } else {
+        router.push('/');
+      }
     }
-  }, [status, router, callbackUrl]);
+  }, [status, session, router]);
 
   const linkedinAvailable = Boolean(providers && providers['linkedin']);
   const credentialsAvailable = Boolean(providers && providers['credentials']);
@@ -64,7 +69,7 @@ function LoginCard() {
     await signIn('credentials', {
       name: devName || 'Guest Developer',
       email: devEmail || 'guest@portfolio.local',
-      callbackUrl,
+      callbackUrl: '/login',
     });
   };
 
@@ -106,7 +111,7 @@ function LoginCard() {
         </div>
       ) : linkedinAvailable ? (
         <button
-          onClick={() => signIn('linkedin', { callbackUrl })}
+          onClick={() => signIn('linkedin', { callbackUrl: '/login' })}
           style={{
             width: '100%',
             padding: '0.85rem 1.25rem',
