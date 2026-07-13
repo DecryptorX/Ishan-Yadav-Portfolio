@@ -146,15 +146,8 @@ export function getAuthOptions(): NextAuthOptions {
           if (account) {
             token.linkedinId = account.providerAccountId ?? undefined;
             token.id = account.providerAccountId || user?.id;
-
-            // ── TEMPORARY: Log provider ID for admin setup ──
-            console.log('\n╔══════════════════════════════════════════╗');
-            console.log('║  LinkedIn Provider ID:                   ║');
-            console.log(`║  ${account.providerAccountId}`);
-            console.log(`║  profile.sub: ${(profile as any)?.sub ?? 'N/A'}`);
-            console.log(`║  user.id: ${user?.id ?? 'N/A'}`);
-            console.log('╚══════════════════════════════════════════╝\n');
-            // ── END TEMPORARY ──
+            // TEMPORARY: pass profile.sub for debug page
+            token.profileSub = (profile as any)?.sub ?? undefined;
           }
           if (user?.id && !token.linkedinId) {
             token.linkedinId = user.id;
@@ -192,6 +185,8 @@ export function getAuthOptions(): NextAuthOptions {
           if (session.user) {
             session.user.id = (token.linkedinId || token.id || token.sub || '') as string;
             session.user.role = (token.role as string) || 'user';
+            // TEMPORARY: expose profileSub for debug page
+            (session.user as any).profileSub = (token.profileSub as string) ?? '';
           }
 
           console.log('[next-auth][debug] session callback output:', {

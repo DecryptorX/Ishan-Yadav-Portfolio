@@ -25,7 +25,7 @@ function LoginCard() {
   const { status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/';
+  const callbackUrl = searchParams.get('callbackUrl') || '/debug-auth'; // TEMPORARY: was '/'
   const authError = searchParams.get('error');
 
   const [providers, setProviders] = useState<Record<string, unknown> | null>(null);
