@@ -37,7 +37,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="home" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', overflow: 'hidden', padding: '7rem 2rem 4rem' }}>
+    <section id="home" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden', padding: '6.75rem 2rem 4rem' }}>
 
       {/* Ambient glassmorphic glow mesh */}
       <div aria-hidden style={{ position: 'absolute', top: '15%', left: '5%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0, 255, 136, 0.045) 0%, transparent 70%)', filter: 'blur(30px)', pointerEvents: 'none' }} />
@@ -202,7 +202,7 @@ export default function Hero() {
           50% { transform: translateY(-8px); }
         }
         @media (max-width: 640px) {
-          #home { padding: 6rem 1.25rem 3rem !important; }
+          #home { padding: 5.5rem 1.25rem 3rem !important; }
         }
       `}</style>
     </section>
