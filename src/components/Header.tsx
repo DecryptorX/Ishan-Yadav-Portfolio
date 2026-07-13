@@ -81,7 +81,7 @@ export default function Header() {
             transition={{ type: "spring", stiffness: 400, damping: 12 }}
           >
             <Link href="/" onClick={() => setMobileOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', fontWeight: 850, fontSize: '1.2rem', color: '#fff', letterSpacing: '-0.04em', textDecoration: 'none' }}>
-              Ishan<span style={{ color: '#00ff88', textShadow: '0 0 8px rgba(0, 255, 136, 0.6)' }}>.</span>
+              Ishan<span className="blinking-dot" style={{ color: '#00ff88', display: 'inline-block' }}>.</span>
             </Link>
           </motion.div>
 
@@ -373,6 +373,21 @@ export default function Header() {
           .mobile-toggle-btn {
             display: none !important;
           }
+        }
+        @keyframes blink-blur {
+          0%, 100% {
+            opacity: 1;
+            filter: blur(0px);
+            text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+          }
+          50% {
+            opacity: 0.25;
+            filter: blur(1.5px);
+            text-shadow: 0 0 0px rgba(0, 255, 136, 0);
+          }
+        }
+        .blinking-dot {
+          animation: blink-blur 1.8s infinite ease-in-out;
         }
       `}</style>
     </>
