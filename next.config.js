@@ -1,9 +1,13 @@
+/** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['example.com'], // Add your image domains here
-  },
-  env: {
-    CUSTOM_API_URL: process.env.CUSTOM_API_URL, // Example of an environment variable
+    remotePatterns: [
+      // LinkedIn profile images
+      { protocol: 'https', hostname: 'media.licdn.com' },
+      { protocol: 'https', hostname: '*.licdn.com' },
+      // Flaticon CDN (fallback avatars)
+      { protocol: 'https', hostname: 'cdn-icons-png.flaticon.com' },
+    ],
   },
 };

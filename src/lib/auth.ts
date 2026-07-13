@@ -19,10 +19,9 @@ declare module 'next-auth/jwt' {
   }
 }
 
-/**
- * Bridge Auth.js v5 naming (AUTH_URL / AUTH_SECRET) to the NEXTAUTH_* names
- * that NextAuth v4 reads internally, so either naming convention works.
- */
+// ─── Environment Variable Resolution ───────────────────────────────────────
+// Bridge Auth.js v5 naming (AUTH_URL / AUTH_SECRET) to NEXTAUTH_* names
+// that NextAuth v4 reads internally.
 if (!process.env.NEXTAUTH_URL && process.env.AUTH_URL) {
   process.env.NEXTAUTH_URL = process.env.AUTH_URL;
 }
@@ -32,29 +31,67 @@ if (!process.env.NEXTAUTH_SECRET && process.env.AUTH_SECRET) {
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+// ─── Read & Validate Environment Variables ─────────────────────────────────
 const linkedinClientId = process.env.LINKEDIN_CLIENT_ID;
 const linkedinClientSecret = process.env.LINKEDIN_CLIENT_SECRET;
-
-/** The LinkedIn providerAccountId that maps to the admin role. */
 const adminLinkedinId = process.env.ADMIN_LINKEDIN_ID;
+const authSecret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+const authUrl = process.env.AUTH_URL || process.env.NEXTAUTH_URL;
 
-/** True only when real LinkedIn OAuth credentials are present. */
-export const linkedinConfigured = Boolean(linkedinClientId && linkedinClientSecret);
+/**
+ * Returns true only if a value is a real credential — not empty, not undefined,
+ * and not a placeholder like "your_linkedin_client_id" or "<your client id>".
+ */
+function isRealValue(val: string | undefined): boolean {
+  if (!val) return false;
+  const lower = val.toLowerCase().trim();
+  if (lower.length < 5) return false;
+  if (lower.includes('your_')) return false;
+  if (lower.includes('<your')) return false;
+  if (lower.includes('placeholder')) return false;
+  if (lower.includes('example')) return false;
+  if (lower.includes('change_me')) return false;
+  if (lower.includes('xxx')) return false;
+  return true;
+}
+
+/** True only when real (non-placeholder) LinkedIn OAuth credentials are present. */
+export const linkedinConfigured = isRealValue(linkedinClientId) && isRealValue(linkedinClientSecret);
 
 /** True when at least one real OAuth provider is available. */
 export const authConfigured = linkedinConfigured;
 
+// ─── Startup Environment Status Logging ────────────────────────────────────
+// Print which env vars are loaded (never print actual values).
+if (typeof globalThis !== 'undefined') {
+  const status = (name: string, val: string | undefined) => {
+    const real = isRealValue(val);
+    const exists = Boolean(val);
+    if (real) return `  ✓ ${name} loaded`;
+    if (exists) return `  ✗ ${name} contains a placeholder value!`;
+    return `  ✗ ${name} is missing`;
+  };
+
+  console.log('\n┌─ Auth Environment Status ──────────────────');
+  console.log(status('AUTH_SECRET', authSecret));
+  console.log(status('AUTH_URL', authUrl));
+  console.log(status('LINKEDIN_CLIENT_ID', linkedinClientId));
+  console.log(status('LINKEDIN_CLIENT_SECRET', linkedinClientSecret));
+  console.log(status('ADMIN_LINKEDIN_ID', adminLinkedinId));
+  console.log(`  ℹ LinkedIn configured: ${linkedinConfigured}`);
+  console.log(`  ℹ Environment: ${process.env.NODE_ENV}`);
+  console.log('└─────────────────────────────────────────────\n');
+}
+
+// ─── Provider Registration ─────────────────────────────────────────────────
 const providers: NextAuthOptions['providers'] = [];
 
-// LinkedIn — registered ONLY when real credentials exist.
 if (linkedinConfigured) {
   providers.push(
     LinkedInProvider({
-      clientId: linkedinClientId as string,
-      clientSecret: linkedinClientSecret as string,
+      clientId: linkedinClientId!,
+      clientSecret: linkedinClientSecret!,
       client: {
-        // LinkedIn requires the secret to be sent in the POST body, not as
-        // a Basic Auth header (which is the NextAuth default).
         token_endpoint_auth_method: 'client_secret_post',
       },
       authorization: {
@@ -62,10 +99,18 @@ if (linkedinConfigured) {
       },
     })
   );
+} else if (isProduction) {
+  // In production, if LinkedIn isn't configured, log a critical warning.
+  console.error(
+    '\n⚠️  CRITICAL: LinkedIn OAuth is NOT configured in production!\n' +
+    '   Set LINKEDIN_CLIENT_ID and LINKEDIN_CLIENT_SECRET in Vercel.\n' +
+    '   Current LINKEDIN_CLIENT_ID is: ' +
+    (linkedinClientId ? `"${linkedinClientId.substring(0, 4)}..." (looks like a placeholder)` : 'undefined') +
+    '\n'
+  );
 }
 
 // Developer bypass — LOCAL DEVELOPMENT ONLY.
-// Never registered in production so no mock auth can appear on the live site.
 if (!isProduction) {
   providers.push(
     CredentialsProvider({
@@ -73,7 +118,6 @@ if (!isProduction) {
       credentials: {
         name: { label: 'Name', type: 'text', placeholder: 'Test User' },
         email: { label: 'Email', type: 'text', placeholder: 'test@local' },
-        // Pass "admin" to simulate the admin LinkedIn ID
         linkedinId: { label: 'LinkedIn ID (optional)', type: 'text', placeholder: adminLinkedinId ?? '' },
       },
       async authorize(credentials) {
@@ -89,29 +133,23 @@ if (!isProduction) {
   );
 }
 
+// ─── NextAuth Configuration ────────────────────────────────────────────────
 export const authOptions: NextAuthOptions = {
-  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
+  secret: authSecret,
   providers,
   session: { strategy: 'jwt' },
   callbacks: {
-    /**
-     * Called after every sign-in. `account.providerAccountId` is the LinkedIn
-     * member ID (e.g. "abc123") that we compare against ADMIN_LINKEDIN_ID.
-     */
     async jwt({ token, account, user }) {
-      // On first sign-in, `account` and `user` are present.
       if (account) {
-        // Store the LinkedIn providerAccountId in the token for admin checks.
         token.linkedinId = account.providerAccountId ?? undefined;
         token.id = account.providerAccountId || user?.id;
       }
       if (user?.id && !token.linkedinId) {
-        // Credentials provider — store the id directly.
         token.linkedinId = user.id;
         token.id = user.id;
       }
 
-      // Determine role server-side: compare LinkedIn member ID against env var.
+      // Admin role: compare LinkedIn providerAccountId against env var.
       const lId = (token.linkedinId as string | undefined) ?? '';
       if (adminLinkedinId && lId && lId === adminLinkedinId) {
         token.role = 'admin';
@@ -131,14 +169,12 @@ export const authOptions: NextAuthOptions = {
     },
 
     async redirect({ url, baseUrl }) {
-      // Allow relative URLs and same-origin redirects; otherwise go home.
       if (url.startsWith('/')) return `${baseUrl}${url}`;
       if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
   },
   pages: { signIn: '/login' },
-  // Use secure cookies in production.
   useSecureCookies: isProduction,
   cookies: isProduction
     ? {
@@ -157,7 +193,6 @@ export const authOptions: NextAuthOptions = {
 
 /**
  * Server-side helper: returns true if the given LinkedIn ID is the admin.
- * Use this in server components / API routes for authorization checks.
  */
 export function isOwner(linkedinId?: string | null): boolean {
   if (!linkedinId || !adminLinkedinId) return false;
