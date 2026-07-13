@@ -19,18 +19,8 @@ export const authOptions: NextAuthOptions = {
     LinkedInProvider({
       clientId: process.env.LINKEDIN_CLIENT_ID || 'mock',
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET || 'mock',
-      authorization: {
-        params: { scope: 'openid profile email' },
-      },
-      issuer: 'https://www.linkedin.com',
-      jwks_endpoint: 'https://www.linkedin.com/oauth/openid/jwks',
-      profile(profile) {
-        return {
-          id: profile.sub,
-          name: profile.name,
-          email: profile.email,
-          image: profile.picture,
-        };
+      client: {
+        token_endpoint_auth_method: 'client_secret_post',
       },
     }),
     GithubProvider({
