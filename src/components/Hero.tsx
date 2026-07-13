@@ -5,29 +5,28 @@ import { useModal } from '../context/modal';
 import Image from 'next/image';
 import Link from 'next/link';
 import MagneticButton from './MagneticButton';
-import { FileText, MapPin } from 'lucide-react';
-
-// GitHub / LinkedIn brand marks as inline SVGs (matches the rest of the codebase).
-const GithubIcon = () => (
-  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-  </svg>
-);
-const LinkedinIcon = () => (
-  <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-    <rect x="2" y="9" width="4" height="12" />
-    <circle cx="4" cy="4" r="2" />
-  </svg>
-);
+import { FileText } from 'lucide-react';
 
 // Green is used sparingly as a single accent, not the primary color.
 const ACCENT = '#00ff88';
 
-// Almost-invisible backdrop typography — reduced opacity + scale.
+// Almost-invisible backdrop typography.
 const BACKGROUND_WORDS = [
-  { text: 'BACKEND', top: '18%', left: '6%' },
-  { text: 'SECURITY', top: '68%', left: '58%' },
+  { text: 'BACKEND', top: '18%', left: '5%' },
+  { text: 'SECURITY', top: '70%', left: '56%' },
+];
+
+// Deterministic orbiting particles (no Math.random → no hydration mismatch).
+// Each "satellite" orbits at its own radius/speed, breathes in-and-out, and fades.
+const ORBIT_PARTICLES = [
+  { angle: 0, radius: 172, size: 6, orbit: 28, breathe: 4.6, delay: 0.0, op: 0.9, dir: 1 },
+  { angle: 45, radius: 205, size: 4, orbit: 36, breathe: 5.4, delay: 1.1, op: 0.65, dir: -1 },
+  { angle: 90, radius: 158, size: 3, orbit: 24, breathe: 3.9, delay: 0.6, op: 0.55, dir: 1 },
+  { angle: 135, radius: 214, size: 5, orbit: 42, breathe: 6.0, delay: 2.0, op: 0.8, dir: -1 },
+  { angle: 180, radius: 184, size: 3, orbit: 31, breathe: 4.3, delay: 0.3, op: 0.5, dir: 1 },
+  { angle: 225, radius: 226, size: 7, orbit: 48, breathe: 5.1, delay: 1.6, op: 0.85, dir: -1 },
+  { angle: 270, radius: 166, size: 4, orbit: 27, breathe: 4.9, delay: 2.5, op: 0.6, dir: 1 },
+  { angle: 315, radius: 208, size: 3, orbit: 39, breathe: 5.3, delay: 0.9, op: 0.5, dir: -1 },
 ];
 
 // Shared entrance: gentle fade + blur + subtle translate (no bounce, no scale).
@@ -36,13 +35,15 @@ const fadeUp = {
   show: { opacity: 1, y: 0, filter: 'blur(0px)' },
 };
 
+const PORTRAIT = 340; // px
+
 export default function Hero() {
   const { openModal } = useModal();
   const containerRef = useRef<HTMLDivElement>(null);
   const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
-  // Detect mobile
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -50,12 +51,21 @@ export default function Hero() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Track mouse coordinates for the subtle spotlight
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isMobile || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     setMouseCoords({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
+
+  // Portrait tilt follows the cursor within its own bounds (max ~9°).
+  const handlePortraitMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+    const py = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+    setTilt({ x: px * 9, y: -py * 9 });
+  };
+  const handlePortraitLeave = () => setTilt({ x: 0, y: 0 });
 
   return (
     <section
@@ -109,7 +119,7 @@ export default function Hero() {
         }}
       />
 
-      {/* Almost-invisible decorative backdrop words */}
+      {/* Almost-invisible decorative backdrop words (~4% opacity) */}
       {!isMobile && (
         <div aria-hidden style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
           {BACKGROUND_WORDS.map((w) => (
@@ -122,7 +132,7 @@ export default function Hero() {
                 fontSize: 'clamp(2.5rem, 7vw, 5rem)',
                 fontWeight: 800,
                 color: 'rgba(255, 255, 255, 0.012)',
-                WebkitTextStroke: '1px rgba(255, 255, 255, 0.015)',
+                WebkitTextStroke: '1px rgba(255, 255, 255, 0.02)',
                 letterSpacing: '0.12em',
                 fontFamily: 'monospace',
                 userSelect: 'none',
@@ -144,8 +154,8 @@ export default function Hero() {
           width: '100%',
           margin: '0 auto',
           display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : '1.15fr 0.85fr',
-          gap: isMobile ? '3.5rem' : '5rem',
+          gridTemplateColumns: isMobile ? '1fr' : '1.05fr 0.95fr',
+          gap: isMobile ? '4rem' : '4rem',
           alignItems: 'center',
           position: 'relative',
           zIndex: 2,
@@ -154,11 +164,7 @@ export default function Hero() {
         {/* LEFT COLUMN — identity + actions */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {/* Availability eyebrow — minimal, low glow */}
-          <motion.div
-            variants={fadeUp}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-            style={{ marginBottom: '2rem' }}
-          >
+          <motion.div variants={fadeUp} transition={{ duration: 0.5, ease: 'easeOut' }} style={{ marginBottom: '2rem' }}>
             <span
               style={{
                 display: 'inline-flex',
@@ -186,7 +192,7 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Name — clean single-line hierarchy, no "Hi, I'm" */}
+          {/* Name */}
           <motion.h1
             variants={fadeUp}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -202,7 +208,7 @@ export default function Hero() {
             Ishan Yadav
           </motion.h1>
 
-          {/* Role line — accent used only for the separator */}
+          {/* Role line — accent only on the separator */}
           <motion.p
             variants={fadeUp}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -217,7 +223,7 @@ export default function Hero() {
             Backend Engineer <span style={{ color: ACCENT, margin: '0 0.5rem' }}>·</span> Cybersecurity
           </motion.p>
 
-          {/* Description — natural, max three lines */}
+          {/* Description */}
           <motion.p
             variants={fadeUp}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -233,7 +239,7 @@ export default function Hero() {
             experiences while exploring modern cybersecurity.
           </motion.p>
 
-          {/* CTA buttons — smaller, softer glow, thin borders */}
+          {/* CTA buttons — consistent height, soft glow, thin borders */}
           <motion.div
             variants={fadeUp}
             transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -244,26 +250,23 @@ export default function Hero() {
               <Link
                 href="/projects"
                 style={{
-                  padding: '0.6rem 1.35rem',
+                  height: 44,
+                  padding: '0 1.5rem',
                   borderRadius: '0.6rem',
                   fontWeight: 600,
                   fontSize: '0.85rem',
                   background: ACCENT,
                   color: '#04160d',
-                  border: 'none',
+                  border: '1px solid transparent',
                   textDecoration: 'none',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.4rem',
                   boxShadow: '0 2px 12px rgba(0,255,136,0.15)',
-                  transition: 'box-shadow 0.25s, transform 0.25s',
+                  transition: 'box-shadow 0.25s',
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,255,136,0.25)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,255,136,0.15)';
-                }}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,255,136,0.25)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,255,136,0.15)'; }}
               >
                 Projects
               </Link>
@@ -274,7 +277,8 @@ export default function Hero() {
               <Link
                 href="/journey"
                 style={{
-                  padding: '0.6rem 1.35rem',
+                  height: 44,
+                  padding: '0 1.5rem',
                   borderRadius: '0.6rem',
                   fontWeight: 600,
                   fontSize: '0.85rem',
@@ -287,14 +291,8 @@ export default function Hero() {
                   gap: '0.4rem',
                   transition: 'all 0.25s',
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'; }}
               >
                 Journey
               </Link>
@@ -305,7 +303,8 @@ export default function Hero() {
               <button
                 onClick={openModal}
                 style={{
-                  padding: '0.6rem 1.35rem',
+                  height: 44,
+                  padding: '0 1.35rem',
                   borderRadius: '0.6rem',
                   fontWeight: 600,
                   fontSize: '0.85rem',
@@ -318,12 +317,8 @@ export default function Hero() {
                   gap: '0.4rem',
                   transition: 'color 0.25s',
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#fafafa';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'rgba(148, 163, 184, 0.8)';
-                }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = '#fafafa'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(148, 163, 184, 0.8)'; }}
               >
                 <FileText size={14} />
                 Resume
@@ -332,150 +327,135 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* RIGHT COLUMN — premium developer ID card */}
+        {/* RIGHT COLUMN — large circular portrait with orbiting particles */}
         <motion.div
           variants={fadeUp}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          style={{ display: 'flex', justifyContent: isMobile ? 'flex-start' : 'flex-end' }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
         >
           <div
+            onMouseMove={handlePortraitMove}
+            onMouseLeave={handlePortraitLeave}
             style={{
-              width: '100%',
-              maxWidth: 320,
-              background: 'rgba(255, 255, 255, 0.025)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.07)',
-              borderRadius: '1.25rem',
-              padding: '1.75rem',
-              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.35)',
               position: 'relative',
+              width: PORTRAIT,
+              height: PORTRAIT,
+              maxWidth: '80vw',
+              perspective: 1000,
             }}
           >
-            {/* Header row — avatar + name + role */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div
-                style={{
-                  width: 64,
-                  height: 64,
-                  borderRadius: '0.9rem',
-                  overflow: 'hidden',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  flexShrink: 0,
-                }}
-              >
-                <Image
-                  src="/profile-ishan-v2.jpg"
-                  alt="Ishan Yadav"
-                  width={64}
-                  height={64}
-                  priority
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                />
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <h3
+            {/* Soft outer glow */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                inset: '-22%',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(0,255,136,0.16) 0%, rgba(0,255,136,0.05) 40%, transparent 70%)',
+                filter: 'blur(18px)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Orbiting particle field — subtle cursor parallax */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                inset: 0,
+                transform: `translate(${tilt.x * 0.9}px, ${-tilt.y * 0.9}px)`,
+                transition: 'transform 0.3s ease-out',
+                pointerEvents: 'none',
+              }}
+            >
+              {ORBIT_PARTICLES.map((p, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ rotate: p.angle }}
+                  animate={{ rotate: p.angle + 360 * p.dir }}
+                  transition={{ duration: p.orbit, repeat: Infinity, ease: 'linear' }}
                   style={{
-                    fontSize: '1.05rem',
-                    fontWeight: 650,
-                    color: '#fafafa',
-                    letterSpacing: '-0.01em',
-                    margin: 0,
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    width: 0,
+                    height: 0,
                   }}
                 >
-                  Ishan Yadav
-                </h3>
-                <p
-                  style={{
-                    fontSize: '0.78rem',
-                    color: 'rgba(148, 163, 184, 0.8)',
-                    margin: '0.2rem 0 0',
-                  }}
-                >
-                  Backend Engineer · Cybersecurity
-                </p>
-              </div>
-            </div>
-
-            <div style={{ height: 1, background: 'rgba(255, 255, 255, 0.06)', margin: '1.5rem 0' }} />
-
-            {/* Details — only the essentials */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', fontSize: '0.82rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem', color: 'rgba(148,163,184,0.7)' }}>
-                  <MapPin size={13} /> Location
-                </span>
-                <span style={{ color: 'rgba(226,232,240,0.85)', fontWeight: 500 }}>Gurgaon, IN</span>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ color: 'rgba(148,163,184,0.7)' }}>Availability</span>
-                <span style={{ color: ACCENT, fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <span
+                  <motion.span
+                    animate={{ opacity: [p.op * 0.25, p.op, p.op * 0.25], x: [0, 7, 0] }}
+                    transition={{ duration: p.breathe, repeat: Infinity, ease: 'easeInOut', delay: p.delay }}
                     style={{
-                      width: 5,
-                      height: 5,
+                      position: 'absolute',
+                      left: p.radius,
+                      top: -p.size / 2,
+                      width: p.size,
+                      height: p.size,
                       borderRadius: '50%',
                       background: ACCENT,
-                      display: 'inline-block',
-                      animation: 'hero-status-pulse 2s infinite',
+                      boxShadow: `0 0 ${p.size + 4}px ${ACCENT}`,
+                      willChange: 'transform, opacity',
                     }}
                   />
-                  Open to work
-                </span>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}>
-                <span style={{ color: 'rgba(148,163,184,0.7)', flexShrink: 0 }}>Current focus</span>
-                <span style={{ color: 'rgba(226,232,240,0.85)', fontWeight: 500, textAlign: 'right' }}>
-                  Secure backend &amp; SOC
-                </span>
-              </div>
-            </div>
-
-            <div style={{ height: 1, background: 'rgba(255, 255, 255, 0.06)', margin: '1.5rem 0' }} />
-
-            {/* Social links */}
-            <div style={{ display: 'flex', gap: '0.6rem' }}>
-              {[
-                { href: 'https://github.com/DecryptorX', label: 'GitHub', Icon: GithubIcon },
-                { href: 'https://www.linkedin.com/in/ishan-yadav-a22251325', label: 'LinkedIn', Icon: LinkedinIcon },
-              ].map(({ href, label, Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    flex: 1,
-                    padding: '0.5rem',
-                    borderRadius: '0.55rem',
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.07)',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.4rem',
-                    color: 'rgba(226,232,240,0.7)',
-                    fontSize: '0.78rem',
-                    fontWeight: 500,
-                    textDecoration: 'none',
-                    transition: 'all 0.2s',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)';
-                    e.currentTarget.style.color = '#fafafa';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)';
-                    e.currentTarget.style.color = 'rgba(226,232,240,0.7)';
-                  }}
-                >
-                  <Icon />
-                  {label}
-                </a>
+                </motion.div>
               ))}
             </div>
+
+            {/* Floating + tilting portrait */}
+            <motion.div
+              animate={{ y: [0, -14, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ position: 'absolute', inset: 0, transformStyle: 'preserve-3d' }}
+            >
+              <motion.div
+                animate={{ rotateX: tilt.y, rotateY: tilt.x }}
+                transition={{ type: 'spring', stiffness: 150, damping: 18 }}
+                style={{ position: 'absolute', inset: 0, transformStyle: 'preserve-3d' }}
+              >
+                {/* Outer ring */}
+                <div
+                  aria-hidden
+                  style={{
+                    position: 'absolute',
+                    inset: -14,
+                    borderRadius: '50%',
+                    border: '1px solid rgba(0, 255, 136, 0.28)',
+                    boxShadow: '0 0 45px rgba(0, 255, 136, 0.15)',
+                  }}
+                />
+                {/* Inner ring */}
+                <div
+                  aria-hidden
+                  style={{
+                    position: 'absolute',
+                    inset: -2,
+                    borderRadius: '50%',
+                    border: '2px solid rgba(0, 255, 136, 0.5)',
+                    boxShadow: 'inset 0 0 20px rgba(0, 255, 136, 0.12), 0 0 25px rgba(0, 255, 136, 0.18)',
+                  }}
+                />
+                {/* Image */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    boxShadow: '0 30px 60px rgba(0, 0, 0, 0.55)',
+                  }}
+                >
+                  <Image
+                    src="/profile-ishan-v2.jpg"
+                    alt="Ishan Yadav"
+                    width={PORTRAIT}
+                    height={PORTRAIT}
+                    priority
+                    sizes="340px"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  />
+                </div>
+              </motion.div>
+            </motion.div>
           </div>
         </motion.div>
       </motion.div>

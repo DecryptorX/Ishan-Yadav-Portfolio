@@ -1,8 +1,8 @@
 import { NextAuthOptions, DefaultSession } from 'next-auth';
 import LinkedInProvider from 'next-auth/providers/linkedin';
-import GithubProvider from 'next-auth/providers/github';
-import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
+
+type Providers = NextAuthOptions['providers'];
 
 declare module "next-auth" {
   interface Session {
@@ -13,42 +13,74 @@ declare module "next-auth" {
   }
 }
 
-export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET || 'super-secret-fallback-key-for-preview-builds-development-mode-987654321',
-  providers: [
+/**
+ * Bridge Auth.js v5 naming (AUTH_URL / AUTH_SECRET) to the NEXTAUTH_* names that
+ * NextAuth v4 reads internally, so either naming works in production.
+ */
+if (!process.env.NEXTAUTH_URL && process.env.AUTH_URL) {
+  process.env.NEXTAUTH_URL = process.env.AUTH_URL;
+}
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+const linkedinClientId = process.env.LINKEDIN_CLIENT_ID;
+const linkedinClientSecret = process.env.LINKEDIN_CLIENT_SECRET;
+
+/** True only when real LinkedIn OAuth credentials are present (no mock fallback). */
+export const linkedinConfigured = Boolean(linkedinClientId && linkedinClientSecret);
+
+/** True when at least one real OAuth provider is available. */
+export const authConfigured = linkedinConfigured;
+
+const adminEmail = process.env.ADMIN_LINKEDIN_EMAIL || 'ishanyadav09@outlook.com';
+
+const providers: Providers = [];
+
+// LinkedIn (primary) — registered ONLY when real credentials exist.
+if (linkedinConfigured) {
+  providers.push(
     LinkedInProvider({
-      clientId: process.env.LINKEDIN_CLIENT_ID || 'mock',
-      clientSecret: process.env.LINKEDIN_CLIENT_SECRET || 'mock',
+      clientId: linkedinClientId as string,
+      clientSecret: linkedinClientSecret as string,
       client: {
         token_endpoint_auth_method: 'client_secret_post',
       },
-    }),
-    GithubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID || 'mock',
-      clientSecret: process.env.GITHUB_CLIENT_SECRET || 'mock',
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || 'mock',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'mock',
-    }),
+    })
+  );
+}
+
+// Developer bypass — LOCAL DEVELOPMENT ONLY. Never registered in production,
+// so no mock/bypass authentication can ever appear on the deployed site.
+if (!isProduction) {
+  providers.push(
     CredentialsProvider({
       name: 'Developer Mode',
       credentials: {
-        name: { label: "Name", type: "text", placeholder: "Ishan Yadav" },
-        email: { label: "Email (Bypass)", type: "text", placeholder: "ishanyadav09@outlook.com" },
+        name: { label: 'Name', type: 'text', placeholder: 'Ishan Yadav' },
+        email: { label: 'Email (Bypass)', type: 'text', placeholder: adminEmail },
       },
       async authorize(credentials) {
         if (!credentials) return null;
-        // Allows bypass authentication in development and testing
         return {
-          id: credentials.email === 'ishanyadav09@outlook.com' ? 'ishan-yadav' : 'normal-user-id',
+          id: credentials.email === adminEmail ? 'ishan-yadav' : 'normal-user-id',
           name: credentials.name || 'Developer Visitor',
           email: credentials.email || 'guest@portfolio.local',
-          image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'
+          image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
         };
-      }
+      },
     })
-  ],
+  );
+}
+
+export const authOptions: NextAuthOptions = {
+  // Prefer AUTH_SECRET (Auth.js v5) then NEXTAUTH_SECRET. A labelled fallback keeps
+  // the app from crashing when unconfigured — it is never used to mint real sessions
+  // because no providers are registered until credentials are supplied.
+  secret:
+    process.env.AUTH_SECRET ||
+    process.env.NEXTAUTH_SECRET ||
+    'insecure-fallback-secret-set-AUTH_SECRET-in-production',
+  providers,
   callbacks: {
     async jwt({ token, profile, user }) {
       if (profile) token.sub = (profile as Record<string, string>).sub ?? token.sub;
@@ -57,15 +89,9 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
       }
 
-      // Check admin status on every token compilation
-      const adminId = process.env.ADMIN_LINKEDIN_ID || process.env.OWNER_LINKEDIN_ID || 'ishan-yadav';
-      const adminEmail = process.env.ADMIN_LINKEDIN_EMAIL || 'ishanyadav09@outlook.com';
-      
-      if (
-        (adminId && token.sub === adminId) ||
-        (adminEmail && token.email === adminEmail) ||
-        token.id === 'ishan-yadav'
-      ) {
+      // Admin is determined server-side by matching the authenticated email
+      // against ADMIN_LINKEDIN_EMAIL.
+      if ((adminEmail && token.email === adminEmail) || token.id === 'ishan-yadav') {
         token.role = 'admin';
       } else {
         token.role = 'user';
@@ -81,21 +107,17 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Directs safe redirects on callback
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
-    }
+    },
   },
   pages: { signIn: '/login' },
 };
 
 export function isOwner(userId?: string | null, email?: string | null): boolean {
   if (!userId && !email) return false;
-  const adminId = process.env.ADMIN_LINKEDIN_ID || process.env.OWNER_LINKEDIN_ID || 'ishan-yadav';
-  const adminEmail = process.env.ADMIN_LINKEDIN_EMAIL || 'ishanyadav09@outlook.com';
-
-  if (adminId && userId === adminId) return true;
   if (adminEmail && email === adminEmail) return true;
+  if (userId === 'ishan-yadav') return true;
   return false;
 }

@@ -31,9 +31,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <FallingPattern
                   className="fixed inset-0 z-0 pointer-events-none"
                   color="#00ff88"
-                  duration={50}
-                  density={3}
+                  duration={55}
+                  density={2}
                   blurIntensity="2px"
+                  opacity={0.05}
                 />
                 <Header />
                 <main className="relative z-10">

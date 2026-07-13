@@ -7,6 +7,7 @@ export type FallingPatternProps = {
   duration?: number;   // seconds for a particle to travel full height
   density?: number;    // relative multiplier; 1 = default
   blurIntensity?: string; // CSS blur value
+  opacity?: number;    // max glyph opacity (0-1); keeps background text faint
 };
 
 type Particle = {
@@ -30,7 +31,12 @@ export default function FallingPattern({
   duration = 80,
   density = 2,
   blurIntensity = "0.5rem",
+  opacity = 0.7,
 }: FallingPatternProps) {
+  // Keep the max glyph opacity in a ref so the RAF draw loop always reads the
+  // latest value without needing to be in the effect's dependency array.
+  const opacityRef = useRef(opacity);
+  opacityRef.current = opacity;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
   const particlesRef = useRef<Particle[]>([]);
@@ -86,7 +92,7 @@ export default function FallingPattern({
       y: scatter ? Math.random() * h : -20,
       size: 13 + Math.random() * 10,
       speed: baseSpeed * (0.4 + Math.random() * 1.2),
-      opacity: 0.35 + Math.random() * 0.35,
+      opacity: opacityRef.current * (0.5 + Math.random() * 0.5),
       char: randomFrom(CHARS),
     });
 
@@ -130,7 +136,7 @@ export default function FallingPattern({
           p.y = -20;
           p.size = 13 + Math.random() * 10;
           p.speed = baseSpeed * (0.4 + Math.random() * 1.2);
-          p.opacity = 0.35 + Math.random() * 0.35;
+          p.opacity = opacityRef.current * (0.5 + Math.random() * 0.5);
           p.char = randomFrom(CHARS);
         }
       });
