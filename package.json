@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\"",
-    "postinstall": "next build || true"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@emailjs/browser": "latest",
