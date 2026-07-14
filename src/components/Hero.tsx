@@ -14,17 +14,6 @@ const STATS = [
   { end: 2028, suffix: '', label: 'Graduation Year' },
 ];
 
-const FONTS = [
-  'var(--font-display), Cabinet Grotesk, Clash Display, sans-serif',
-  'var(--font-sans), Inter, sans-serif',
-  'var(--font-mono), Geist Mono, monospace',
-  'Satoshi, var(--font-sans), sans-serif',
-  'General Sans, var(--font-sans), sans-serif',
-  'Clash Display, var(--font-display), sans-serif',
-  'Switzer, var(--font-sans), sans-serif',
-  'Plus Jakarta Sans, var(--font-sans), sans-serif'
-];
-
 function Counter({ end, suffix }: { end: number; suffix: string }) {
   const [val, setVal] = useState(0);
   useEffect(() => {
@@ -44,25 +33,6 @@ export default function Hero() {
   const [idx, setIdx] = useState(0);
   const [heroData, setHeroData] = useState<any>(null);
   const [cycleList, setCycleList] = useState<string[]>(DEFAULT_CYCLE);
-
-  const [fontIdx, setFontIdx] = useState(0);
-  const [transitioning, setTransitioning] = useState(false);
-  const [currentFont, setCurrentFont] = useState(FONTS[0]);
-
-  useEffect(() => {
-    const t = setInterval(() => {
-      setTransitioning(true);
-      setTimeout(() => {
-        setFontIdx(i => {
-          const next = (i + 1) % FONTS.length;
-          setCurrentFont(FONTS[next]);
-          return next;
-        });
-        setTransitioning(false);
-      }, 200);
-    }, 800); // every 0.8s
-    return () => clearInterval(t);
-  }, []);
 
   // Mouse spotlight tracking
   const containerRef = useRef<HTMLDivElement>(null);
@@ -217,20 +187,16 @@ export default function Hero() {
  
             {/* Massive typography — Name */}
             <h1 
-              className="hero-name-heading"
+              data-text="ISHAN YADAV"
+              className="hero-name-heading cinematic-glitch"
               style={{ 
                 fontSize: 'clamp(2.8rem, 6.5vw, 6.2rem)', 
                 fontWeight: 900, 
                 color: '#ffffff', 
                 lineHeight: 1.0, 
                 letterSpacing: '-0.04em', 
-                fontFamily: currentFont,
                 margin: '0 0 2rem 0',
                 textTransform: 'uppercase',
-                transition: 'filter 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                filter: transitioning ? 'blur(4px)' : 'blur(0px)',
-                opacity: transitioning ? 0.6 : 1,
-                willChange: 'filter, opacity'
               }}
             >
               <motion.span
@@ -350,8 +316,8 @@ export default function Hero() {
  
           {/* RIGHT: Sophisticated Asymmetric Portrait */}
           <motion.div 
-            initial={{ opacity: 0, y: 40, scale: 0.95 }} 
-            animate={{ opacity: 1, y: 0, scale: 1 }} 
+            initial={{ opacity: 0, y: -10, scale: 0.95 }} 
+            animate={{ opacity: 1, y: -50, scale: 1 }} 
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.7 }}
             style={{ justifySelf: 'center', position: 'relative' }}
           >
@@ -435,6 +401,70 @@ export default function Hero() {
       <style>{`
         .hero-name-heading {
           white-space: nowrap;
+        }
+        .cinematic-glitch {
+          font-family: var(--font-display), Cabinet Grotesk, Clash Display, sans-serif !important;
+          position: relative;
+          display: inline-block;
+          animation: glitch-main 7s infinite steps(1);
+        }
+        .cinematic-glitch::before {
+          content: attr(data-text);
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: var(--bg);
+          text-shadow: -2px 0 #ff00c1;
+          clip-path: inset(0 0 0 0);
+          animation: glitch-anim-1 7s infinite linear;
+          opacity: 0;
+          z-index: -1;
+        }
+        .cinematic-glitch::after {
+          content: attr(data-text);
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: var(--bg);
+          text-shadow: 2px 0 #00fff0;
+          clip-path: inset(0 0 0 0);
+          animation: glitch-anim-2 7s infinite linear;
+          opacity: 0;
+          z-index: -2;
+        }
+        @keyframes glitch-anim-1 {
+          0% { clip-path: inset(40% 0 61% 0); transform: skew(0.3deg); opacity: 1; }
+          4% { clip-path: inset(92% 0 1% 0); transform: skew(-0.5deg) translate3d(-2px, 0, 0); opacity: 1; }
+          8% { clip-path: inset(15% 0 80% 0); transform: skew(0.8deg) translate3d(2px, 0, 0); opacity: 0.85; }
+          12% { clip-path: inset(5% 0 15% 0); transform: skew(-0.8deg); opacity: 0.95; }
+          16% { clip-path: inset(80% 0 5% 0); transform: skew(0.3deg) translate3d(-1px, 0, 0); opacity: 1; }
+          20% { clip-path: inset(30% 0 60% 0); transform: skew(0deg) translate3d(1px, 0, 0); opacity: 0.9; }
+          24% { clip-path: inset(65% 0 25% 0); transform: skew(0.5deg) translate3d(-2px, 0, 0); opacity: 1; }
+          28.5%, 100% { clip-path: inset(0% 0 0% 0); transform: none; opacity: 0; }
+        }
+        @keyframes glitch-anim-2 {
+          0% { clip-path: inset(25% 0 58% 0); transform: skew(-0.3deg); opacity: 1; }
+          4% { clip-path: inset(70% 0 10% 0); transform: skew(0.5deg) translate3d(2px, 0, 0); opacity: 1; }
+          8% { clip-path: inset(50% 0 30% 0); transform: skew(-0.8deg) translate3d(-2px, 0, 0); opacity: 0.9; }
+          12% { clip-path: inset(10% 0 85% 0); transform: skew(0.8deg); opacity: 0.95; }
+          16% { clip-path: inset(60% 0 20% 0); transform: skew(-0.3deg) translate3d(1px, 0, 0); opacity: 1; }
+          20% { clip-path: inset(45% 0 45% 0); transform: skew(0deg) translate3d(-1px, 0, 0); opacity: 0.85; }
+          24% { clip-path: inset(20% 0 75% 0); transform: skew(-0.5deg) translate3d(2px, 0, 0); opacity: 1; }
+          28.5%, 100% { clip-path: inset(0% 0 0% 0); transform: none; opacity: 0; }
+        }
+        @keyframes glitch-main {
+          0% { text-shadow: 2px 0 0 rgba(255, 0, 193, 0.4), -2px 0 0 rgba(0, 255, 240, 0.4); transform: translate3d(1px, 0, 0); }
+          4% { text-shadow: -2px 0 0 rgba(255, 0, 193, 0.4), 2px 0 0 rgba(0, 255, 240, 0.4); transform: translate3d(-1px, 0, 0); }
+          8% { text-shadow: 2px 0 0 rgba(255, 0, 193, 0.4), -2px 0 0 rgba(0, 255, 240, 0.4); transform: skew(0.5deg); }
+          12% { text-shadow: none; transform: none; }
+          16% { text-shadow: 1px 0 0 rgba(255, 0, 193, 0.3), -1px 0 0 rgba(0, 255, 240, 0.3); transform: translate3d(-2px, 0, 0); }
+          20% { text-shadow: none; transform: none; }
+          24% { text-shadow: 2px 0 0 rgba(255, 0, 193, 0.4), -2px 0 0 rgba(0, 255, 240, 0.4); transform: translate3d(2px, 0, 0) skew(-0.5deg); }
+          28.5%, 100% { text-shadow: none; transform: none; }
         }
         @media (max-width: 768px) {
           .hero-name-heading {
