@@ -21,6 +21,46 @@ export default function SkillsPage() {
   const [groupColor, setGroupColor] = useState<string>('var(--accent-emerald)');
 
   useEffect(() => {
+    const FALLBACK_SKILL_GROUPS = [
+      {
+        category: 'Programming Languages',
+        color: 'var(--accent-emerald)',
+        skills: [
+          { name: 'Python', level: 'Proficient', exp: '3 Years', projects: ['SkinVision AI', 'Automated Log Analyzer', 'JARVIS AI Agent'], desc: 'Used for backend API creation, deep learning classification pipeline builds, and raw logs regex parser script engineering.' },
+          { name: 'Java', level: 'Amateur', exp: '2 Years', projects: ['Academic Algorithms', 'Object-Oriented structures'], desc: 'Applied in college coursework to implement computational data structures, logical recursion, and algorithmic processes.' },
+          { name: 'JavaScript', level: 'Amateur', exp: '3 Years', projects: ['SAFEपथ', 'Interactive Portfolio'], desc: 'Underpins all interactive browser scripting, DOM tracking, cursor trailing interpolations, and animations.' }
+        ]
+      },
+      {
+        category: 'Frameworks & Frontend',
+        color: '#ffffff',
+        skills: [
+          { name: 'React', level: 'Amateur', exp: '2.5 Years', projects: ['SAFEपथ', 'Portfolio'], desc: 'Built modular component systems, interactive mapping grids, and responsive state handlers.' },
+          { name: 'Next.js', level: 'Amateur', exp: '2 Years', projects: ['SkinVision AI', 'Portfolio App Router'], desc: 'Leveraged Next.js App Router for layouts routing transitions, server-side dynamic analytics pipelines, and API hooks.' },
+          { name: 'Flask', level: 'Amateur', exp: '2 Years', projects: ['SkinVision AI', 'JARVIS AI Agent'], desc: 'Utilized as lightweight backend gateways to run Python inference classification scripts and process JSON client calls.' },
+          { name: 'Tailwind CSS', level: 'Amateur', exp: '2.5 Years', projects: ['All Web Projects'], desc: 'Used to write utility styling tokens, custom layouts responsive grids, and design system templates.' }
+        ]
+      },
+      {
+        category: 'Databases & DevOps',
+        color: 'var(--accent-emerald)',
+        skills: [
+          { name: 'MongoDB', level: 'Amateur', exp: '2 Years', projects: ['SAFEपथ'], desc: 'Managed schema structures for geolocation heatmaps, user records, and threat reporting logs.' },
+          { name: 'MySQL', level: 'Amateur', exp: '2.5 Years', projects: ['Academic Databases', 'Admin Analytics'], desc: 'Constructed relational entity maps, transaction indexing, and optimized SQL procedures.' },
+          { name: 'Git & GitHub', level: 'Amateur', exp: '3 Years', projects: ['All Projects'], desc: 'Controlled branches, semantic tags, release structures, actions automation workflows, and collaborative pull request audits.' }
+        ]
+      },
+      {
+        category: 'Cybersecurity Operations',
+        color: '#ffffff',
+        skills: [
+          { name: 'Log Security Auditing', level: 'Amateur', exp: '1.5 Years', projects: ['Automated Log Analyzer'], desc: 'Parsed raw syslog streams, verified authentication footprints, and configured anomalous event notifications.' },
+          { name: 'MITRE ATT&CK Mapping', level: 'Amateur', exp: '1.5 Years', projects: ['Automated Log Analyzer'], desc: 'Mapped event behaviors (e.g. brute-force, privilege escalation attempts) to standard threat IDs.' },
+          { name: 'System Hardening', level: 'Amateur', exp: '1 Year', projects: ['Sandbox Lab Setups'], desc: 'Audited directory credential scopes, port listening logs, and configured system firewalls.' }
+        ]
+      }
+    ];
+
     fetch('/api/content/skills')
       .then(res => res.json())
       .then(data => {
@@ -41,11 +81,22 @@ export default function SkillsPage() {
             setSelectedSkill(parsed[0].skills[0]);
             setGroupColor(parsed[0].color);
           }
+        } else {
+          setSkillsList(FALLBACK_SKILL_GROUPS);
+          if (FALLBACK_SKILL_GROUPS[0]?.skills?.length > 0) {
+            setSelectedSkill(FALLBACK_SKILL_GROUPS[0].skills[0]);
+            setGroupColor(FALLBACK_SKILL_GROUPS[0].color);
+          }
         }
         setLoading(false);
       })
       .catch(err => {
         console.error(err);
+        setSkillsList(FALLBACK_SKILL_GROUPS);
+        if (FALLBACK_SKILL_GROUPS[0]?.skills?.length > 0) {
+          setSelectedSkill(FALLBACK_SKILL_GROUPS[0].skills[0]);
+          setGroupColor(FALLBACK_SKILL_GROUPS[0].color);
+        }
         setLoading(false);
       });
   }, []);

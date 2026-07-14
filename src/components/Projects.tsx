@@ -46,6 +46,98 @@ function ProjectVisual({ p }: { p: any }) {
   );
 }
 
+const FALLBACK_PROJECTS = [
+  {
+    num: '01',
+    title: 'SkinVision AI',
+    tagline: 'AI-powered skin disease detection platform',
+    role: ['Full Stack Developer', 'AI Integration'],
+    description: 'An intelligent web application that leverages deep learning to analyse skin images and detect potential skin conditions. Built with a Flask backend handling the ML inference pipeline and a Next.js frontend delivering a seamless, mobile-first experience.',
+    features: [
+      'AI-powered dermoscopic image analysis',
+      'Real-time skin condition detection',
+      'Location-based dermatologist finder',
+      'Responsive mobile-first UI',
+      'Secure image upload pipeline',
+    ],
+    tech: ['Python', 'Flask', 'React', 'Next.js', 'Tailwind CSS', 'TensorFlow'],
+    highlights: 'Built the full ML pipeline from data preprocessing through model training to API serving. Integrated location services for dermatologist discovery.',
+    github: 'https://github.com/DecryptorX/SkinVision',
+    demo: 'https://skinvision.vercel.app/',
+    status: 'live',
+    color: '#00e5ff',
+    accent: '#00e5ff',
+    gradFrom: '#001f2e',
+    gradTo: '#002a3d',
+  },
+  {
+    num: '02',
+    title: 'Automated Log Analyzer',
+    tagline: 'Security log analysis and automated incident reporting',
+    role: ['Security Developer', 'Python Engineer'],
+    description: 'A professional-grade Python security tool that ingests Windows Event Logs and Linux syslog files, runs pattern-matching detection for common attack signatures — brute-force, privilege escalation, lateral movement — and produces structured incident reports.',
+    features: [
+      'Windows & Linux log parsing engine',
+      'Brute-force and anomaly detection',
+      'Privilege escalation pattern matching',
+      'Structured HTML & JSON report generation',
+      'Configurable detection rule sets',
+    ],
+    tech: ['Python', 'RegEx', 'Linux', 'Windows', 'JSON'],
+    highlights: 'Developed custom detection rules mapped to MITRE ATT&CK techniques, reducing manual log review time by automating pattern recognition across thousands of events.',
+    github: 'https://github.com/DecryptorX/Automated-Log-Analyzer-and-Reporting-Script',
+    status: 'open-source',
+    color: '#f59e0b',
+    accent: '#f59e0b',
+    gradFrom: '#1e1000',
+    gradTo: '#2a1600',
+  },
+  {
+    num: '03',
+    title: 'SAFEपथ',
+    tagline: 'AI-assisted women safety and emergency response platform',
+    role: ['Full Stack Developer', 'AI Integration'],
+    description: "A community-driven safety platform for women's security. Features real-time emergency SOS dispatch, AI-assisted threat monitoring, crowd-sourced safety heatmaps, and community engagement tools — all in a mobile-first progressive web app.",
+    features: [
+      'Real-time emergency SOS dispatch',
+      'AI-assisted safety monitoring',
+      'Community safety heatmaps',
+      'Safe route recommendations',
+      'Incident reporting & tracking',
+    ],
+    tech: ['React', 'Next.js', 'Node.js', 'MongoDB', 'AI/ML'],
+    highlights: 'Designed the AI safety scoring system and the emergency contact notification pipeline. Prioritised sub-second response times for SOS alerts.',
+    github: 'https://github.com/DecryptorX/SafePath',
+    status: 'open-source',
+    color: '#ec4899',
+    accent: '#ec4899',
+    gradFrom: '#1e0011',
+    gradTo: '#2a0018',
+  },
+  {
+    num: '04',
+    title: 'JARVIS AI Agent',
+    tagline: 'Desktop AI assistant with local intelligence and voice interaction',
+    role: ['AI Engineer', 'System Architect'],
+    description: 'A modular desktop AI assistant built around OpenRouter-hosted LLMs, persistent conversational memory, a local-first tool-calling framework, and a planned PC automation layer — designed for offline-capable, privacy-preserving everyday use.',
+    features: [
+      'Natural voice interaction pipeline',
+      'Persistent conversational memory',
+      'OpenRouter LLM integration',
+      'Modular tool-calling architecture',
+      'PC automation capabilities (planned)',
+    ],
+    tech: ['Python', 'LLM APIs', 'Voice Recognition', 'Tool Calling', 'SQLite'],
+    highlights: 'Architecting a clean separation between the conversation manager, tool dispatcher, and response synthesiser to enable future multi-modal automation.',
+    github: '',
+    status: 'in-development',
+    color: '#6366f1',
+    accent: '#6366f1',
+    gradFrom: '#07001e',
+    gradTo: '#0f0028',
+  },
+];
+
 export default function Projects() {
   const [projectsList, setProjectsList] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -55,7 +147,7 @@ export default function Projects() {
     fetch('/api/content/projects')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           const parsed = data.map(p => ({
             ...p,
             role: typeof p.role === 'string' ? p.role.split(',').map((r: any) => r.trim()).filter(Boolean) : p.role,
@@ -63,11 +155,14 @@ export default function Projects() {
             tech: typeof p.tech === 'string' ? p.tech.split(',').map((t: any) => t.trim()).filter(Boolean) : p.tech,
           }));
           setProjectsList(parsed);
+        } else {
+          setProjectsList(FALLBACK_PROJECTS);
         }
         setLoading(false);
       })
       .catch(err => {
         console.error(err);
+        setProjectsList(FALLBACK_PROJECTS);
         setLoading(false);
       });
   }, []);

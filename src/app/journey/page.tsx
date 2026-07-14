@@ -21,10 +21,111 @@ export default function JourneyPage() {
   const [activeYear, setActiveYear] = useState('');
 
   useEffect(() => {
+    const FALLBACK_MILESTONES = [
+      {
+        year: '2006',
+        title: 'Where It All Began',
+        subtitle: 'Born in 2006',
+        description: 'Every journey starts somewhere. Mine began with an endless curiosity about how things work and a fascination with technology that would eventually shape my career. Long before I wrote my first line of code, I was already drawn to computers, solving problems, and building things from scratch.',
+        achievements: [
+          'Discovered a natural affinity for puzzles, logical problems, and building mechanisms',
+          'Developed an early curiosity about how software and hardware systems function under the hood',
+          'Established a foundation of creative problem-solving and critical thinking'
+        ],
+        tech: ['Curiosity', 'Problem Solving', 'Logical Thinking'],
+        color: 'var(--accent-emerald)',
+        icon: '👶'
+      },
+      {
+        year: '2017',
+        title: 'The First Lines of Code',
+        subtitle: 'Discovering Programming',
+        description: 'This was the year I truly stepped into the world of programming. I began experimenting with Python, Java, and JavaScript, creating small games and simple applications. Each project taught me something new and fueled my passion for software development. What started as curiosity quickly became a hobby I wanted to pursue every day.',
+        achievements: [
+          'Wrote my very first scripts in Python and explored basic object-oriented concepts in Java',
+          'Created small custom text games, interactive scripts, and logical calculators',
+          'Committed to programming as a creative daily hobby outside school hours'
+        ],
+        tech: ['Python', 'Java', 'JavaScript', 'Logic Design'],
+        color: '#ffffff',
+        icon: '💻'
+      },
+      {
+        year: '2020',
+        title: 'Exploring Design',
+        subtitle: 'UI/UX Design Journey',
+        description: 'As I became more comfortable with coding, I realized that great software isn\'t just about functionality—it\'s also about user experience. I started designing interfaces, experimenting with layouts, colors, and interactions, and learned how thoughtful UI/UX can transform an ordinary application into an enjoyable experience.',
+        achievements: [
+          'Studied visual hierarchy, typography alignments, and intuitive interface layouts',
+          'Experimented with wireframing tools to sketch creative and clean interface pathways',
+          'Aligned visual empathy with codebase functions to build clean user flows'
+        ],
+        tech: ['Figma', 'UI/UX Design', 'Visual Hierarchy', 'Colors & Layouts'],
+        color: 'var(--accent-emerald)',
+        icon: '🎨'
+      },
+      {
+        year: '2021',
+        title: 'Robotics & IoT',
+        subtitle: 'Competition and Innovation',
+        description: 'I participated in an IoT, Coding, and Robotics competition, where I collaborated on building technology-driven solutions. It was my first experience working on larger technical challenges under competitive conditions, strengthening my problem-solving skills and exposing me to hardware-software integration.',
+        achievements: [
+          'Collaborated in a team environment to map sensors, indicators, and microcontrollers to a working application',
+          'Programmed logic scripts to integrate hardware inputs dynamically under time pressure',
+          'Exposed to core robotics concepts, networking loops, and mechanical-software interfaces'
+        ],
+        tech: ['IoT Protocols', 'Robotics Systems', 'Arduino / C++', 'Team Collaboration'],
+        color: '#ffffff',
+        icon: '🤖'
+      },
+      {
+        year: '2024',
+        title: 'A New Chapter',
+        subtitle: 'Beginning My University Journey',
+        description: 'After graduating from school, I joined Bennett University to pursue a Bachelor\'s degree in Computer Science. University opened the door to larger-scale software development, collaboration with talented peers, and opportunities to transform ideas into real-world projects.',
+        achievements: [
+          'Admitted to Bennett University B.Tech CSE program to build technical foundations',
+          'Learned version control processes with Git & GitHub and navigated Linux environments',
+          'Partnered on collective developer tasks and projects with skilled peers'
+        ],
+        tech: ['Computer Science', 'Data Structures', 'Git & GitHub', 'Linux CLI'],
+        color: 'var(--accent-emerald)',
+        icon: '🎓'
+      },
+      {
+        year: '2025',
+        title: 'Building, Leading & Securing',
+        subtitle: 'Hackathons, Projects & Cybersecurity',
+        description: '2025 became the year I accelerated my growth. I built SkinVision AI, Manifest, Jarvis, and several hackathon projects while diving deeper into backend engineering and cybersecurity. Alongside my technical journey, I served as the Social Media Sub Head of the ACM Student Chapter at Bennett University (2025–2026), managing the club\'s online presence, promoting events, and working with an incredible team to grow one of the university\'s most active technical communities.',
+        achievements: [
+          'Appointed Social Media Sub Head for the ACM Student Chapter at Bennett University (2025–2026)',
+          'Built and shipped SkinVision AI, Manifest, Jarvis, and multiple hackathon prototypes',
+          'Advanced hands-on understanding of threat log intelligence and cybersecurity audits'
+        ],
+        tech: ['Cybersecurity', 'Web Security', 'Flask APIs', 'Next.js Frontend', 'ACM Leadership'],
+        color: '#ffffff',
+        icon: '🛡️'
+      },
+      {
+        year: '2026',
+        title: 'Startup & Scale',
+        subtitle: 'Startup Journey',
+        description: 'Currently, I\'m building a startup with a group of friends, leading backend development and cybersecurity. My focus has shifted from simply building applications to designing secure, scalable systems while continuing to explore AI, modern web technologies, and security-first software engineering.',
+        achievements: [
+          'Co-founded a tech startup alongside close friends',
+          'Architected reliable database structures, scalable APIs, and backend server codebases',
+          'Hardened cloud environments and established strict defensive credentials monitoring'
+        ],
+        tech: ['Backend Engineering', 'Startup Operations', 'API Scaling', 'Environment Security'],
+        color: 'var(--accent-emerald)',
+        icon: '🚀'
+      }
+    ];
+
     fetch('/api/content/journey')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           const parsed = data.map((m, idx) => ({
             ...m,
             color: idx % 2 === 0 ? 'var(--accent-emerald)' : '#ffffff',
@@ -35,11 +136,16 @@ export default function JourneyPage() {
           if (parsed[0]?.year) {
             setActiveYear(parsed[0].year);
           }
+        } else {
+          setMilestonesList(FALLBACK_MILESTONES);
+          setActiveYear(FALLBACK_MILESTONES[0].year);
         }
         setLoading(false);
       })
       .catch(err => {
         console.error(err);
+        setMilestonesList(FALLBACK_MILESTONES);
+        setActiveYear(FALLBACK_MILESTONES[0].year);
         setLoading(false);
       });
   }, []);

@@ -7,10 +7,65 @@ export default function ExperiencePage() {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
+    const FALLBACK_ROLES = [
+      {
+        period: '2024 — Present',
+        title: 'Social Media Sub Head',
+        organization: 'ACM Bennett University Student Chapter',
+        location: 'Greater Noida, India',
+        color: '#00e5ff',
+        type: 'Leadership & Community',
+        responsibilities: [
+          'Managed all digital channels and media assets for the university\'s ACM chapter, expanding community engagement by sharing security alerts and tech announcements.',
+          'Organized and captured promotional event photography and high-quality recap videography for technical workshops.',
+          'Supervised, mentored, and assigned tasks to a junior content core team of 5 members, establishing consistent release schedules.'
+        ]
+      },
+      {
+        period: '2025 — Present',
+        title: 'Freelance Software Developer & Security Consultant',
+        organization: 'Independent / Self-Employed',
+        location: 'Gurgaon, India',
+        color: '#f59e0b',
+        type: 'Freelance Engineering',
+        responsibilities: [
+          'Engineered and custom-configured security monitoring tools for clients using Python, automating Linux syslog audits and threat log matching.',
+          'Constructed responsive full-stack dashboards using React, Next.js, and Flask backend APIs, ensuring proper environment configuration and validation.',
+          'Advised local clients on threat assessment protocols, secure session workflows, and credential handling best practices.'
+        ]
+      },
+      {
+        period: '2024 — Present',
+        title: 'Academic Projects & Security Researcher',
+        organization: 'Bennett University',
+        location: 'Gurgaon, India',
+        color: '#ec4899',
+        type: 'Academic & Development',
+        responsibilities: [
+          'Researched and integrated machine learning algorithms with web security protocols, deploying full-stack deep learning classifiers.',
+          'Designed safe notification dispatch structures and location services mapping for emergency emergency SOS setups (SAFEपथ platform).',
+          'Modeled systems networks parameters to simulate enterprise environments for SOC threat evaluation.'
+        ]
+      },
+      {
+        period: 'Seeking Roles',
+        title: 'SOC Analyst Intern / Software Developer Intern',
+        organization: 'Active Candidate',
+        location: 'Open to Remote / Hybrid / On-site',
+        color: '#10b981',
+        type: 'Career Focus',
+        responsibilities: [
+          'Ready to contribute to enterprise operations centers, monitor network traffic, analyze security incidents, and write custom automation scripts.',
+          'Highly familiar with log analytics, Python script creation, Next.js / TypeScript code bases, and OWASP security guidelines.',
+          'Committed to accelerating developer velocity while keeping defensive security controls tight.'
+        ]
+      }
+    ];
+
     fetch('/api/content/experience')
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           const parsed = data.map((exp, idx) => ({
             ...exp,
             organization: exp.company,
@@ -19,11 +74,14 @@ export default function ExperiencePage() {
             responsibilities: exp.points ? exp.points.split('\n').map((p: any) => p.trim()).filter(Boolean) : []
           }));
           setExperienceList(parsed);
+        } else {
+          setExperienceList(FALLBACK_ROLES);
         }
         setLoading(false);
       })
       .catch(err => {
         console.error(err);
+        setExperienceList(FALLBACK_ROLES);
         setLoading(false);
       });
   }, []);
