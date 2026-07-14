@@ -1,11 +1,12 @@
 "use client";
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, animate, useMotionValue, useSpring } from 'framer-motion';
+import { motion, animate, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { useModal } from '../context/modal';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ChevronDown } from 'lucide-react';
 
-const DEFAULT_CYCLE = ['Cybersecurity Specialist', 'SOC Analyst Intern', 'Software Developer', 'Startup Co-Founder'];
+const DEFAULT_CYCLE = ['Secure Software Engineer', 'Backend Developer', 'Cybersecurity Engineer', 'AI Builder'];
 
 const STATS = [
   { end: 4, suffix: '+', label: 'Projects Built' },
@@ -17,7 +18,7 @@ function Counter({ end, suffix }: { end: number; suffix: string }) {
   const [val, setVal] = useState(0);
   useEffect(() => {
     const ctrl = animate(0, end, {
-      duration: 1.8,
+      duration: 2,
       ease: 'easeOut',
       onUpdate: (v) => setVal(Math.round(v)),
     });
@@ -38,8 +39,8 @@ export default function Hero() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
-  const springX = useSpring(mouseX, { stiffness: 60, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 60, damping: 20 });
+  const springX = useSpring(mouseX, { stiffness: 40, damping: 25 });
+  const springY = useSpring(mouseY, { stiffness: 40, damping: 25 });
 
   useEffect(() => {
     fetch('/api/content/hero')
@@ -64,8 +65,8 @@ export default function Hero() {
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - 250; // Offset by half width of spotlight glow
-    const y = e.clientY - rect.top - 250;
+    const x = e.clientX - rect.left - 300;
+    const y = e.clientY - rect.top - 300;
     mouseX.set(x);
     mouseY.set(y);
   };
@@ -82,7 +83,7 @@ export default function Hero() {
         justifyContent: 'center',
         position: 'relative', 
         overflow: 'hidden', 
-        padding: '8rem 2rem 4rem',
+        padding: '6rem 2rem 2rem',
         background: 'var(--bg)'
       }}
     >
@@ -91,11 +92,11 @@ export default function Hero() {
         aria-hidden
         style={{ 
           position: 'absolute', 
-          width: 500, 
-          height: 500, 
+          width: 600, 
+          height: 600, 
           borderRadius: '50%', 
-          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.025) 0%, transparent 70%)', 
-          filter: 'blur(50px)', 
+          background: 'radial-gradient(circle, rgba(52, 211, 153, 0.03) 0%, rgba(255, 255, 255, 0.015) 40%, transparent 70%)', 
+          filter: 'blur(60px)', 
           pointerEvents: 'none',
           left: springX,
           top: springY,
@@ -103,25 +104,40 @@ export default function Hero() {
         }} 
       />
 
-      {/* Layered background mesh gradient */}
+      {/* Layered background mesh gradients */}
       <div 
         aria-hidden 
         style={{ 
           position: 'absolute', 
-          top: '20%', 
-          left: '10%', 
-          width: 600, 
-          height: 600, 
+          top: '15%', 
+          left: '5%', 
+          width: 700, 
+          height: 700, 
           borderRadius: '50%', 
-          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.015) 0%, transparent 65%)', 
+          background: 'radial-gradient(circle, rgba(52, 211, 153, 0.015) 0%, transparent 60%)', 
+          filter: 'blur(100px)', 
+          pointerEvents: 'none',
+          animation: 'mesh-float-slow 30s infinite ease-in-out'
+        }} 
+      />
+      <div 
+        aria-hidden 
+        style={{ 
+          position: 'absolute', 
+          bottom: '10%', 
+          right: '10%', 
+          width: 500, 
+          height: 500, 
+          borderRadius: '50%', 
+          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.01) 0%, transparent 60%)', 
           filter: 'blur(80px)', 
           pointerEvents: 'none',
-          animation: 'mesh-float-slow 25s infinite ease-in-out'
+          animation: 'mesh-float-slow 25s infinite ease-in-out reverse'
         }} 
       />
 
       <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', position: 'relative', zIndex: 2 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '4rem', alignItems: 'center' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '4rem', alignItems: 'center' }} className="hero-grid">
           
           {/* LEFT: Text & Branding statements */}
           <div>
@@ -129,8 +145,8 @@ export default function Hero() {
             <motion.div 
               initial={{ opacity: 0, y: 15 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }} 
-              style={{ marginBottom: '2.5rem', display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }} 
+              style={{ marginBottom: '3rem', display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}
             >
               <span style={{
                 display: 'inline-flex', 
@@ -138,17 +154,17 @@ export default function Hero() {
                 gap: '0.4rem',
                 padding: '0.4rem 1rem', 
                 borderRadius: 999,
-                border: '1px solid rgba(255, 255, 255, 0.06)', 
-                background: 'rgba(255, 255, 255, 0.02)',
-                color: '#ffffff', 
+                border: '1px solid rgba(52, 211, 153, 0.15)', 
+                background: 'rgba(52, 211, 153, 0.05)',
+                color: 'var(--accent-emerald)', 
                 fontSize: '0.68rem', 
                 fontFamily: 'var(--font-mono)',
                 fontWeight: 500, 
                 textTransform: 'uppercase',
-                letterSpacing: '0.05em'
+                letterSpacing: '0.06em'
               }}>
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#ffffff', display: 'inline-block', opacity: 0.8 }} />
-                Startup Co-Founder
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent-emerald)', display: 'inline-block', animation: 'blink 2s infinite' }} />
+                Open to Work
               </span>
               <span style={{
                 display: 'inline-flex', 
@@ -163,154 +179,142 @@ export default function Hero() {
                 fontFamily: 'var(--font-mono)',
                 fontWeight: 500, 
                 textTransform: 'uppercase',
-                letterSpacing: '0.05em'
+                letterSpacing: '0.06em'
               }}>
                 Gurgaon, IN
               </span>
             </motion.div>
 
-            {/* Oversized typography with clip-path mask reveal */}
-            <div style={{ overflow: 'hidden', marginBottom: '1.5rem' }}>
+            {/* Massive typography — Name */}
+            <div style={{ overflow: 'hidden', marginBottom: '0.5rem' }}>
               <motion.h1 
-                initial={{ y: '100%' }} 
+                initial={{ y: '110%' }} 
                 animate={{ y: 0 }} 
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
                 style={{ 
-                  fontSize: 'clamp(3rem, 7vw, 5.2rem)', 
+                  fontSize: 'clamp(3.5rem, 8vw, 6.5rem)', 
                   fontWeight: 900, 
                   color: '#ffffff', 
-                  lineHeight: 1.0, 
-                  letterSpacing: '-0.05em', 
-                  fontFamily: 'var(--font-display)' 
+                  lineHeight: 0.95, 
+                  letterSpacing: '-0.06em', 
+                  fontFamily: 'var(--font-display)',
+                  margin: 0
                 }}
               >
-                {heroData?.title || 'Ishan Yadav'}
+                {heroData?.title || 'Ishan'}
+              </motion.h1>
+            </div>
+            <div style={{ overflow: 'hidden', marginBottom: '2rem' }}>
+              <motion.h1 
+                initial={{ y: '110%' }} 
+                animate={{ y: 0 }} 
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                style={{ 
+                  fontSize: 'clamp(3.5rem, 8vw, 6.5rem)', 
+                  fontWeight: 900, 
+                  lineHeight: 0.95, 
+                  letterSpacing: '-0.06em', 
+                  fontFamily: 'var(--font-display)',
+                  margin: 0
+                }}
+                className="gradient-text-emerald"
+              >
+                Yadav
               </motion.h1>
             </div>
 
-            {/* Role transition details */}
-            <div style={{ height: 36, position: 'relative', overflow: 'hidden', marginBottom: '2.5rem' }}>
-              {cycleList.map((text, i) => (
+            {/* Animated role transition */}
+            <div style={{ height: 40, position: 'relative', overflow: 'hidden', marginBottom: '2.5rem' }}>
+              <AnimatePresence mode="wait">
                 <motion.div 
-                  key={text}
-                  initial={{ y: '100%', opacity: 0 }}
-                  animate={{ y: i === idx ? '0%' : '-100%', opacity: i === idx ? 1 : 0 }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  key={cycleList[idx]}
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -30, opacity: 0 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   style={{
                     position: 'absolute', 
                     top: 0, 
                     left: 0,
-                    fontSize: 'clamp(1.1rem, 2.5vw, 1.45rem)', 
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem'
+                  }}
+                >
+                  <span style={{ 
+                    width: 24, 
+                    height: 1, 
+                    background: 'var(--accent-emerald)',
+                    display: 'inline-block',
+                    flexShrink: 0
+                  }} />
+                  <span style={{
+                    fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', 
                     fontWeight: 400,
                     fontStyle: 'italic',
                     fontFamily: 'var(--font-editorial)',
                     color: 'var(--text-muted)'
-                  }}
-                >
-                  {text}
+                  }}>
+                    {cycleList[idx]}
+                  </span>
                 </motion.div>
-              ))}
+              </AnimatePresence>
             </div>
 
-            {/* Bio with slow fade */}
+            {/* Bio */}
             <motion.p 
               initial={{ opacity: 0, y: 15 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
               style={{ 
-                fontSize: '0.94rem', 
+                fontSize: '1rem', 
                 color: 'var(--text-muted)', 
-                maxWidth: 480, 
+                maxWidth: 500, 
                 lineHeight: 1.8, 
                 marginBottom: '3rem',
                 fontFamily: 'var(--font-sans)',
                 fontWeight: 400 
               }}
             >
-              {heroData?.bio || 'Computer Science student at Bennett University passionate about building secure, scalable software products. Currently leading backend development and cybersecurity at our startup co-founded with close friends.'}
+              {heroData?.bio || 'Computer Science student at Bennett University building secure, scalable software. Currently leading backend development and cybersecurity at a startup co-founded with close friends.'}
             </motion.p>
 
-            {/* Action buttons (Minimal, elegant, magnetic-style border glow) */}
+            {/* Action buttons */}
             <motion.div 
               initial={{ opacity: 0, y: 15 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-              style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '4rem' }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '4rem' }}
             >
-              <button 
-                onClick={openModal} 
-                style={{
-                  padding: '0.8rem 2rem', 
-                  borderRadius: '9999px', 
-                  fontWeight: 650, 
-                  fontSize: '0.85rem',
-                  background: '#ffffff', 
-                  color: '#070708', 
-                  border: 'none',
-                  boxShadow: '0 20px 40px rgba(255, 255, 255, 0.05)', 
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', 
-                  cursor: 'pointer'
-                }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 25px 45px rgba(255, 255, 255, 0.08)'; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 20px 40px rgba(255, 255, 255, 0.05)'; }}
-              >
+              <button onClick={openModal} className="btn-primary">
                 Curriculum Vitae
               </button>
               <a 
                 href="https://github.com/DecryptorX" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                style={{
-                  padding: '0.8rem 2rem', 
-                  borderRadius: '9999px', 
-                  fontWeight: 600, 
-                  fontSize: '0.85rem',
-                  background: 'rgba(255, 255, 255, 0.02)', 
-                  color: '#ffffff', 
-                  display: 'inline-block',
-                  border: '1px solid rgba(255, 255, 255, 0.06)', 
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', 
-                  textDecoration: 'none'
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)'; }}
+                className="btn-secondary"
               >
                 GitHub Profile
               </a>
-              <Link 
-                href="/dashboard" 
-                style={{
-                  padding: '0.8rem 2rem', 
-                  borderRadius: '9999px', 
-                  fontWeight: 600, 
-                  fontSize: '0.85rem',
-                  background: 'transparent', 
-                  color: 'var(--text-muted)', 
-                  display: 'inline-block',
-                  border: '1px solid rgba(255, 255, 255, 0.03)', 
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', 
-                  textDecoration: 'none'
-                }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'; e.currentTarget.style.color = '#ffffff'; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.03)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
-              >
+              <Link href="/dashboard" className="btn-ghost">
                 Analytics
               </Link>
             </motion.div>
 
-            {/* Counters Row - minimal style */}
+            {/* Counters Row */}
             <motion.div 
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }} 
-              transition={{ duration: 1, delay: 0.5 }}
-              style={{ display: 'flex', gap: '3rem', paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.04)' }}
+              transition={{ duration: 1.2, delay: 0.6 }}
+              style={{ display: 'flex', gap: '3.5rem', paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.04)' }}
             >
               {STATS.map(s => (
                 <div key={s.label}>
-                  <div style={{ fontSize: '1.8rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.03em', fontFamily: 'var(--font-display)' }}>
+                  <div style={{ fontSize: '2rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.03em', fontFamily: 'var(--font-display)' }}>
                     <Counter end={s.end} suffix={s.suffix} />
                   </div>
-                  <div style={{ fontSize: '0.62rem', color: 'var(--text-muted)', marginTop: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
+                  <div style={{ fontSize: '0.62rem', color: 'var(--text-subtle)', marginTop: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>
                     {s.label}
                   </div>
                 </div>
@@ -318,88 +322,129 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* RIGHT: Sophisticated Asymmetric Portrait Placement */}
+          {/* RIGHT: Sophisticated Asymmetric Portrait */}
           <motion.div 
-            initial={{ opacity: 0, y: 30 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            initial={{ opacity: 0, y: 40, scale: 0.95 }} 
+            animate={{ opacity: 1, y: 0, scale: 1 }} 
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
             style={{ justifySelf: 'center', position: 'relative' }}
           >
-            {/* Soft Ambient Shadow backing */}
+            {/* Ambient glow backing */}
             <div style={{
               position: 'absolute',
-              inset: 0,
-              borderRadius: '2rem',
-              background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 80%)',
-              filter: 'blur(30px)',
+              inset: '-20%',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(52, 211, 153, 0.04) 0%, transparent 70%)',
+              filter: 'blur(40px)',
               zIndex: -1,
-              transform: 'scale(1.1)'
+              animation: 'glow-pulse 6s infinite ease-in-out'
             }} />
 
-            {/* Editorial Frame Layout */}
+            {/* Portrait Frame */}
             <div style={{
-              width: 280,
-              height: 380,
+              width: 300,
+              height: 400,
               borderRadius: '2rem',
               padding: 1,
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
-              boxShadow: '0 30px 60px rgba(0, 0, 0, 0.5)',
-              animation: 'editorial-portrait-float 8s infinite ease-in-out',
+              background: 'linear-gradient(160deg, rgba(52, 211, 153, 0.12) 0%, rgba(255,255,255,0.04) 50%, rgba(52, 211, 153, 0.06) 100%)',
+              boxShadow: '0 40px 80px rgba(0, 0, 0, 0.5)',
+              animation: 'float-gentle 10s infinite ease-in-out',
               overflow: 'hidden'
             }}>
               <Image
                 src={heroData?.avatarUrl || "/profile-ishan-v2.jpg"}
                 alt={heroData?.title || "Ishan Yadav"}
-                width={280}
-                height={380}
+                width={300}
+                height={400}
                 priority
                 style={{ 
                   width: '100%', 
                   height: '100%', 
                   objectFit: 'cover', 
                   display: 'block',
-                  filter: 'grayscale(15%) contrast(105%) saturate(90%)'
+                  borderRadius: 'calc(2rem - 1px)',
+                  filter: 'grayscale(20%) contrast(1.05) saturate(0.85)'
                 }}
               />
             </div>
 
-            {/* Micro badges absolute positioning */}
-            <div style={{
-              position: 'absolute',
-              bottom: '-1.5rem',
-              right: '-1rem',
-              background: 'rgba(7, 7, 8, 0.65)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
-              padding: '0.5rem 1rem',
-              borderRadius: '9999px',
-              fontSize: '0.62rem',
-              fontFamily: 'var(--font-mono)',
-              color: 'var(--text-muted)',
-              boxShadow: '0 10px 20px rgba(0,0,0,0.3)',
-              display: 'flex',
-              gap: '0.4rem',
-              alignItems: 'center'
-            }}>
-              <span style={{ width: 4, height: 4, borderRadius: '50%', background: '#fff' }} />
-              BUILDING SECURE SOLUTIONS
-            </div>
+            {/* Floating badge */}
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              style={{
+                position: 'absolute',
+                bottom: '-1.5rem',
+                right: '-1.5rem',
+                background: 'rgba(5, 5, 6, 0.7)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(52, 211, 153, 0.1)',
+                padding: '0.5rem 1.2rem',
+                borderRadius: '9999px',
+                fontSize: '0.62rem',
+                fontFamily: 'var(--font-mono)',
+                color: 'var(--accent-emerald)',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
+                display: 'flex',
+                gap: '0.5rem',
+                alignItems: 'center',
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase'
+              }}
+            >
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent-emerald)', animation: 'blink 2s infinite' }} />
+              Building Secure Solutions
+            </motion.div>
           </motion.div>
 
         </div>
       </div>
 
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.5rem',
+          zIndex: 5
+        }}
+      >
+        <span style={{ fontSize: '0.6rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+          Scroll
+        </span>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <ChevronDown size={14} color="var(--text-subtle)" />
+        </motion.div>
+      </motion.div>
+
       <style>{`
-        @keyframes mesh-float-slow {
-          0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
-          50% { transform: translateY(-40px) scale(1.05); opacity: 0.4; }
-        }
-        @keyframes editorial-portrait-float {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-12px) rotate(1deg); }
+        @media (max-width: 820px) {
+          .hero-grid {
+            grid-template-columns: 1fr !important;
+            gap: 3rem !important;
+            text-align: center;
+          }
+          .hero-grid > div:last-child {
+            order: -1;
+          }
+          .hero-grid > div:first-child > div {
+            justify-content: center;
+          }
         }
         @media (max-width: 640px) {
-          #home { padding: 7rem 1.25rem 3rem !important; }
+          #home { padding: 5rem 1.25rem 3rem !important; }
         }
       `}</style>
     </section>

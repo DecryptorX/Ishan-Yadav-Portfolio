@@ -4,70 +4,99 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer style={{ borderTop: '1px solid rgba(255,255,255,0.04)', padding: '3.5rem 2rem', textAlign: 'center' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <p style={{ fontWeight: 700, fontSize: '1.1rem', color: '#fff', marginBottom: '0.4rem' }}>
-          Ishan<span style={{ color: '#00e5ff' }}>.</span>
-        </p>
-        <p style={{ color: 'rgba(100,116,139,0.8)', fontSize: '0.8rem', marginBottom: '1.5rem' }}>
-          Cybersecurity Enthusiast · Software Developer · CS Student
-        </p>
+    <footer style={{ borderTop: '1px solid rgba(255,255,255,0.03)', padding: '5rem 2rem 3rem' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        
+        {/* Top section — editorial grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem', marginBottom: '4rem' }}>
+          
+          {/* Brand column */}
+          <div>
+            <p style={{ fontWeight: 800, fontSize: '1.15rem', color: '#fff', marginBottom: '0.75rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.03em' }}>
+              Ishan<span style={{ color: 'var(--accent-emerald)' }}>.</span>
+            </p>
+            <p style={{ color: 'var(--text-subtle)', fontSize: '0.82rem', lineHeight: 1.7, maxWidth: 260 }}>
+              Building secure software and AI-driven tools. CS student at Bennett University.
+            </p>
+          </div>
 
-        {/* Main navigations */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-          {[
-            { label: 'Uses / Setup', href: '/uses' },
-            { label: 'Asset Gallery', href: '/gallery' },
-            { label: 'Technical Blog', href: '/blog' },
-            { label: 'Dashboard', href: '/dashboard' },
-            { label: 'Admin Panel', href: '/admin' },
-          ].map(l => (
-            <Link key={l.label} href={l.href}
-              style={{ color: 'rgba(226, 232, 240, 0.5)', fontSize: '0.82rem', transition: 'color 0.2s', textDecoration: 'none' }}
-              onMouseEnter={e => { e.currentTarget.style.color = '#00e5ff'; }}
-              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(226, 232, 240, 0.5)'; }}>
-              {l.label}
-            </Link>
-          ))}
+          {/* Navigation column */}
+          <div>
+            <p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem', fontWeight: 600 }}>
+              Navigation
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              {[
+                { label: 'Uses / Setup', href: '/uses' },
+                { label: 'Asset Gallery', href: '/gallery' },
+                { label: 'Technical Blog', href: '/blog' },
+                { label: 'Dashboard', href: '/dashboard' },
+              ].map(l => (
+                <Link key={l.label} href={l.href}
+                  style={{ color: 'var(--text-subtle)', fontSize: '0.82rem', transition: 'color 0.3s', textDecoration: 'none', fontWeight: 500 }}
+                  onMouseEnter={e => { e.currentTarget.style.color = '#ffffff'; }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-subtle)'; }}>
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Connect column */}
+          <div>
+            <p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem', fontWeight: 600 }}>
+              Connect
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              {[
+                { label: 'GitHub', href: 'https://github.com/DecryptorX' },
+                { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ishan-yadav-a22251325' },
+                { label: 'Email', href: 'mailto:ishanyadav09@outlook.com' },
+                { label: 'Contact Form', href: '/contact' },
+              ].map(l => (
+                <a key={l.label} href={l.href}
+                  target={l.href.startsWith('http') ? '_blank' : undefined}
+                  rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  style={{ color: 'var(--text-subtle)', fontSize: '0.82rem', transition: 'color 0.3s', textDecoration: 'none', fontWeight: 500 }}
+                  onMouseEnter={e => { e.currentTarget.style.color = '#ffffff'; }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-subtle)'; }}>
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Legal column */}
+          <div>
+            <p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1.25rem', fontWeight: 600 }}>
+              Legal
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              {[
+                { label: 'Privacy Policy', href: '/privacy' },
+                { label: 'Terms of Use', href: '/terms' },
+                { label: 'Admin Panel', href: '/admin' },
+              ].map(l => (
+                <Link key={l.label} href={l.href}
+                  style={{ color: 'var(--text-subtle)', fontSize: '0.82rem', transition: 'color 0.3s', textDecoration: 'none', fontWeight: 500 }}
+                  onMouseEnter={e => { e.currentTarget.style.color = '#ffffff'; }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-subtle)'; }}>
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Social connections */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
-          {[
-            { label: 'GitHub', href: 'https://github.com/DecryptorX' },
-            { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ishan-yadav-a22251325' },
-            { label: 'Contact', href: '/contact' },
-            { label: 'Email', href: 'mailto:ishanyadav09@outlook.com' },
-          ].map(l => (
-            <a key={l.label} href={l.href}
-              target={l.href.startsWith('http') ? '_blank' : undefined}
-              rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              style={{ color: 'rgba(100,116,139,0.6)', fontSize: '0.82rem', transition: 'color 0.2s', textDecoration: 'none' }}
-              onMouseEnter={e => { e.currentTarget.style.color = '#00ff88'; }}
-              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(100,116,139,0.6)'; }}>
-              {l.label}
-            </a>
-          ))}
+        {/* Bottom bar */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.03)', paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <p style={{ color: 'var(--text-subtle)', fontSize: '0.72rem', fontFamily: 'var(--font-mono)', margin: 0 }}>
+            © {new Date().getFullYear()} Ishan Yadav
+          </p>
+          <p style={{ color: 'var(--text-subtle)', fontSize: '0.72rem', fontFamily: 'var(--font-mono)', margin: 0 }}>
+            Built with Next.js & Framer Motion
+          </p>
         </div>
-
-        {/* Legal links */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '1.25rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-          {[
-            { label: 'Privacy Policy', href: '/privacy' },
-            { label: 'Terms of Use', href: '/terms' },
-          ].map(l => (
-            <Link key={l.label} href={l.href}
-              style={{ color: 'rgba(100,116,139,0.4)', fontSize: '0.75rem', transition: 'color 0.2s', textDecoration: 'none' }}
-              onMouseEnter={e => { e.currentTarget.style.color = 'rgba(148,163,184,0.7)'; }}
-              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(100,116,139,0.4)'; }}>
-              {l.label}
-            </Link>
-          ))}
-        </div>
-
-        <p style={{ color: 'rgba(100,116,139,0.4)', fontSize: '0.72rem' }}>
-          © {new Date().getFullYear()} Ishan Yadav. Built with Next.js &amp; Framer Motion.
-        </p>
       </div>
     </footer>
   );

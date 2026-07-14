@@ -112,7 +112,7 @@ export default function Projects() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           style={{ maxWidth: 800, marginBottom: '4rem' }}
         >
-          <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+          <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
             // Portfolio Index
           </p>
           <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.8rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', fontFamily: 'var(--font-display)', marginBottom: '1.5rem' }}>
@@ -194,10 +194,10 @@ export default function Projects() {
                 >
                   {/* Number & Role */}
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.04)', paddingBottom: '1rem', marginBottom: '1.5rem' }}>
-                    <span style={{ fontSize: '0.85rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
+                    <span style={{ fontSize: '0.85rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)' }}>
                       CASE {p.num}
                     </span>
-                    <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                    <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', textTransform: 'uppercase' }}>
                       {p.role.join(' / ')}
                     </span>
                   </div>

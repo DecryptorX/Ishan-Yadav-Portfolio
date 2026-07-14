@@ -12,18 +12,19 @@ function Track({ reverse = false }: { reverse?: boolean }) {
   return (
     <div style={{
       display: 'flex', gap: '0px',
-      animation: `marquee${reverse ? 'R' : ''} 40s linear infinite`,
+      animation: `marquee${reverse ? 'R' : ''} 50s linear infinite`,
       willChange: 'transform',
     }}>
       {doubled.map((item, i) => (
         <span key={i} style={{
-          display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
-          padding: '0 2rem', whiteSpace: 'nowrap',
-          fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.08em',
-          color: i % 3 === 0 ? '#00e5ff' : i % 3 === 1 ? 'rgba(226,232,240,0.5)' : '#6366f1',
+          display: 'inline-flex', alignItems: 'center', gap: '0.75rem',
+          padding: '0 2.5rem', whiteSpace: 'nowrap',
+          fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.12em',
+          color: 'var(--text-subtle)',
           textTransform: 'uppercase',
+          fontFamily: 'var(--font-mono)',
         }}>
-          <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'currentColor', display: 'inline-block', flexShrink: 0 }} />
+          <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'var(--text-subtle)', display: 'inline-block', flexShrink: 0, opacity: 0.6 }} />
           {item}
         </span>
       ))}
@@ -33,14 +34,24 @@ function Track({ reverse = false }: { reverse?: boolean }) {
 
 export default function MarqueeStrip() {
   return (
-    <div style={{ borderTop: '1px solid rgba(255,255,255,0.04)', borderBottom: '1px solid rgba(255,255,255,0.04)', overflow: 'hidden', padding: '0.85rem 0', background: 'rgba(255,255,255,0.015)' }}>
+    <div style={{ 
+      borderTop: '1px solid rgba(255,255,255,0.03)', 
+      borderBottom: '1px solid rgba(255,255,255,0.03)', 
+      overflow: 'hidden', 
+      padding: '1rem 0', 
+      background: 'transparent',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.5rem'
+    }}
+    className="marquee-container"
+    >
       <div style={{ display: 'flex', overflow: 'hidden' }}>
         <Track />
       </div>
-      <style>{`
-        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        @keyframes marqueeR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
-      `}</style>
+      <div style={{ display: 'flex', overflow: 'hidden' }}>
+        <Track reverse />
+      </div>
     </div>
   );
 }
