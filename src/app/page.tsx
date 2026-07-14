@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import Hero from '../components/Hero';
 import MarqueeStrip from '../components/MarqueeStrip';
@@ -400,6 +400,7 @@ export default function Page() {
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [activeScene, setActiveScene] = useState(1);
+  const scrollYProgress = useMotionValue(0);
 
   useEffect(() => {
     setMounted(true);
@@ -412,22 +413,40 @@ export default function Page() {
   }, []);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: scrollContainerRef,
-    offset: ["start start", "end end"]
-  });
 
   useEffect(() => {
-    if (!mounted) return;
-    const unsubscribe = scrollYProgress.on("change", (latest) => {
+    if (!mounted || isMobile) return;
+
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const updateActiveScene = (latest: number) => {
       if (latest < 0.2) setActiveScene(1);
       else if (latest < 0.4) setActiveScene(2);
       else if (latest < 0.6) setActiveScene(3);
       else if (latest < 0.8) setActiveScene(4);
       else setActiveScene(5);
-    });
-    return () => unsubscribe();
-  }, [mounted, scrollYProgress]);
+    };
+
+    const updateScrollProgress = () => {
+      const start = container.offsetTop;
+      const scrollableDistance = container.offsetHeight - window.innerHeight;
+      const latest = scrollableDistance > 0
+        ? Math.min(Math.max((window.scrollY - start) / scrollableDistance, 0), 1)
+        : 0;
+
+      scrollYProgress.set(latest);
+      updateActiveScene(latest);
+    };
+
+    updateScrollProgress();
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    window.addEventListener('resize', updateScrollProgress);
+    return () => {
+      window.removeEventListener('scroll', updateScrollProgress);
+      window.removeEventListener('resize', updateScrollProgress);
+    };
+  }, [isMobile, mounted, scrollYProgress]);
 
   // Scene 1: Hero Transforms
   const s1Opacity = useTransform(scrollYProgress, [0.0, 0.15, 0.2], [1, 1, 0]);
@@ -457,7 +476,10 @@ export default function Page() {
   const renderContent = () => {
     if (!mounted) {
       return (
-        <div style={{ background: 'var(--bg)', minHeight: '100vh' }} />
+        <div
+          ref={scrollContainerRef}
+          style={{ background: 'var(--bg)', minHeight: '100vh' }}
+        />
       );
     }
 
