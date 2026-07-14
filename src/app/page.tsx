@@ -38,36 +38,36 @@ function FeaturedCarousel({ projects }: { projects: any[] }) {
       onMouseLeave={() => setIsPaused(false)}
       style={{ position: 'relative' }}
     >
-      <div className="carousel-layout" style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '4rem', alignItems: 'center', minHeight: '500px' }}>
+      <div className="carousel-layout" style={{ display: 'grid', gridTemplateColumns: '1.25fr 0.75fr', gap: '6rem', alignItems: 'center', minHeight: '520px' }}>
         {/* Visual side */}
         <AnimatePresence mode="wait">
           <motion.div
             key={`visual-${active}`}
-            initial={{ opacity: 0, scale: 0.95, x: 30 }}
+            initial={{ opacity: 0, scale: 0.96, x: 40 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
-            exit={{ opacity: 0, scale: 0.95, x: -30 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            exit={{ opacity: 0, scale: 0.96, x: -40 }}
+            transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
             style={{
               background: 'rgba(255, 255, 255, 0.01)',
               border: '1px solid rgba(255, 255, 255, 0.04)',
-              borderRadius: '2rem',
+              borderRadius: '2.5rem',
               overflow: 'hidden',
               position: 'relative',
-              boxShadow: '0 40px 80px rgba(0, 0, 0, 0.3)',
+              boxShadow: '0 40px 80px rgba(0, 0, 0, 0.4)',
             }}
           >
-            <div style={{ padding: '4rem 3rem', position: 'relative', minHeight: '420px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ padding: '6rem 4rem', position: 'relative', minHeight: '460px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <div aria-hidden style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px)', backgroundSize: '28px 28px', opacity: 0.5 }} />
-              <div aria-hidden style={{ position: 'absolute', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.03) 0%, transparent 70%)', filter: 'blur(40px)' }} />
+              <div aria-hidden style={{ position: 'absolute', width: 380, height: 380, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.04) 0%, transparent 70%)', filter: 'blur(50px)' }} />
               
               <div style={{ textAlign: 'center', position: 'relative', zIndex: 2 }}>
-                <span style={{ fontSize: '8rem', fontWeight: 900, fontFamily: 'var(--font-mono)', opacity: 0.04, color: '#fff', letterSpacing: '-0.05em', lineHeight: 1, display: 'block' }}>
+                <span style={{ fontSize: '11rem', fontWeight: 900, fontFamily: 'var(--font-mono)', opacity: 0.03, color: '#fff', letterSpacing: '-0.05em', lineHeight: 1, display: 'block' }}>
                   {p.num}
                 </span>
-                <h4 style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: '#ffffff', marginTop: '-2rem', letterSpacing: '-0.02em' }}>
+                <h4 style={{ fontSize: '2.2rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: '#ffffff', marginTop: '-3rem', letterSpacing: '-0.02em' }}>
                   {p.title}
                 </h4>
-                <p style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', marginTop: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                <p style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', marginTop: '1rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                   {p.status === 'live' ? '● Live' : p.status === 'in-development' ? '◐ In Development' : '○ Open Source'}
                 </p>
               </div>
@@ -79,42 +79,42 @@ function FeaturedCarousel({ projects }: { projects: any[] }) {
         <AnimatePresence mode="wait">
           <motion.div
             key={`content-${active}`}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            exit={{ opacity: 0, y: -25 }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
-              <span style={{ fontSize: '0.68rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-emerald)', fontWeight: 600 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem' }}>
+              <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-emerald)', fontWeight: 600 }}>
                 {String(active + 1).padStart(2, '0')}
               </span>
-              <span style={{ width: 30, height: 1, background: 'rgba(255,255,255,0.1)' }} />
-              <span style={{ fontSize: '0.68rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)' }}>
+              <span style={{ width: 40, height: 1, background: 'rgba(255,255,255,0.1)' }} />
+              <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)' }}>
                 {String(slides.length).padStart(2, '0')}
               </span>
             </div>
 
             <span style={{
-              display: 'inline-block', padding: '0.25rem 0.75rem', borderRadius: '9999px',
-              fontSize: '0.65rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em',
+              display: 'inline-block', padding: '0.35rem 1rem', borderRadius: '9999px',
+              fontSize: '0.72rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em',
               background: 'rgba(52, 211, 153, 0.08)', color: 'var(--accent-emerald)',
-              border: '1px solid rgba(52, 211, 153, 0.12)', marginBottom: '1.5rem'
+              border: '1px solid rgba(52, 211, 153, 0.12)', marginBottom: '2rem'
             }}>
               {p.status === 'live' ? 'Live' : p.status === 'in-development' ? 'In Development' : 'Open Source'}
             </span>
 
-            <h3 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#ffffff', letterSpacing: '-0.03em', margin: '0 0 0.75rem' }}>
+            <h3 style={{ fontSize: 'clamp(2.2rem, 3.5vw, 3.4rem)', fontWeight: 800, fontFamily: 'var(--font-display)', color: '#ffffff', letterSpacing: '-0.03em', margin: '0 0 1rem' }}>
               {p.title}
             </h3>
 
-            <p style={{ fontSize: '1rem', color: 'var(--text-muted)', fontStyle: 'italic', fontFamily: 'var(--font-editorial)', margin: '0 0 2rem', lineHeight: 1.7 }}>
+            <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', fontStyle: 'italic', fontFamily: 'var(--font-editorial)', margin: '0 0 2.5rem', lineHeight: 1.7 }}>
               {p.tagline || p.description?.slice(0, 120) + '...'}
             </p>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '2.5rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '3rem' }}>
               {(p.tech || []).slice(0, 5).map((t: string) => (
                 <span key={t} style={{
-                  padding: '0.3rem 0.8rem', borderRadius: '9999px', fontSize: '0.7rem', fontWeight: 500,
+                  padding: '0.4rem 1rem', borderRadius: '9999px', fontSize: '0.78rem', fontWeight: 500,
                   background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', color: 'var(--text-muted)'
                 }}>
                   {t}
@@ -122,15 +122,15 @@ function FeaturedCarousel({ projects }: { projects: any[] }) {
               ))}
             </div>
 
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               {p.github && (
-                <a href={p.github} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: '0.65rem 1.5rem', fontSize: '0.8rem' }}>
+                <a href={p.github} target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ padding: '0.8rem 2rem', fontSize: '0.85rem' }}>
                   Source
                 </a>
               )}
               {p.demo && (
-                <a href={p.demo} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ padding: '0.65rem 1.5rem', fontSize: '0.8rem' }}>
-                  <ExternalLink size={14} /> Live Demo
+                <a href={p.demo} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ padding: '0.8rem 2rem', fontSize: '0.85rem' }}>
+                  <ExternalLink size={16} /> Live Demo
                 </a>
               )}
             </div>
@@ -138,25 +138,31 @@ function FeaturedCarousel({ projects }: { projects: any[] }) {
         </AnimatePresence>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '3rem' }}>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4rem' }}>
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
           <button onClick={prev} style={{
-            width: 42, height: 42, borderRadius: '50%', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+            width: 48, height: 48, borderRadius: '50%', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
             color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.3s'
-          }}>
-            <ChevronLeft size={16} />
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(52, 211, 153, 0.3)'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; }}
+          >
+            <ChevronLeft size={18} />
           </button>
           <button onClick={next} style={{
-            width: 42, height: 42, borderRadius: '50%', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+            width: 48, height: 48, borderRadius: '50%', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
             color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.3s'
-          }}>
-            <ChevronRight size={16} />
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(52, 211, 153, 0.3)'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; }}
+          >
+            <ChevronRight size={18} />
           </button>
         </div>
-        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           {slides.map((_, i) => (
             <button key={i} onClick={() => goTo(i)} style={{
-              width: i === active ? 32 : 6, height: 6, borderRadius: '9999px',
+              width: i === active ? 36 : 8, height: 8, borderRadius: '9999px',
               background: i === active ? 'var(--accent-emerald)' : 'rgba(255,255,255,0.1)', border: 'none', cursor: 'pointer',
               transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)', boxShadow: i === active ? '0 0 12px rgba(52, 211, 153, 0.3)' : 'none'
             }} />
@@ -173,47 +179,51 @@ function FeaturedCarousel({ projects }: { projects: any[] }) {
 
 function Slide2About() {
   return (
-    <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }} className="hero-grid">
-        <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
-          <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6rem', alignItems: 'center' }} className="hero-grid">
+        <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.9, delay: 0.2 }}>
+          <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '2rem' }}>
             // Philosophy
           </p>
-          <blockquote style={{ fontSize: '1.45rem', fontWeight: 400, fontFamily: 'var(--font-editorial)', fontStyle: 'italic', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 2.5rem', letterSpacing: '-0.01em' }}>
+          <blockquote style={{ fontSize: 'clamp(1.6rem, 2.5vw, 2.3rem)', fontWeight: 400, fontFamily: 'var(--font-editorial)', fontStyle: 'italic', color: 'var(--text-muted)', lineHeight: 1.5, margin: '0 0 3rem', letterSpacing: '-0.02em' }}>
             "Building secure systems requires a balance of defense engineering, local intelligence, and 
             <span style={{ color: '#ffffff', fontWeight: 500 }}> obsessive attention to detail</span>. 
             Every line of code is either a wall or a door."
           </blockquote>
           
-          <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+          <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1rem' }}>
             // Domain Expertise
           </p>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.94rem', lineHeight: 1.8, margin: '0 0 2rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.15rem', lineHeight: 1.8, margin: '0 0 3rem' }}>
             Specializing in threat detection, incident log automation, and mapping attack patterns to the MITRE ATT&CK framework. Building tools that turn raw security data into actionable intelligence.
           </p>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
-            <Link href="/about" className="btn-primary" style={{ padding: '0.7rem 1.8rem', fontSize: '0.82rem' }}>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <Link href="/about" className="btn-primary" style={{ padding: '0.9rem 2.2rem', fontSize: '0.9rem' }}>
               About Me
             </Link>
           </div>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
           {[
-            { label: 'MITRE ATT&CK', desc: 'Automated threat mapping', num: '01' },
-            { label: 'SOC Analysis', desc: 'Log monitoring & triage', num: '02' },
-            { label: 'Incident Response', desc: 'Automated report generation', num: '03' },
-            { label: 'Penetration Testing', desc: 'Vulnerability assessment', num: '04' },
+            { label: 'MITRE ATT&CK', desc: 'Automated threat mapping and signature verification.', num: '01' },
+            { label: 'SOC Analysis', desc: 'Real-time log monitoring, alert analysis, and triage workflows.', num: '02' },
+            { label: 'Incident Response', desc: 'Automated response execution and reporting dashboards.', num: '03' },
+            { label: 'Penetration Testing', desc: 'Continuous vulnerability assessment and threat model validation.', num: '04' },
           ].map((item, i) => (
             <motion.div
               key={item.label}
-              initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 + (i * 0.1) }}
+              initial={{ opacity: 0, y: 40 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ duration: 0.7, delay: 0.4 + (i * 0.1) }}
               className="card-editorial"
-              style={{ padding: '1.5rem' }}
+              style={{ padding: '2.5rem', minHeight: '220px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'all 0.4s' }}
             >
-              <span style={{ fontSize: '0.6rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', display: 'block', marginBottom: '0.75rem' }}>{item.num}</span>
-              <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: '0 0 0.35rem' }}>{item.label}</h4>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.4 }}>{item.desc}</p>
+              <div>
+                <span style={{ fontSize: '0.68rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', display: 'block', marginBottom: '1.25rem' }}>{item.num}</span>
+                <h4 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: '0 0 0.75rem' }}>{item.label}</h4>
+                <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -224,92 +234,97 @@ function Slide2About() {
 
 function Slide4Experience() {
   const experiences = [
-    { period: '2025 — Present', role: 'Freelance Developer & Security Consultant', org: 'Self-Employed', brief: 'Building security tools, full-stack dashboards, and advising clients on threat protocols.' },
-    { period: '2024 — Present', role: 'Social Media Sub Head', org: 'ACM Bennett University', brief: 'Managing digital channels, event media, and mentoring a junior content core team.' },
-    { period: '2024 — Present', role: 'Academic Researcher', org: 'Bennett University', brief: 'ML integration with web security, emergency SOS platform, SOC threat simulation.' },
+    { period: '2025 — Present', role: 'Freelance Developer & Consultant', org: 'Self-Employed', brief: 'Engineering custom security monitoring tools using Python, auditing Linux syslogs, and constructing Next.js dashboards backed by Flask APIs.' },
+    { period: '2024 — Present', role: 'Social Media Sub Head', org: 'ACM Bennett University', brief: 'Managing digital channels, event media, and supervising a junior core team of 5 members to establish consistent release schedules.' },
+    { period: '2024 — Present', role: 'Academic Projects Researcher', org: 'Bennett University', brief: 'Researching machine learning integrations with web security and building women safety SOS dispatcher architectures.' },
   ];
   return (
-    <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
-      <div style={{ maxWidth: 760, margin: '0 auto' }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem' }}>
-            <div>
-              <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-                // History
-              </p>
-              <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: 0, fontFamily: 'var(--font-display)' }}>
-                Experience
-              </h2>
-            </div>
-            <Link href="/experience" className="btn-secondary" style={{ padding: '0.6rem 1.3rem', fontSize: '0.8rem' }}>
-              Full History <ArrowUpRight size={14} />
-            </Link>
+    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
+      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.2 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem' }}>
+          <div>
+            <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+              // History
+            </p>
+            <h2 style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: 0, fontFamily: 'var(--font-display)' }}>
+              Experience
+            </h2>
           </div>
-          
-          <div style={{ position: 'relative' }}>
-            {/* Animated Timeline Line */}
-            <motion.div 
-              initial={{ height: 0 }} animate={{ height: '100%' }} transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              style={{ position: 'absolute', left: '16px', top: '10px', bottom: '10px', width: '2px', background: 'var(--accent-emerald)', opacity: 0.5, zIndex: 0 }} 
-            />
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', position: 'relative', zIndex: 1 }}>
-              {experiences.map((exp, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.6 + (i * 0.15) }}
-                  className="card-editorial"
-                  style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '120px 1fr', gap: '1.5rem', alignItems: 'center' }}
-                >
-                  <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-emerald)' }}>
+          <Link href="/experience" className="btn-secondary" style={{ padding: '0.8rem 1.8rem', fontSize: '0.85rem' }}>
+            Full History <ArrowUpRight size={16} />
+          </Link>
+        </div>
+        
+        <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}>
+          {/* Connecting line */}
+          <div style={{ position: 'absolute', top: '-1.5rem', left: '1rem', right: '1rem', height: '1px', background: 'rgba(255,255,255,0.06)', zIndex: 0 }} />
+
+          {experiences.map((exp, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 35 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ duration: 0.7, delay: 0.4 + (i * 0.15) }}
+              className="card-editorial"
+              style={{ padding: '2.5rem', minHeight: '340px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', zIndex: 1 }}
+            >
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: i === 0 ? 'var(--accent-emerald)' : 'rgba(255,255,255,0.2)', display: 'inline-block' }} />
+                  <span style={{ fontSize: '0.85rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-emerald)', fontWeight: 600 }}>
                     {exp.period}
                   </span>
-                  <div>
-                    <h4 style={{ fontSize: '0.94rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: '0 0 0.2rem' }}>
-                      {exp.role}
-                    </h4>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', margin: 0 }}>
-                      {exp.org} — {exp.brief}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </div>
+                </div>
+                <h4 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', fontFamily: 'var(--font-display)', margin: '0 0 0.5rem', lineHeight: 1.3 }}>
+                  {exp.role}
+                </h4>
+                <p style={{ fontSize: '0.88rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', margin: '0 0 1.5rem' }}>
+                  {exp.org}
+                </p>
+                <p style={{ fontSize: '0.96rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.6 }}>
+                  {exp.brief}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     </div>
   );
 }
 
 function Slide5Skills() {
   return (
-    <div style={{ maxWidth: 960, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
-        <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
+      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.2 }}>
+        <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
           // Stack
         </p>
-        <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: '0 0 2.5rem', fontFamily: 'var(--font-display)' }}>
-          Technologies
+        <h2 style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: '0 0 3.5rem', fontFamily: 'var(--font-display)' }}>
+          Technologies & Expertise
         </h2>
       </motion.div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}>
         {SKILLS.slice(0, 6).map((group, gi) => (
           <motion.div
             key={group.category}
-            initial={{ opacity: 0, y: 28 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 + (gi * 0.1) }}
+            transition={{ duration: 0.7, delay: 0.4 + (gi * 0.1) }}
             className="card-editorial"
-            style={{ padding: '1.25rem' }}
+            style={{ padding: '2.5rem', minHeight: '200px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', transition: 'all 0.4s' }}
           >
-            <h4 style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.85rem', fontFamily: 'var(--font-display)', margin: '0 0 0.75rem' }}>{group.category}</h4>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
-              {group.items.slice(0, 4).map(skill => (
-                <span key={skill} style={{ padding: '0.2rem 0.55rem', borderRadius: '9999px', fontSize: '0.68rem', fontWeight: 500, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', color: 'var(--text-muted)' }}>
-                  {skill}
-                </span>
-              ))}
+            <div>
+              <h4 style={{ fontWeight: 800, color: '#ffffff', fontSize: '1.25rem', fontFamily: 'var(--font-display)', margin: '0 0 1.5rem' }}>{group.category}</h4>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                {group.items.slice(0, 6).map(skill => (
+                  <span key={skill} style={{ padding: '0.4rem 0.9rem', borderRadius: '9999px', fontSize: '0.8rem', fontWeight: 500, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', color: 'var(--text-muted)', transition: 'all 0.3s' }}
+                        onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(52, 211, 153, 0.3)'; e.currentTarget.style.color = '#ffffff'; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'var(--text-muted)'; }}>
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </div>
           </motion.div>
         ))}
@@ -319,52 +334,105 @@ function Slide5Skills() {
 }
 
 function Slide6Journey() {
+  const milestones = [
+    { year: '2023', label: 'Systems Foundations', desc: 'Started computer science studies, centering on security fundamentals, operating systems, and Python scripting.' },
+    { year: '2024', label: 'AI & Research Core', desc: 'Authored emergency SOS response systems and integrated machine learning classifiers with security layers.' },
+    { year: '2025', label: 'Startups & Production', desc: 'Co-founded backend operations, building custom threat intelligence log parsers and consulting on local infrastructure.' },
+  ];
   return (
-    <div style={{ maxWidth: 900, width: '100%', margin: '0 auto', padding: '0 2rem', textAlign: 'center' }}>
-      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
-        <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
-          // Path
-        </p>
-        <h2 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '1.25rem', fontFamily: 'var(--font-display)' }}>
-          My Journey So Far
-        </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '3rem', maxWidth: 600, margin: '0 auto 3rem' }}>
-          From early experiments in programming to building full-stack platforms and securing systems. Explore the complete timeline of my evolution as a developer.
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Link href="/journey" className="btn-primary" style={{ padding: '0.8rem 2rem', fontSize: '0.9rem' }}>
-            View Full Journey <ArrowUpRight size={16} />
-          </Link>
+    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '0.8fr 1.2fr', gap: '6rem', alignItems: 'center' }} className="hero-grid">
+        <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.9, delay: 0.2 }}>
+          <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+            // Path
+          </p>
+          <h2 style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '2rem', fontFamily: 'var(--font-display)' }}>
+            My Journey So Far
+          </h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.15rem', lineHeight: 1.8, marginBottom: '3rem' }}>
+            From building local helper scripts to engineering machine-learning defense structures. Explore the complete interactive timeline of my development path.
+          </p>
+          <div style={{ display: 'flex' }}>
+            <Link href="/journey" className="btn-primary" style={{ padding: '0.9rem 2.2rem', fontSize: '0.9rem' }}>
+              View Full Journey <ArrowUpRight size={16} />
+            </Link>
+          </div>
+        </motion.div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          {milestones.map((ms, i) => (
+            <motion.div
+              key={ms.year}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 + (i * 0.15) }}
+              className="card-editorial"
+              style={{ padding: '2rem 2.5rem', display: 'grid', gridTemplateColumns: '100px 1fr', gap: '2rem', alignItems: 'center' }}
+            >
+              <div style={{ fontSize: '2rem', fontWeight: 900, fontFamily: 'var(--font-display)', color: 'var(--accent-emerald)', borderRight: '1px solid rgba(255,255,255,0.06)', paddingRight: '1.5rem' }}>
+                {ms.year}
+              </div>
+              <div>
+                <h4 style={{ fontSize: '1.15rem', fontWeight: 800, color: '#ffffff', fontFamily: 'var(--font-display)', margin: '0 0 0.35rem' }}>{ms.label}</h4>
+                <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.5 }}>{ms.desc}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
 
 function Slide7Contact() {
   return (
-    <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center', padding: '0 2rem' }}>
-      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}>
-        <div aria-hidden style={{ position: 'absolute', top: '50%', left: '50%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.05) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
-        
-        <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
-          // Let's Connect
-        </p>
-        <h2 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '1.25rem', fontFamily: 'var(--font-display)' }}>
-          Let's build secure<br />solutions together.
-        </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '3rem' }}>
-          Looking for a Cybersecurity Analyst, SOC Intern, or Software Engineer? Let's discuss how I can contribute to your team.
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <Link href="/contact" className="btn-primary">
-            Get In Touch
-          </Link>
-          <Link href="/journey" className="btn-secondary">
-            Explore My Journey
-          </Link>
+    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '6rem', alignItems: 'center' }} className="hero-grid">
+        <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.9, delay: 0.2 }}>
+          <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+            // Let's Connect
+          </p>
+          <h2 style={{ fontSize: 'clamp(2.4rem, 4.5vw, 4.2rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '2rem', fontFamily: 'var(--font-display)' }}>
+            Let's build secure solutions together.
+          </h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.15rem', lineHeight: 1.8, marginBottom: '3rem' }}>
+            Looking for a Cybersecurity Analyst, SOC Intern, or Software Engineer? Let's discuss how I can contribute to your team.
+          </p>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <Link href="/contact" className="btn-primary" style={{ padding: '0.9rem 2.2rem', fontSize: '0.9rem' }}>
+              Get In Touch
+            </Link>
+            <Link href="/journey" className="btn-secondary" style={{ padding: '0.9rem 2.2rem', fontSize: '0.9rem' }}>
+              Explore My Journey
+            </Link>
+          </div>
+        </motion.div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          {[
+            { label: 'Email', value: 'ishanyadav09@outlook.com', href: 'mailto:ishanyadav09@outlook.com' },
+            { label: 'LinkedIn', value: 'ishan-yadav-a22251325', href: 'https://www.linkedin.com/in/ishan-yadav-a22251325' },
+            { label: 'GitHub', value: 'DecryptorX', href: 'https://github.com/DecryptorX' },
+          ].map((c, i) => (
+            <motion.a
+              key={c.label}
+              href={c.href}
+              target={c.href.startsWith('http') ? '_blank' : undefined}
+              rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 + (i * 0.15) }}
+              className="card-editorial"
+              style={{ padding: '2rem 2.5rem', display: 'block', textDecoration: 'none', transition: 'all 0.3s' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(52, 211, 153, 0.3)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; }}
+            >
+              <span style={{ fontSize: '0.68rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase' }}>{c.label}</span>
+              <h4 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: 0, wordBreak: 'break-all' }}>{c.value}</h4>
+            </motion.a>
+          ))}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -378,6 +446,7 @@ export default function Page() {
   const [mounted, setMounted] = useState(false);
   const [activeScene, setActiveScene] = useState(1);
   const [direction, setDirection] = useState(1);
+  const [isExited, setIsExited] = useState(false);
   const transitionLock = useRef(false);
   const touchStartY = useRef<number | null>(null);
   
@@ -438,29 +507,74 @@ export default function Page() {
     window.setTimeout(() => { transitionLock.current = false; }, 850);
   }, [activeScene]);
 
+  // Scroll lock effect using body class
   useEffect(() => {
     if (!mounted) return;
-    document.body.style.overflow = 'hidden';
+    if (isExited) {
+      document.documentElement.classList.remove('lock-scroll');
+      document.body.classList.remove('lock-scroll');
+    } else {
+      document.documentElement.classList.add('lock-scroll');
+      document.body.classList.add('lock-scroll');
+    }
+    return () => {
+      document.documentElement.classList.remove('lock-scroll');
+      document.body.classList.remove('lock-scroll');
+    };
+  }, [isExited, mounted]);
+
+  useEffect(() => {
+    if (!mounted) return;
     
     const isInteractive = (target: EventTarget | null) => target instanceof Element && Boolean(target.closest('a, button, input, textarea, select, [data-carousel]'));
     
     const onWheel = (event: WheelEvent) => {
       if (isInteractive(event.target)) return;
+
+      if (isExited) {
+        if (window.scrollY === 0 && event.deltaY < 0) {
+          event.preventDefault();
+          setIsExited(false);
+          goToScene(TOTAL_SCENES);
+        }
+        return;
+      }
+
       if (Math.abs(event.deltaY) < 20) return; // Ignore tiny scroll bumps
       event.preventDefault();
       
       if (!transitionLock.current) {
-        goToScene(activeScene + (event.deltaY > 0 ? 1 : -1));
+        const next = activeScene + (event.deltaY > 0 ? 1 : -1);
+        if (next > TOTAL_SCENES) {
+          setIsExited(true);
+        } else {
+          goToScene(next);
+        }
       }
     };
     
     const onKeyDown = (event: KeyboardEvent) => {
       if (isInteractive(event.target)) return;
+
+      if (isExited) {
+        if (window.scrollY === 0 && (event.key === 'ArrowUp' || event.key === 'PageUp')) {
+          event.preventDefault();
+          setIsExited(false);
+          goToScene(TOTAL_SCENES);
+        }
+        return;
+      }
+
       const forward = ['ArrowDown', 'PageDown', ' '];
       const backward = ['ArrowUp', 'PageUp'];
       if (forward.includes(event.key) || backward.includes(event.key)) {
         event.preventDefault();
-        goToScene(activeScene + (forward.includes(event.key) ? 1 : -1));
+        const next = activeScene + (forward.includes(event.key) ? 1 : -1);
+        if (next > TOTAL_SCENES) {
+          setIsExited(true);
+        } else {
+          goToScene(next);
+        }
       }
     };
     
@@ -470,7 +584,23 @@ export default function Page() {
       if (touchStartY.current === null || isInteractive(event.target)) return;
       const distance = touchStartY.current - (event.changedTouches[0]?.clientY ?? touchStartY.current);
       touchStartY.current = null;
-      if (Math.abs(distance) > 50) goToScene(activeScene + (distance > 0 ? 1 : -1));
+
+      if (isExited) {
+        if (window.scrollY === 0 && distance < -50) {
+          setIsExited(false);
+          goToScene(TOTAL_SCENES);
+        }
+        return;
+      }
+
+      if (Math.abs(distance) > 50) {
+        const next = activeScene + (distance > 0 ? 1 : -1);
+        if (next > TOTAL_SCENES) {
+          setIsExited(true);
+        } else {
+          goToScene(next);
+        }
+      }
     };
 
     window.addEventListener('wheel', onWheel, { passive: false });
@@ -479,13 +609,12 @@ export default function Page() {
     window.addEventListener('touchend', onTouchEnd, { passive: true });
     
     return () => {
-      document.body.style.overflow = '';
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchend', onTouchEnd);
     };
-  }, [activeScene, goToScene, mounted]);
+  }, [activeScene, goToScene, mounted, isExited]);
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -522,10 +651,10 @@ export default function Page() {
       case 1: return <Hero />;
       case 2: return <Slide2About />;
       case 3: return (
-        <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
-            <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>// Featured Work</p>
-            <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: '0 0 3rem', fontFamily: 'var(--font-display)' }}>Selected Projects</h2>
+        <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
+            <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>// Featured Work</p>
+            <h2 style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: '0 0 3.5rem', fontFamily: 'var(--font-display)' }}>Selected Projects</h2>
           </motion.div>
           <FeaturedCarousel projects={featuredProjects} />
         </div>
@@ -543,53 +672,69 @@ export default function Page() {
   }
 
   return (
-    <div style={{ background: 'var(--bg)', color: 'var(--text)', position: 'relative', height: '100vh', overflow: 'hidden' }}>
+    <div style={{ background: 'var(--bg)', color: 'var(--text)', position: 'relative', minHeight: '100vh' }}>
       {/* Background Ambience */}
-      <div className="moving-grid" style={{ position: 'absolute', inset: 0, zIndex: 0, opacity: 0.5 }} />
-      <div aria-hidden style={{ position: 'absolute', top: '50%', left: '50%', width: 800, height: 800, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.02) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(100px)', pointerEvents: 'none', zIndex: 0 }} />
+      <div className="moving-grid" style={{ position: 'fixed', inset: 0, zIndex: 0, opacity: 0.5, pointerEvents: 'none' }} />
+      <div aria-hidden style={{ position: 'fixed', top: '50%', left: '50%', width: 800, height: 800, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.02) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(100px)', pointerEvents: 'none', zIndex: 0 }} />
 
       {/* Cinematic Slide Carousel */}
-      <AnimatePresence initial={false} custom={direction}>
-        <motion.div
-          key={activeScene}
-          custom={direction}
-          initial={slideVariants.enter(direction)}
-          animate={slideVariants.center}
-          exit={slideVariants.exit(direction)}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1,
-            willChange: 'transform, opacity'
-          }}
-        >
-          {renderScene()}
-        </motion.div>
-      </AnimatePresence>
+      <div style={{ 
+        position: isExited ? 'relative' : 'fixed', 
+        inset: isExited ? 'auto' : 0, 
+        height: '100vh', 
+        width: '100%', 
+        overflow: 'hidden',
+        zIndex: 1 
+      }}>
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={activeScene}
+            custom={direction}
+            initial={slideVariants.enter(direction)}
+            animate={slideVariants.center}
+            exit={slideVariants.exit(direction)}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1,
+              willChange: 'transform, opacity'
+            }}
+          >
+            {renderScene()}
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       {/* Navigation Indicators */}
-      <nav style={{
-        position: 'fixed', right: '2rem', top: '50%', transform: 'translateY(-50%)',
-        display: 'flex', flexDirection: 'column', gap: '0.8rem', zIndex: 50
-      }}>
-        {Array.from({ length: TOTAL_SCENES }).map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goToScene(i + 1)}
-            aria-label={`Go to slide ${i + 1}`}
-            style={{
-              width: 8, height: 8, borderRadius: '50%', padding: 0, border: 'none', cursor: 'pointer',
-              background: activeScene === i + 1 ? 'var(--accent-emerald)' : 'rgba(255, 255, 255, 0.15)',
-              boxShadow: activeScene === i + 1 ? '0 0 10px rgba(52, 211, 153, 0.5)' : 'none',
-              transform: activeScene === i + 1 ? 'scale(1.3)' : 'scale(1)',
-              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
-            }}
-          />
-        ))}
-      </nav>
+      {!isExited && (
+        <nav style={{
+          position: 'fixed', right: '2rem', top: '50%', transform: 'translateY(-50%)',
+          display: 'flex', flexDirection: 'column', gap: '0.8rem', zIndex: 50
+        }}>
+          {Array.from({ length: TOTAL_SCENES }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goToScene(i + 1)}
+              aria-label={`Go to slide ${i + 1}`}
+              style={{
+                width: 8, height: 8, borderRadius: '50%', padding: 0, border: 'none', cursor: 'pointer',
+                background: activeScene === i + 1 ? 'var(--accent-emerald)' : 'rgba(255, 255, 255, 0.15)',
+                boxShadow: activeScene === i + 1 ? '0 0 10px rgba(52, 211, 153, 0.5)' : 'none',
+                transform: activeScene === i + 1 ? 'scale(1.3)' : 'scale(1)',
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+              }}
+            />
+          ))}
+        </nav>
+      )}
+
+      {/* Vertical offset spacing to push footer below absolute carousel when exited */}
+      {isExited && (
+        <div style={{ paddingTop: '100vh' }} />
+      )}
     </div>
   );
 }

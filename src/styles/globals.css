@@ -553,3 +553,9 @@ html.lenis, html.lenis body {
   text-shadow: 0 0 20px rgba(52, 211, 153, 0.3);
 }
 
+.lock-scroll {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+

@@ -23,19 +23,7 @@ export default function GlobalLayoutWrapper({ children }: { children: React.Reac
     setLoading(true);
   }
 
-  React.useEffect(() => {
-    if (pathname === '/') {
-      document.documentElement.style.overflow = 'hidden';
-      document.documentElement.style.height = '100vh';
-      document.body.style.overflow = 'hidden';
-      document.body.style.height = '100vh';
-    } else {
-      document.documentElement.style.overflow = '';
-      document.documentElement.style.height = '';
-      document.body.style.overflow = '';
-      document.body.style.height = '';
-    }
-  }, [pathname]);
+
 
   return (
     <AnimatePresence mode="wait" initial={false}>
@@ -63,7 +51,7 @@ export default function GlobalLayoutWrapper({ children }: { children: React.Reac
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             {children}
           </div>
-          {pathname !== '/' && <Footer />}
+          <Footer />
         </motion.div>
       )}
     </AnimatePresence>
