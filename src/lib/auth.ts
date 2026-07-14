@@ -165,7 +165,7 @@ export function getAuthOptions(): NextAuthOptions {
 
             token.id = dbUser.id;
             token.linkedinId = dbUser.providerAccountId;
-            token.role = dbUser.role;
+            token.role = dbUser.role === 'ADMIN' ? 'admin' : 'user';
           } catch (dbErr: any) {
             console.error('Error during authentication user upsert:', dbErr);
             throw dbErr;
@@ -179,7 +179,7 @@ export function getAuthOptions(): NextAuthOptions {
         if (session.user) {
           session.user.id = (token.linkedinId || token.id || token.sub || '') as string;
           session.user.role = (token.role as string) || 'user';
-          session.user.isAdmin = token.role === 'ADMIN';
+          session.user.isAdmin = token.role === 'admin';
         }
         return session;
       },
