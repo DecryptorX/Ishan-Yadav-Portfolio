@@ -50,7 +50,7 @@ export default function Header() {
       >
         <motion.header
           animate={{
-            width: scrolled ? '65%' : '88%',
+            width: scrolled ? '70%' : '90vw',
             borderRadius: scrolled ? '9999px' : '1.25rem',
             backgroundColor: scrolled ? 'rgba(5, 5, 6, 0.55)' : 'rgba(5, 5, 6, 0.15)',
             borderColor: scrolled ? 'rgba(255, 255, 255, 0.04)' : 'rgba(255, 255, 255, 0.02)',
@@ -58,7 +58,7 @@ export default function Header() {
           }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            maxWidth: '1200px',
+            maxWidth: '1800px',
             borderWidth: '1px',
             borderStyle: 'solid',
             backdropFilter: 'blur(30px) saturate(200%)',
@@ -67,7 +67,7 @@ export default function Header() {
             alignItems: 'center',
             justifyContent: 'space-between',
             height: scrolled ? 50 : 60,
-            padding: scrolled ? '0 2rem' : '0 2rem',
+            padding: scrolled ? '0 2rem' : '0 4rem',
             pointerEvents: 'auto',
             transition: 'height 0.6s cubic-bezier(0.16, 1, 0.3, 1), padding 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
           }}

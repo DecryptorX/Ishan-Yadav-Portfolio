@@ -59,8 +59,8 @@ export default function Hero() {
           return next;
         });
         setTransitioning(false);
-      }, 400);
-    }, 10000); // 10 seconds
+      }, 200);
+    }, 800); // every 0.8s
     return () => clearInterval(t);
   }, []);
 
@@ -227,9 +227,9 @@ export default function Hero() {
                 fontFamily: currentFont,
                 margin: '0 0 2rem 0',
                 textTransform: 'uppercase',
-                transition: 'filter 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                filter: transitioning ? 'blur(8px)' : 'blur(0px)',
-                opacity: transitioning ? 0.3 : 1,
+                transition: 'filter 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                filter: transitioning ? 'blur(4px)' : 'blur(0px)',
+                opacity: transitioning ? 0.6 : 1,
                 willChange: 'filter, opacity'
               }}
             >
