@@ -12,10 +12,10 @@ export default function About() {
         {/* Header Block - Editorial Asymmetric */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3rem', marginBottom: '6rem', alignItems: 'start' }}>
           <motion.div 
-            initial={{ opacity: 0, y: 30 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            viewport={{ once: true }} 
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, clipPath: 'inset(100% 0 0 0)', y: 30 }} 
+            whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0 0)', y: 0 }} 
+            viewport={{ once: true, margin: "-50px" }} 
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
               // Who I Am
@@ -26,10 +26,10 @@ export default function About() {
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            viewport={{ once: true }} 
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            initial={{ opacity: 0, clipPath: 'inset(100% 0 0 0)', y: 30 }} 
+            whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0 0)', y: 0 }} 
+            viewport={{ once: true, margin: "-50px" }} 
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
             style={{ paddingTop: '1.25rem' }}
           >
             <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.8, fontFamily: 'var(--font-sans)', fontWeight: 400, margin: 0 }}>

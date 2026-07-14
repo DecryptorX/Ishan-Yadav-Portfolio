@@ -7,6 +7,12 @@ export default function ExperiencePage() {
   const [loading, setLoading] = React.useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start center", "end center"]
+  });
+  const scaleY = useSpring(scrollYProgress, { stiffness: 80, damping: 20 });
+
   React.useEffect(() => {
     const FALLBACK_ROLES = [
       {
@@ -137,7 +143,7 @@ export default function ExperiencePage() {
               width: '1.5px', 
               background: 'linear-gradient(to bottom, var(--accent-emerald) 50%, rgba(52, 211, 153, 0.05) 100%)',
               originY: 0,
-              scaleY: useSpring(useScroll({ target: containerRef, offset: ["start center", "end center"] }).scrollYProgress, { stiffness: 80, damping: 20 }),
+              scaleY,
               zIndex: 2
             }} 
           />

@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     className="fixed inset-0 z-0 pointer-events-none"
                     color="#ffffff"
                     duration={80}
-                    density={1}
+                    density={0.25}
                     blurIntensity="3px"
                     opacity={0.015}
                   />

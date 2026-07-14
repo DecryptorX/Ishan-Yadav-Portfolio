@@ -34,6 +34,10 @@ export default function Hero() {
   const [heroData, setHeroData] = useState<any>(null);
   const [cycleList, setCycleList] = useState<string[]>(DEFAULT_CYCLE);
 
+  const nameParts = (heroData?.title || 'Ishan Yadav').trim().split(/\s+/);
+  const firstName = nameParts[0] || 'Ishan';
+  const lastName = nameParts.slice(1).join(' ') || 'Yadav';
+
   // Mouse spotlight tracking
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
@@ -186,54 +190,43 @@ export default function Hero() {
             </motion.div>
 
             {/* Massive typography — Name */}
-            <div
-              style={{
-                position: 'relative',
-                height: 'clamp(6.6rem, 10vw, 8.5rem)',
-                marginBottom: '2rem'
+            <h1 
+              style={{ 
+                fontSize: 'clamp(3rem, 9.5vw, 7.5rem)', 
+                fontWeight: 900, 
+                color: '#ffffff', 
+                lineHeight: 0.95, 
+                letterSpacing: '-0.04em', 
+                fontFamily: 'var(--font-display)',
+                margin: '0 0 2.5rem 0',
+                display: 'flex',
+                flexDirection: 'column',
+                textTransform: 'uppercase',
               }}
             >
-              <motion.h1 
-                initial={{ y: 80, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }} 
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-                style={{ 
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  zIndex: 1,
-                  fontSize: 'clamp(3.5rem, 8vw, 6.5rem)', 
-                  fontWeight: 900, 
-                  color: '#ffffff', 
-                  lineHeight: 0.95, 
-                  letterSpacing: '-0.06em', 
-                  fontFamily: 'var(--font-display)',
-                  margin: 0
-                }}
-              >
-                {heroData?.title || 'Ishan'}
-              </motion.h1>
-              <motion.h1 
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }} 
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-                style={{ 
-                  position: 'absolute',
-                  top: '0.45em',
-                  left: '0.38em',
-                  zIndex: 2,
-                  fontSize: 'clamp(3.5rem, 8vw, 6.5rem)', 
-                  fontWeight: 900, 
-                  lineHeight: 0.95, 
-                  letterSpacing: '-0.06em', 
-                  fontFamily: 'var(--font-display)',
-                  margin: 0
-                }}
-                className="gradient-text-emerald"
-              >
-                Yadav
-              </motion.h1>
-            </div>
+              <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.05em' }}>
+                <motion.span
+                  initial={{ y: '100%', opacity: 0, filter: 'blur(8px)' }}
+                  animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+                  transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+                  className="hero-name-line"
+                  style={{ display: 'inline-block', willChange: 'transform, opacity, filter' }}
+                >
+                  {firstName}
+                </motion.span>
+              </span>
+              <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.05em' }}>
+                <motion.span
+                  initial={{ y: '100%', opacity: 0, filter: 'blur(8px)' }}
+                  animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+                  transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+                  className="hero-name-line gradient-text-emerald"
+                  style={{ display: 'inline-block', willChange: 'transform, opacity, filter' }}
+                >
+                  {lastName}
+                </motion.span>
+              </span>
+            </h1>
 
             {/* Animated role transition */}
             <div style={{ height: 40, position: 'relative', overflow: 'hidden', marginBottom: '2.5rem' }}>
@@ -464,51 +457,48 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        width: 350,
-        height: 350,
-        borderRadius: '50%',
+        width: 300,
+        height: 400,
+        borderRadius: '2rem',
         padding: 1,
-        background: 'linear-gradient(160deg, rgba(52, 211, 153, 0.3) 0%, rgba(255,255,255,0.06) 50%, rgba(52, 211, 153, 0.15) 100%)',
-        boxShadow: '0 40px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.1)',
+        background: 'linear-gradient(160deg, rgba(52, 211, 153, 0.25) 0%, rgba(255,255,255,0.04) 50%, rgba(52, 211, 153, 0.1) 100%)',
+        boxShadow: '0 40px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
         animation: 'float-gentle 10s infinite ease-in-out',
         position: 'relative',
         overflow: 'hidden',
         cursor: 'none'
       }}
     >
-      {/* Ambient Inner Glow */}
-      <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 0%, transparent 60%)', zIndex: 3, pointerEvents: 'none' }} />
-
-      {/* Particles behind but inside circle */}
-      <div className="halftone-dots" style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none', opacity: 0.15 }} />
+      {/* Base Layer: Dotted Halftone Background */}
+      <div className="halftone-dots" style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none', opacity: 0.25 }} />
       
       {/* Grain Layer */}
-      <div className="noise-overlay" style={{ position: 'absolute', inset: 0, zIndex: 4, pointerEvents: 'none', borderRadius: '50%', overflow: 'hidden' }} />
+      <div className="noise-overlay" style={{ position: 'absolute', inset: 0, zIndex: 4, pointerEvents: 'none' }} />
 
       {/* Emerald Edge Glow Border Shadow */}
       <div style={{
         position: 'absolute',
         inset: 0,
-        borderRadius: '50%',
-        border: '1.5px solid rgba(52, 211, 153, 0.3)',
-        boxShadow: 'inset 0 0 30px rgba(52, 211, 153, 0.2)',
+        borderRadius: '2rem',
+        border: '1.5px solid rgba(52, 211, 153, 0.25)',
+        boxShadow: 'inset 0 0 20px rgba(52, 211, 153, 0.15)',
         pointerEvents: 'none',
         zIndex: 5
       }} />
 
       {/* Base grayscale blurred image */}
-      <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 1, borderRadius: '50%', overflow: 'hidden' }}>
+      <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 1 }}>
         <Image
           src={avatarUrl}
           alt={title}
-          width={350}
-          height={350}
+          width={300}
+          height={400}
           priority
           style={{ 
             width: '100%', 
             height: '100%', 
             objectFit: 'cover', 
-            filter: 'grayscale(100%) contrast(0.9) opacity(0.4) blur(4px)',
+            filter: 'grayscale(100%) contrast(0.9) opacity(0.35) blur(3px)',
             transition: 'filter 0.3s ease'
           }}
         />
@@ -521,18 +511,16 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
         position: 'absolute', 
         inset: 0, 
         zIndex: 2,
-        borderRadius: '50%',
-        overflow: 'hidden',
         opacity: mousePos.isHovering ? 1 : 0,
         transition: 'opacity 0.4s ease',
-        WebkitMaskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
-        maskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`
+        WebkitMaskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
+        maskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`
       }}>
         <Image
           src={avatarUrl}
           alt={title}
-          width={350}
-          height={350}
+          width={300}
+          height={400}
           priority
           style={{ 
             width: '100%', 

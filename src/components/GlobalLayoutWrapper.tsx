@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Loader from './ui/loader';
+import AmbientBackground from './AmbientBackground';
 
 export default function GlobalLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -41,6 +42,7 @@ export default function GlobalLayoutWrapper({ children }: { children: React.Reac
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
         >
+          <AmbientBackground />
           {children}
         </motion.div>
       )}
