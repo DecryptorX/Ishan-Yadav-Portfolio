@@ -186,12 +186,22 @@ export default function Hero() {
             </motion.div>
 
             {/* Massive typography — Name */}
-            <div style={{ overflow: 'hidden', marginBottom: '0.5rem' }}>
+            <div
+              style={{
+                position: 'relative',
+                height: 'clamp(6.6rem, 10vw, 8.5rem)',
+                marginBottom: '2rem'
+              }}
+            >
               <motion.h1 
-                initial={{ y: '110%' }} 
+                initial={{ y: 80, opacity: 0 }}
                 animate={{ y: 0 }} 
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
                 style={{ 
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  zIndex: 1,
                   fontSize: 'clamp(3.5rem, 8vw, 6.5rem)', 
                   fontWeight: 900, 
                   color: '#ffffff', 
@@ -203,13 +213,15 @@ export default function Hero() {
               >
                 {heroData?.title || 'Ishan'}
               </motion.h1>
-            </div>
-            <div style={{ overflow: 'hidden', marginBottom: '2rem' }}>
               <motion.h1 
-                initial={{ y: '110%' }} 
+                initial={{ y: 100, opacity: 0 }}
                 animate={{ y: 0 }} 
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
                 style={{ 
+                  position: 'absolute',
+                  top: '0.45em',
+                  left: '0.38em',
+                  zIndex: 2,
                   fontSize: 'clamp(3.5rem, 8vw, 6.5rem)', 
                   fontWeight: 900, 
                   lineHeight: 0.95, 

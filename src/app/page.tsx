@@ -449,29 +449,19 @@ export default function Page() {
   }, [isMobile, mounted, scrollYProgress]);
 
   // Scene 1: Hero Transforms
-  const s1Opacity = useTransform(scrollYProgress, [0.0, 0.15, 0.2], [1, 1, 0]);
-  const s1Scale = useTransform(scrollYProgress, [0.0, 0.2], [1, 0.95]);
-  const s1Y = useTransform(scrollYProgress, [0.0, 0.2], [0, -80]);
+  const s1Y = useTransform(scrollYProgress, [0.0, 0.2], ['0vh', '-100vh']);
 
   // Scene 2: Philosophy & Cybersecurity Expertise
-  const s2Opacity = useTransform(scrollYProgress, [0.15, 0.2, 0.35, 0.4], [0, 1, 1, 0]);
-  const s2Scale = useTransform(scrollYProgress, [0.15, 0.2, 0.35, 0.4], [1.05, 1, 1, 0.95]);
-  const s2Y = useTransform(scrollYProgress, [0.15, 0.2, 0.35, 0.4], [80, 0, 0, -80]);
+  const s2Y = useTransform(scrollYProgress, [0.0, 0.2, 0.4], ['100vh', '0vh', '-100vh']);
 
   // Scene 3: Featured Projects
-  const s3Opacity = useTransform(scrollYProgress, [0.35, 0.4, 0.55, 0.6], [0, 1, 1, 0]);
-  const s3Scale = useTransform(scrollYProgress, [0.35, 0.4, 0.55, 0.6], [1.05, 1, 1, 0.95]);
-  const s3Y = useTransform(scrollYProgress, [0.35, 0.4, 0.55, 0.6], [80, 0, 0, -80]);
+  const s3Y = useTransform(scrollYProgress, [0.2, 0.4, 0.6], ['100vh', '0vh', '-100vh']);
 
   // Scene 4: Experience & Skills
-  const s4Opacity = useTransform(scrollYProgress, [0.55, 0.6, 0.75, 0.8], [0, 1, 1, 0]);
-  const s4Scale = useTransform(scrollYProgress, [0.55, 0.6, 0.75, 0.8], [1.05, 1, 1, 0.95]);
-  const s4Y = useTransform(scrollYProgress, [0.55, 0.6, 0.75, 0.8], [80, 0, 0, -80]);
+  const s4Y = useTransform(scrollYProgress, [0.4, 0.6, 0.8], ['100vh', '0vh', '-100vh']);
 
   // Scene 5: Contact
-  const s5Opacity = useTransform(scrollYProgress, [0.75, 0.8, 1.0], [0, 1, 1]);
-  const s5Scale = useTransform(scrollYProgress, [0.75, 0.8, 1.0], [1.05, 1, 1]);
-  const s5Y = useTransform(scrollYProgress, [0.75, 0.8, 1.0], [80, 0, 0]);
+  const s5Y = useTransform(scrollYProgress, [0.6, 0.8], ['100vh', '0vh']);
 
   const renderContent = () => {
     if (!mounted) {
@@ -752,7 +742,7 @@ export default function Page() {
           {/* Scene 1: Hero */}
           <motion.div 
             className="scroll-scene-slide"
-            style={{ opacity: s1Opacity, scale: s1Scale, y: s1Y, zIndex: activeScene === 1 ? 10 : 1, pointerEvents: activeScene === 1 ? 'auto' : 'none' }}
+            style={{ y: s1Y, zIndex: activeScene === 1 ? 10 : 1, pointerEvents: activeScene === 1 ? 'auto' : 'none' }}
           >
             <Hero />
           </motion.div>
@@ -760,7 +750,7 @@ export default function Page() {
           {/* Scene 2: Philosophy & Cybersecurity */}
           <motion.div 
             className="scroll-scene-slide"
-            style={{ opacity: s2Opacity, scale: s2Scale, y: s2Y, zIndex: activeScene === 2 ? 10 : 2, pointerEvents: activeScene === 2 ? 'auto' : 'none' }}
+            style={{ y: s2Y, zIndex: activeScene === 2 ? 10 : 2, pointerEvents: activeScene === 2 ? 'auto' : 'none' }}
           >
             <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }} className="hero-grid">
@@ -812,7 +802,7 @@ export default function Page() {
           {/* Scene 3: Featured Projects */}
           <motion.div 
             className="scroll-scene-slide"
-            style={{ opacity: s3Opacity, scale: s3Scale, y: s3Y, zIndex: activeScene === 3 ? 10 : 3, pointerEvents: activeScene === 3 ? 'auto' : 'none' }}
+            style={{ y: s3Y, zIndex: activeScene === 3 ? 10 : 3, pointerEvents: activeScene === 3 ? 'auto' : 'none' }}
           >
             <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
@@ -835,7 +825,7 @@ export default function Page() {
           {/* Scene 4: Experience & Skills */}
           <motion.div 
             className="scroll-scene-slide"
-            style={{ opacity: s4Opacity, scale: s4Scale, y: s4Y, zIndex: activeScene === 4 ? 10 : 4, pointerEvents: activeScene === 4 ? 'auto' : 'none' }}
+            style={{ y: s4Y, zIndex: activeScene === 4 ? 10 : 4, pointerEvents: activeScene === 4 ? 'auto' : 'none' }}
           >
             <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '4rem', alignItems: 'start' }}>
@@ -917,7 +907,7 @@ export default function Page() {
           {/* Scene 5: Contact */}
           <motion.div 
             className="scroll-scene-slide"
-            style={{ opacity: s5Opacity, scale: s5Scale, y: s5Y, zIndex: activeScene === 5 ? 10 : 5, pointerEvents: activeScene === 5 ? 'auto' : 'none' }}
+            style={{ y: s5Y, zIndex: activeScene === 5 ? 10 : 5, pointerEvents: activeScene === 5 ? 'auto' : 'none' }}
           >
             <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center', padding: '0 2rem' }}>
               <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
