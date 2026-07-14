@@ -399,6 +399,7 @@ export default function Page() {
 
   const [mounted, setMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [activeScene, setActiveScene] = useState(1);
 
   useEffect(() => {
     setMounted(true);
@@ -415,6 +416,18 @@ export default function Page() {
     target: scrollContainerRef,
     offset: ["start start", "end end"]
   });
+
+  useEffect(() => {
+    if (!mounted) return;
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      if (latest < 0.2) setActiveScene(1);
+      else if (latest < 0.4) setActiveScene(2);
+      else if (latest < 0.6) setActiveScene(3);
+      else if (latest < 0.8) setActiveScene(4);
+      else setActiveScene(5);
+    });
+    return () => unsubscribe();
+  }, [mounted, scrollYProgress]);
 
   // Scene 1: Hero Transforms
   const s1Opacity = useTransform(scrollYProgress, [0.0, 0.15, 0.2], [1, 1, 0]);
@@ -717,7 +730,7 @@ export default function Page() {
           {/* Scene 1: Hero */}
           <motion.div 
             className="scroll-scene-slide"
-            style={{ opacity: s1Opacity, scale: s1Scale, y: s1Y, zIndex: 5 }}
+            style={{ opacity: s1Opacity, scale: s1Scale, y: s1Y, zIndex: activeScene === 1 ? 10 : 1, pointerEvents: activeScene === 1 ? 'auto' : 'none' }}
           >
             <Hero />
           </motion.div>
@@ -725,7 +738,7 @@ export default function Page() {
           {/* Scene 2: Philosophy & Cybersecurity */}
           <motion.div 
             className="scroll-scene-slide"
-            style={{ opacity: s2Opacity, scale: s2Scale, y: s2Y, zIndex: 4 }}
+            style={{ opacity: s2Opacity, scale: s2Scale, y: s2Y, zIndex: activeScene === 2 ? 10 : 2, pointerEvents: activeScene === 2 ? 'auto' : 'none' }}
           >
             <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }} className="hero-grid">
@@ -777,7 +790,7 @@ export default function Page() {
           {/* Scene 3: Featured Projects */}
           <motion.div 
             className="scroll-scene-slide"
-            style={{ opacity: s3Opacity, scale: s3Scale, y: s3Y, zIndex: 3 }}
+            style={{ opacity: s3Opacity, scale: s3Scale, y: s3Y, zIndex: activeScene === 3 ? 10 : 3, pointerEvents: activeScene === 3 ? 'auto' : 'none' }}
           >
             <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
@@ -800,7 +813,7 @@ export default function Page() {
           {/* Scene 4: Experience & Skills */}
           <motion.div 
             className="scroll-scene-slide"
-            style={{ opacity: s4Opacity, scale: s4Scale, y: s4Y, zIndex: 2 }}
+            style={{ opacity: s4Opacity, scale: s4Scale, y: s4Y, zIndex: activeScene === 4 ? 10 : 4, pointerEvents: activeScene === 4 ? 'auto' : 'none' }}
           >
             <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '4rem', alignItems: 'start' }}>
@@ -882,7 +895,7 @@ export default function Page() {
           {/* Scene 5: Contact */}
           <motion.div 
             className="scroll-scene-slide"
-            style={{ opacity: s5Opacity, scale: s5Scale, y: s5Y, zIndex: 1 }}
+            style={{ opacity: s5Opacity, scale: s5Scale, y: s5Y, zIndex: activeScene === 5 ? 10 : 5, pointerEvents: activeScene === 5 ? 'auto' : 'none' }}
           >
             <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center', padding: '0 2rem' }}>
               <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
