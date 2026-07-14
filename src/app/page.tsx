@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Hero from '../components/Hero';
+import Footer from '../components/Footer';
 import { SKILLS } from '../components/Skills';
 import { ChevronLeft, ChevronRight, ExternalLink, ArrowUpRight } from 'lucide-react';
 
@@ -384,131 +385,54 @@ function Slide6Journey() {
   );
 }
 
-function Slide7Contact() {
+function Slide7Contact({ subScene, footerRef, footerHeight }: { subScene: number; footerRef: React.RefObject<HTMLDivElement | null>; footerHeight: number }) {
   return (
-    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
-      {/* Top connect grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '6rem', alignItems: 'center', marginBottom: '3.5rem' }} className="hero-grid">
-        <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
-          <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
-            // Let's Connect
-          </p>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '2rem', fontFamily: 'var(--font-display)', lineHeight: 1.15 }}>
-            Let's build secure solutions together.
-          </h2>
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            <Link href="/contact" className="btn-primary" style={{ padding: '0.8rem 2rem', fontSize: '0.85rem' }}>
-              Get In Touch
-            </Link>
-            <Link href="/journey" className="btn-secondary" style={{ padding: '0.8rem 2rem', fontSize: '0.85rem' }}>
-              Explore Journey
-            </Link>
+    <div style={{ width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden', position: 'relative' }}>
+      <div 
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          transform: `translate3d(0, ${subScene === 1 ? `-${footerHeight}px` : '0px'}, 0)`,
+          transition: 'transform 0.85s cubic-bezier(0.76, 0, 0.24, 1)',
+          willChange: 'transform'
+        }}
+      >
+        {/* Contact area */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+          <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center', padding: '0 2rem' }}>
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}>
+              <div aria-hidden style={{ position: 'absolute', top: '50%', left: '50%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.05) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+              
+              <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+                // Let's Connect
+              </p>
+              <h2 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '1.25rem', fontFamily: 'var(--font-display)', lineHeight: 1.2 }}>
+                Let's build secure<br />solutions together.
+              </h2>
+              <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '3rem' }}>
+                Looking for a Cybersecurity Analyst, SOC Intern, or Software Engineer? Let's discuss how I can contribute to your team.
+              </p>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <Link href="/contact" className="btn-primary">
+                  Get In Touch
+                </Link>
+                <Link href="/journey" className="btn-secondary">
+                  Explore My Journey
+                </Link>
+              </div>
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {[
-            { label: 'Email', value: 'ishanyadav09@outlook.com', href: 'mailto:ishanyadav09@outlook.com' },
-            { label: 'LinkedIn', value: 'ishan-yadav-a22251325', href: 'https://www.linkedin.com/in/ishan-yadav-a22251325' },
-          ].map((c, i) => (
-            <motion.a
-              key={c.label}
-              href={c.href}
-              target={c.href.startsWith('http') ? '_blank' : undefined}
-              rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 + (i * 0.15) }}
-              className="card-editorial"
-              style={{ padding: '1.5rem 2rem', display: 'block', textDecoration: 'none', transition: 'all 0.3s' }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(52, 211, 153, 0.3)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; }}
-            >
-              <span style={{ fontSize: '0.65rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', display: 'block', marginBottom: '0.35rem', textTransform: 'uppercase' }}>{c.label}</span>
-              <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: 0 }}>{c.value}</h4>
-            </motion.a>
-          ))}
+        {/* Footer Area */}
+        <div ref={footerRef} style={{ flexShrink: 0 }}>
+          <Footer />
         </div>
       </div>
-
-      {/* Integrated footer links */}
-      <motion.div 
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '2.5rem', display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '3rem' }}
-        className="footer-grid"
-      >
-        <div>
-          <p style={{ fontWeight: 800, fontSize: '1rem', color: '#fff', marginBottom: '0.5rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
-            Ishan Yadav<span style={{ color: 'var(--accent-emerald)' }}>.</span>
-          </p>
-          <p style={{ color: 'var(--text-subtle)', fontSize: '0.78rem', lineHeight: 1.6, margin: 0, maxWidth: 220 }}>
-            Building secure software & AI-driven platforms.
-          </p>
-        </div>
-
-        <div>
-          <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem', fontWeight: 600 }}>
-            Navigation
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-            {[
-              { label: 'Uses / Setup', href: '/uses' },
-              { label: 'Asset Gallery', href: '/gallery' },
-              { label: 'Technical Blog', href: '/blog' },
-            ].map(l => (
-              <Link key={l.label} href={l.href} style={{ color: 'var(--text-subtle)', fontSize: '0.78rem', transition: 'color 0.3s', textDecoration: 'none' }}
-                onMouseEnter={e => { e.currentTarget.style.color = '#ffffff'; }}
-                onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-subtle)'; }}>
-                {l.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem', fontWeight: 600 }}>
-            Connect
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-            {[
-              { label: 'GitHub', href: 'https://github.com/DecryptorX' },
-              { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ishan-yadav-a22251325' },
-              { label: 'Email', href: 'mailto:ishanyadav09@outlook.com' },
-            ].map(l => (
-              <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-subtle)', fontSize: '0.78rem', transition: 'color 0.3s', textDecoration: 'none' }}
-                onMouseEnter={e => { e.currentTarget.style.color = '#ffffff'; }}
-                onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-subtle)'; }}>
-                {l.label}
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem', fontWeight: 600 }}>
-            Legal
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-            {[
-              { label: 'Privacy Policy', href: '/privacy' },
-              { label: 'Terms of Use', href: '/terms' },
-              { label: 'Admin Panel', href: '/admin' },
-            ].map(l => (
-              <Link key={l.label} href={l.href} style={{ color: 'var(--text-subtle)', fontSize: '0.78rem', transition: 'color 0.3s', textDecoration: 'none' }}
-                onMouseEnter={e => { e.currentTarget.style.color = '#ffffff'; }}
-                onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-subtle)'; }}>
-                {l.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </motion.div>
     </div>
   );
 }
-
 
 /* ============================================
    HOMEPAGE
@@ -518,6 +442,11 @@ export default function Page() {
   const [mounted, setMounted] = useState(false);
   const [activeScene, setActiveScene] = useState(1);
   const [direction, setDirection] = useState(1);
+  const [subScene, setSubScene] = useState(0); // 0 = Contact, 1 = Footer
+  
+  const footerRef = useRef<HTMLDivElement>(null);
+  const [footerHeight, setFooterHeight] = useState(320);
+
   const transitionLock = useRef(false);
   const touchStartY = useRef<number | null>(null);
   const lastTransitionTime = useRef(0);
@@ -568,12 +497,21 @@ export default function Page() {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (mounted && footerRef.current) {
+      setFooterHeight(footerRef.current.offsetHeight);
+    }
+  }, [mounted, activeScene]);
+
   const goToScene = useCallback((nextScene: number) => {
     if (transitionLock.current || nextScene < 1 || nextScene > TOTAL_SCENES || nextScene === activeScene) return;
     
     transitionLock.current = true;
     setDirection(nextScene > activeScene ? 1 : -1);
     setActiveScene(nextScene);
+    if (nextScene !== 7) {
+      setSubScene(0);
+    }
     
     // Lock duration matches kinetic scrolling threshold (1000ms)
     window.setTimeout(() => { transitionLock.current = false; }, 1000);
@@ -609,10 +547,31 @@ export default function Page() {
       event.preventDefault();
       
       const dir = event.deltaY > 0 ? 1 : -1;
-      const next = activeScene + dir;
-      if (next >= 1 && next <= TOTAL_SCENES) {
-        lastTransitionTime.current = now;
-        goToScene(next);
+      if (dir > 0) {
+        // Scroll Down
+        if (activeScene === 7) {
+          if (subScene === 0) {
+            lastTransitionTime.current = now;
+            setSubScene(1);
+          }
+        } else {
+          lastTransitionTime.current = now;
+          goToScene(activeScene + 1);
+        }
+      } else {
+        // Scroll Up
+        if (activeScene === 7) {
+          if (subScene === 1) {
+            lastTransitionTime.current = now;
+            setSubScene(0);
+          } else {
+            lastTransitionTime.current = now;
+            goToScene(6);
+          }
+        } else if (activeScene > 1) {
+          lastTransitionTime.current = now;
+          goToScene(activeScene - 1);
+        }
       }
     };
     
@@ -625,13 +584,38 @@ export default function Page() {
         event.preventDefault();
         
         const now = Date.now();
-        if (now - lastTransitionTime.current < 900) return;
-
         const dir = forward.includes(event.key) ? 1 : -1;
-        const next = activeScene + dir;
-        if (next >= 1 && next <= TOTAL_SCENES) {
-          lastTransitionTime.current = now;
-          goToScene(next);
+        
+        if (dir > 0) {
+          // Down
+          if (activeScene === 7) {
+            if (subScene === 0) {
+              if (now - lastTransitionTime.current < 900) return;
+              lastTransitionTime.current = now;
+              setSubScene(1);
+            }
+          } else {
+            if (now - lastTransitionTime.current < 900) return;
+            lastTransitionTime.current = now;
+            goToScene(activeScene + 1);
+          }
+        } else {
+          // Up
+          if (activeScene === 7) {
+            if (subScene === 1) {
+              if (now - lastTransitionTime.current < 900) return;
+              lastTransitionTime.current = now;
+              setSubScene(0);
+            } else {
+              if (now - lastTransitionTime.current < 900) return;
+              lastTransitionTime.current = now;
+              goToScene(6);
+            }
+          } else if (activeScene > 1) {
+            if (now - lastTransitionTime.current < 900) return;
+            lastTransitionTime.current = now;
+            goToScene(activeScene - 1);
+          }
         }
       }
     };
@@ -645,13 +629,38 @@ export default function Page() {
 
       if (Math.abs(distance) > 50) {
         const now = Date.now();
-        if (now - lastTransitionTime.current < 900) return;
-
         const dir = distance > 0 ? 1 : -1;
-        const next = activeScene + dir;
-        if (next >= 1 && next <= TOTAL_SCENES) {
-          lastTransitionTime.current = now;
-          goToScene(next);
+
+        if (dir > 0) {
+          // Swipe Up / Scroll Down
+          if (activeScene === 7) {
+            if (subScene === 0) {
+              if (now - lastTransitionTime.current < 900) return;
+              lastTransitionTime.current = now;
+              setSubScene(1);
+            }
+          } else {
+            if (now - lastTransitionTime.current < 900) return;
+            lastTransitionTime.current = now;
+            goToScene(activeScene + 1);
+          }
+        } else {
+          // Swipe Down / Scroll Up
+          if (activeScene === 7) {
+            if (subScene === 1) {
+              if (now - lastTransitionTime.current < 900) return;
+              lastTransitionTime.current = now;
+              setSubScene(0);
+            } else {
+              if (now - lastTransitionTime.current < 900) return;
+              lastTransitionTime.current = now;
+              goToScene(6);
+            }
+          } else if (activeScene > 1) {
+            if (now - lastTransitionTime.current < 900) return;
+            lastTransitionTime.current = now;
+            goToScene(activeScene - 1);
+          }
         }
       }
     };
@@ -667,7 +676,7 @@ export default function Page() {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchend', onTouchEnd);
     };
-  }, [activeScene, goToScene, mounted]);
+  }, [activeScene, subScene, goToScene, mounted]);
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -715,7 +724,7 @@ export default function Page() {
       case 4: return <Slide4Experience />;
       case 5: return <Slide5Skills />;
       case 6: return <Slide6Journey />;
-      case 7: return <Slide7Contact />;
+      case 7: return <Slide7Contact subScene={subScene} footerRef={footerRef} footerHeight={footerHeight} />;
       default: return null;
     }
   };

@@ -22,6 +22,18 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (window.location.pathname === '/') {
+                document.documentElement.classList.add('lock-scroll');
+                document.body.classList.add('lock-scroll');
+              }
+            `,
+          }}
+        />
+      </head>
       <body>
         <SessionWrapper>
           <ModalProvider>
