@@ -14,6 +14,17 @@ const STATS = [
   { end: 2028, suffix: '', label: 'Graduation Year' },
 ];
 
+const FONTS = [
+  'var(--font-display), Cabinet Grotesk, Clash Display, sans-serif',
+  'var(--font-sans), Inter, sans-serif',
+  'var(--font-mono), Geist Mono, monospace',
+  'Satoshi, var(--font-sans), sans-serif',
+  'General Sans, var(--font-sans), sans-serif',
+  'Clash Display, var(--font-display), sans-serif',
+  'Switzer, var(--font-sans), sans-serif',
+  'Plus Jakarta Sans, var(--font-sans), sans-serif'
+];
+
 function Counter({ end, suffix }: { end: number; suffix: string }) {
   const [val, setVal] = useState(0);
   useEffect(() => {
@@ -34,9 +45,24 @@ export default function Hero() {
   const [heroData, setHeroData] = useState<any>(null);
   const [cycleList, setCycleList] = useState<string[]>(DEFAULT_CYCLE);
 
-  const nameParts = (heroData?.title || 'Ishan Yadav').trim().split(/\s+/);
-  const firstName = nameParts[0] || 'Ishan';
-  const lastName = nameParts.slice(1).join(' ') || 'Yadav';
+  const [fontIdx, setFontIdx] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
+  const [currentFont, setCurrentFont] = useState(FONTS[0]);
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setTransitioning(true);
+      setTimeout(() => {
+        setFontIdx(i => {
+          const next = (i + 1) % FONTS.length;
+          setCurrentFont(FONTS[next]);
+          return next;
+        });
+        setTransitioning(false);
+      }, 400);
+    }, 10000); // 10 seconds
+    return () => clearInterval(t);
+  }, []);
 
   // Mouse spotlight tracking
   const containerRef = useRef<HTMLDivElement>(null);
@@ -140,7 +166,7 @@ export default function Hero() {
         }} 
       />
 
-      <div style={{ maxWidth: 1800, width: '90%', margin: '0 auto', padding: '0 4rem', position: 'relative', zIndex: 2 }}>
+      <div style={{ width: '90vw', maxWidth: 'none', margin: '0 auto', padding: '0 4rem', position: 'relative', zIndex: 2 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '55% 45%', gap: '8rem', alignItems: 'center' }} className="hero-grid">
           
           {/* LEFT: Text & Branding statements */}
@@ -191,41 +217,31 @@ export default function Hero() {
  
             {/* Massive typography — Name */}
             <h1 
+              className="hero-name-heading"
               style={{ 
-                fontSize: 'clamp(4rem, 10vw, 8.5rem)', 
+                fontSize: 'clamp(2.8rem, 6.5vw, 6.2rem)', 
                 fontWeight: 900, 
                 color: '#ffffff', 
-                lineHeight: 0.9, 
+                lineHeight: 1.0, 
                 letterSpacing: '-0.04em', 
-                fontFamily: 'var(--font-display)',
-                margin: '0 0 2.5rem 0',
-                display: 'flex',
-                flexDirection: 'column',
+                fontFamily: currentFont,
+                margin: '0 0 2rem 0',
                 textTransform: 'uppercase',
+                transition: 'filter 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                filter: transitioning ? 'blur(8px)' : 'blur(0px)',
+                opacity: transitioning ? 0.3 : 1,
+                willChange: 'filter, opacity'
               }}
             >
-              <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.05em' }}>
-                <motion.span
-                  initial={{ y: '100%', opacity: 0, filter: 'blur(8px)' }}
-                  animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-                  transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-                  className="hero-name-line"
-                  style={{ display: 'inline-block', willChange: 'transform, opacity, filter' }}
-                >
-                  {firstName}
-                </motion.span>
-              </span>
-              <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.05em' }}>
-                <motion.span
-                  initial={{ y: '100%', opacity: 0, filter: 'blur(8px)' }}
-                  animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-                  transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-                  className="hero-name-line gradient-text-emerald"
-                  style={{ display: 'inline-block', willChange: 'transform, opacity, filter' }}
-                >
-                  {lastName}
-                </motion.span>
-              </span>
+              <motion.span
+                initial={{ y: 25, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+                style={{ display: 'inline-block' }}
+                className="hero-name-line"
+              >
+                ISHAN YADAV
+              </motion.span>
             </h1>
  
             {/* Animated role transition */}
@@ -277,10 +293,10 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }} 
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
               style={{ 
-                fontSize: '1.25rem', 
+                fontSize: '1rem', 
                 color: 'var(--text-muted)', 
-                maxWidth: 620, 
-                lineHeight: 1.7, 
+                maxWidth: 750, 
+                lineHeight: 1.8, 
                 marginBottom: '3.5rem',
                 fontFamily: 'var(--font-sans)',
                 fontWeight: 400 
@@ -294,9 +310,9 @@ export default function Hero() {
               initial={{ opacity: 0, y: 15 }} 
               animate={{ opacity: 1, y: 0 }} 
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
-              style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '4.5rem' }}
+              style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '4rem' }}
             >
-              <button onClick={openModal} className="btn-primary" style={{ padding: '0.9rem 2.2rem', fontSize: '0.95rem' }}>
+              <button onClick={openModal} className="btn-primary">
                 Curriculum Vitae
               </button>
               <a 
@@ -304,11 +320,10 @@ export default function Hero() {
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="btn-secondary"
-                style={{ padding: '0.9rem 2.2rem', fontSize: '0.95rem' }}
               >
                 GitHub Profile
               </a>
-              <Link href="/dashboard" className="btn-ghost" style={{ padding: '0.9rem 2.2rem', fontSize: '0.95rem' }}>
+              <Link href="/dashboard" className="btn-ghost">
                 Analytics
               </Link>
             </motion.div>
@@ -418,6 +433,14 @@ export default function Hero() {
       </motion.div>
  
       <style>{`
+        .hero-name-heading {
+          white-space: nowrap;
+        }
+        @media (max-width: 768px) {
+          .hero-name-heading {
+            white-space: normal !important;
+          }
+        }
         @media (max-width: 1024px) {
           .hero-grid {
             grid-template-columns: 1fr !important;
@@ -437,10 +460,8 @@ export default function Hero() {
       `}</style>
     </section>
   );
-}
-
-function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: string }) {
-  const [mousePos, setMousePos] = useState({ x: 220, y: 275, isHovering: false });
+}function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: string }) {
+  const [mousePos, setMousePos] = useState({ x: 150, y: 150, isHovering: false });
   const containerRef = useRef<HTMLDivElement>(null);
   
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -463,9 +484,9 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        width: 440,
-        height: 550,
-        borderRadius: '2rem',
+        width: 300,
+        height: 300,
+        borderRadius: '50%',
         padding: 1,
         background: 'linear-gradient(160deg, rgba(52, 211, 153, 0.25) 0%, rgba(255,255,255,0.04) 50%, rgba(52, 211, 153, 0.1) 100%)',
         boxShadow: '0 40px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
@@ -485,7 +506,7 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
       <div style={{
         position: 'absolute',
         inset: 0,
-        borderRadius: '2rem',
+        borderRadius: '50%',
         border: '1.5px solid rgba(52, 211, 153, 0.25)',
         boxShadow: 'inset 0 0 20px rgba(52, 211, 153, 0.15)',
         pointerEvents: 'none',
@@ -497,8 +518,8 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
         <Image
           src={avatarUrl}
           alt={title}
-          width={440}
-          height={550}
+          width={300}
+          height={300}
           priority
           style={{ 
             width: '100%', 
@@ -519,14 +540,14 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
         zIndex: 2,
         opacity: mousePos.isHovering ? 1 : 0,
         transition: 'opacity 0.4s ease',
-        WebkitMaskImage: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
-        maskImage: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`
+        WebkitMaskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
+        maskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`
       }}>
         <Image
           src={avatarUrl}
           alt={title}
-          width={440}
-          height={550}
+          width={300}
+          height={300}
           priority
           style={{ 
             width: '100%', 
