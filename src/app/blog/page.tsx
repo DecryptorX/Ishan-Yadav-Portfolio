@@ -3,17 +3,16 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const cardStyle: React.CSSProperties = {
-  background: 'rgba(255, 255, 255, 0.02)',
-  backdropFilter: 'blur(20px)',
-  WebkitBackdropFilter: 'blur(20px)',
-  border: '1px solid rgba(255, 255, 255, 0.06)',
-  borderRadius: '1.25rem',
-  padding: '2rem',
+  background: 'rgba(255, 255, 255, 0.01)',
+  backdropFilter: 'blur(30px)',
+  WebkitBackdropFilter: 'blur(30px)',
+  border: '1px solid rgba(255, 255, 255, 0.04)',
+  borderRadius: '2rem',
+  padding: '2.5rem',
   position: 'relative',
   overflow: 'hidden',
-  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.25)',
+  boxShadow: '0 30px 60px rgba(0, 0, 0, 0.4)',
   cursor: 'pointer',
-  transition: 'border-color 0.2s, box-shadow 0.2s',
 };
 
 const POSTS = [
@@ -23,7 +22,7 @@ const POSTS = [
     readTime: '6 min read',
     desc: 'An in-depth look at automating log parsing in security monitoring pipelines, scanning syslogs for brute-force threats, and mapping indicators to the MITRE ATT&CK framework.',
     tags: ['Cybersecurity', 'Python', 'Log Audits'],
-    color: '#00e5ff'
+    color: 'var(--accent-emerald)'
   },
   {
     title: 'Integrating Custom Deep Learning Models into Next.js App Router APIs',
@@ -31,7 +30,7 @@ const POSTS = [
     readTime: '8 min read',
     desc: 'A complete workflow guide to passing dermoscopic images from Next.js frontends to Python Flask ML frameworks and returning classification records dynamically.',
     tags: ['AI/ML', 'Next.js', 'Flask'],
-    color: '#ec4899'
+    color: '#ffffff'
   },
   {
     title: 'Configuring Secure OAuth Handshakes with NextAuth and LinkedIn API',
@@ -39,28 +38,41 @@ const POSTS = [
     readTime: '5 min read',
     desc: 'How to register applications in developer consoles, map OpenID session claims, retrieve profile properties, and establish secure gates for analytics dashboards.',
     tags: ['Web Security', 'NextAuth.js', 'APIs'],
-    color: '#f59e0b'
+    color: 'var(--accent-emerald)'
   }
 ];
 
 export default function BlogPage() {
   return (
     <div style={{ minHeight: '100vh', padding: '8rem 2rem 6rem', background: 'var(--bg)' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto' }}>
         
-        {/* Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.5 }}
-          style={{ marginBottom: '5rem', textAlign: 'center' }}
-        >
-          <p style={{ fontSize: '0.8rem', color: '#00e5ff', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Articles</p>
-          <h1 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', fontWeight: 800, color: '#f1f5f9', letterSpacing: '-0.04em', marginBottom: '1rem' }}>Technical Blog</h1>
-          <p style={{ color: 'rgba(148,163,184,0.75)', fontSize: '1.05rem', maxWidth: 580, margin: '0 auto', lineHeight: 1.6 }}>
-            Sharing investigations, workflows, and solutions in cybersecurity logs, software APIs, and AI integrations.
-          </p>
-        </motion.div>
+        {/* Asymmetrical Editorial Header */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3rem', marginBottom: '6rem', alignItems: 'start' }}>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+              // Articles
+            </p>
+            <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.8rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', fontFamily: 'var(--font-display)', margin: 0 }}>
+              Technical Blog
+            </h1>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            style={{ paddingTop: '1.25rem' }}
+          >
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.8, fontFamily: 'var(--font-sans)', fontWeight: 400, margin: 0 }}>
+              Sharing technical investigations, system designs, and solutions in cybersecurity logging, software engineering, and AI interfaces.
+            </p>
+          </motion.div>
+        </div>
 
         {/* Blog Posts List */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -70,39 +82,39 @@ export default function BlogPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.08 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: idx * 0.08 }}
               style={{ ...cardStyle }}
-              whileHover={{ borderColor: `${post.color}35`, boxShadow: `0 15px 30px ${post.color}05` }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; }}
               onClick={() => alert(`"${post.title}" will be fully readable soon! Keep an eye on updates.`)}
             >
               {/* Post Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', color: 'rgba(148,163,184,0.5)', fontSize: '0.8rem' }}>
-                <span>📅 {post.date}</span>
-                <span>⏱️ {post.readTime}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', color: 'var(--text-subtle)', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}>
+                <span>{post.date}</span>
+                <span>{post.readTime}</span>
               </div>
 
               {/* Title */}
-              <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#f1f5f9', letterSpacing: '-0.02em', marginBottom: '1rem', transition: 'color 0.2s' }}>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '1rem', fontFamily: 'var(--font-display)' }}>
                 {post.title}
               </h2>
 
               {/* Description */}
-              <p style={{ color: 'rgba(148, 163, 184, 0.8)', fontSize: '0.9rem', lineHeight: 1.7, marginBottom: '2rem' }}>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.94rem', lineHeight: 1.7, marginBottom: '2rem', margin: 0 }}>
                 {post.desc}
               </p>
 
               {/* Tags */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.5rem' }}>
                 {post.tags.map(t => (
                   <span key={t} style={{
-                    padding: '0.2rem 0.6rem', borderRadius: 999, fontSize: '0.72rem', fontWeight: 600,
-                    background: `${post.color}10`, border: `1px solid ${post.color}20`, color: post.color,
+                    padding: '0.3rem 0.8rem', borderRadius: '9999px', fontSize: '0.72rem', fontWeight: 500,
+                    background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', color: 'var(--text-muted)'
                   }}>
                     {t}
                   </span>
                 ))}
               </div>
-
             </motion.div>
           ))}
         </div>
