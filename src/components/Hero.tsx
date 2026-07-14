@@ -140,8 +140,8 @@ export default function Hero() {
         }} 
       />
 
-      <div style={{ maxWidth: 1400, width: '85%', margin: '0 auto', position: 'relative', zIndex: 2 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '55% 45%', gap: '5rem', alignItems: 'center' }} className="hero-grid">
+      <div style={{ maxWidth: 1800, width: '90%', margin: '0 auto', padding: '0 4rem', position: 'relative', zIndex: 2 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '55% 45%', gap: '8rem', alignItems: 'center' }} className="hero-grid">
           
           {/* LEFT: Text & Branding statements */}
           <div>
@@ -440,7 +440,7 @@ export default function Hero() {
 }
 
 function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: string }) {
-  const [mousePos, setMousePos] = useState({ x: 190, y: 240, isHovering: false });
+  const [mousePos, setMousePos] = useState({ x: 220, y: 275, isHovering: false });
   const containerRef = useRef<HTMLDivElement>(null);
   
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -463,8 +463,8 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        width: 380,
-        height: 480,
+        width: 440,
+        height: 550,
         borderRadius: '2rem',
         padding: 1,
         background: 'linear-gradient(160deg, rgba(52, 211, 153, 0.25) 0%, rgba(255,255,255,0.04) 50%, rgba(52, 211, 153, 0.1) 100%)',
@@ -497,8 +497,8 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
         <Image
           src={avatarUrl}
           alt={title}
-          width={380}
-          height={480}
+          width={440}
+          height={550}
           priority
           style={{ 
             width: '100%', 
@@ -519,14 +519,14 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
         zIndex: 2,
         opacity: mousePos.isHovering ? 1 : 0,
         transition: 'opacity 0.4s ease',
-        WebkitMaskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
-        maskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`
+        WebkitMaskImage: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
+        maskImage: `radial-gradient(circle 150px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`
       }}>
         <Image
           src={avatarUrl}
           alt={title}
-          width={380}
-          height={480}
+          width={440}
+          height={550}
           priority
           style={{ 
             width: '100%', 
