@@ -1,7 +1,5 @@
 import '../styles/globals.css';
 import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import FallingPattern from '../components/ui/falling-pattern';
 import { ThemeProvider } from 'next-themes';
 import SessionWrapper from '../components/SessionWrapper';
@@ -38,11 +36,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     blurIntensity="3px"
                     opacity={0.015}
                   />
-                  <Header />
                   <main className="relative z-10">
                     <PageTransition>{children}</PageTransition>
                   </main>
-                  <Footer />
                   <CVModal />
                   <Cursor />
                   <CommandPalette />

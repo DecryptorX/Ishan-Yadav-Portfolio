@@ -1,11 +1,12 @@
 "use client";
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 
 export default function ExperiencePage() {
   const [experienceList, setExperienceList] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [lineCoords, setLineCoords] = useState({ top: 48, height: 0 });
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -13,7 +14,7 @@ export default function ExperiencePage() {
   });
   const scaleY = useSpring(scrollYProgress, { stiffness: 80, damping: 20 });
 
-  React.useEffect(() => {
+  useEffect(() => {
     const FALLBACK_ROLES = [
       {
         period: '2024 — Present',
@@ -93,6 +94,47 @@ export default function ExperiencePage() {
       });
   }, []);
 
+  useEffect(() => {
+    if (loading || experienceList.length === 0) return;
+
+    const measureLine = () => {
+      if (!containerRef.current) return;
+      const markers = containerRef.current.querySelectorAll('.timeline-marker');
+      if (markers.length >= 2) {
+        const first = markers[0] as HTMLElement;
+        const last = markers[markers.length - 1] as HTMLElement;
+        
+        const firstRect = first.getBoundingClientRect();
+        const lastRect = last.getBoundingClientRect();
+        const containerRect = containerRef.current.getBoundingClientRect();
+        
+        const top = (firstRect.top + firstRect.height / 2) - containerRect.top;
+        const bottom = (lastRect.top + lastRect.height / 2) - containerRect.top;
+        
+        setLineCoords({
+          top,
+          height: Math.max(0, bottom - top)
+        });
+      }
+    };
+
+    // Run on mount / update
+    measureLine();
+
+    // Resize Observer to handle changes in card dimensions dynamically
+    const resizeObserver = new ResizeObserver(() => {
+      measureLine();
+    });
+
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [loading, experienceList]);
+
   if (loading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
@@ -138,8 +180,8 @@ export default function ExperiencePage() {
             style={{ 
               position: 'absolute', 
               left: 0, 
-              top: '1rem', 
-              bottom: '1rem', 
+              top: lineCoords.top, 
+              height: lineCoords.height, 
               width: '1.5px', 
               background: 'linear-gradient(to bottom, var(--accent-emerald) 50%, rgba(52, 211, 153, 0.05) 100%)',
               originY: 0,
@@ -148,7 +190,15 @@ export default function ExperiencePage() {
             }} 
           />
           {/* Static vertical background line */}
-          <div style={{ position: 'absolute', left: 0, top: '1rem', bottom: '1rem', width: '1px', background: 'rgba(255,255,255,0.04)', zIndex: 1 }} />
+          <div style={{ 
+            position: 'absolute', 
+            left: 0, 
+            top: lineCoords.top, 
+            height: lineCoords.height, 
+            width: '1px', 
+            background: 'rgba(255,255,255,0.04)', 
+            zIndex: 1 
+          }} />
 
           {experienceList.map((r, idx) => (
             <motion.div
@@ -160,17 +210,21 @@ export default function ExperiencePage() {
               style={{ position: 'relative' }}
             >
               {/* Timeline node */}
-              <div style={{
-                position: 'absolute',
-                left: 'calc(-2rem - 4px)',
-                top: '2rem',
-                width: '9px',
-                height: '9px',
-                borderRadius: '50%',
-                background: idx === 0 ? 'var(--accent-emerald)' : 'rgba(255,255,255,0.15)',
-                boxShadow: idx === 0 ? '0 0 12px rgba(52, 211, 153, 0.3)' : 'none',
-                border: '2px solid var(--bg)',
-              }} />
+              <div 
+                className="timeline-marker"
+                style={{
+                  position: 'absolute',
+                  left: 'calc(-2rem - 4.5px)',
+                  top: '3rem',
+                  width: '9px',
+                  height: '9px',
+                  borderRadius: '50%',
+                  background: idx === 0 ? 'var(--accent-emerald)' : 'rgba(255,255,255,0.15)',
+                  boxShadow: idx === 0 ? '0 0 12px rgba(52, 211, 153, 0.3)' : 'none',
+                  border: '2px solid var(--bg)',
+                  zIndex: 3
+                }} 
+              />
 
               <div className="card-editorial" style={{ padding: '2.5rem' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>

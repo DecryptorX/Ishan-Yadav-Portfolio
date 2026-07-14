@@ -492,17 +492,27 @@ export default function Page() {
       y: direction > 0 ? '100%' : '-100%',
       opacity: 0,
       scale: 0.98,
+      filter: 'blur(12px)',
     }),
     center: {
       y: '0%',
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.85, ease: [0.76, 0, 0.24, 1] as [number, number, number, number] }
+      filter: 'blur(0px)',
+      transition: { 
+        duration: 0.85, 
+        ease: [0.76, 0, 0.24, 1] as [number, number, number, number],
+        y: { duration: 0.85 },
+        opacity: { duration: 0.65 },
+        scale: { duration: 0.85 },
+        filter: { duration: 0.85 }
+      }
     },
     exit: (direction: number) => ({
       y: direction < 0 ? '100%' : '-100%',
-      opacity: 0.35,
+      opacity: 0,
       scale: 0.98,
+      filter: 'blur(12px)',
       transition: { duration: 0.85, ease: [0.76, 0, 0.24, 1] as [number, number, number, number] }
     })
   };

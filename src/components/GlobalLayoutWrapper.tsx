@@ -4,6 +4,8 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Loader from './ui/loader';
 import AmbientBackground from './AmbientBackground';
+import Header from './Header';
+import Footer from './Footer';
 
 export default function GlobalLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -20,6 +22,20 @@ export default function GlobalLayoutWrapper({ children }: { children: React.Reac
     setCoveredPath(pathname);
     setLoading(true);
   }
+
+  React.useEffect(() => {
+    if (pathname === '/') {
+      document.documentElement.style.overflow = 'hidden';
+      document.documentElement.style.height = '100vh';
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100vh';
+    } else {
+      document.documentElement.style.overflow = '';
+      document.documentElement.style.height = '';
+      document.body.style.overflow = '';
+      document.body.style.height = '';
+    }
+  }, [pathname]);
 
   return (
     <AnimatePresence mode="wait" initial={false}>
@@ -43,7 +59,11 @@ export default function GlobalLayoutWrapper({ children }: { children: React.Reac
           style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
         >
           <AmbientBackground />
-          {children}
+          <Header />
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            {children}
+          </div>
+          {pathname !== '/' && <Footer />}
         </motion.div>
       )}
     </AnimatePresence>
