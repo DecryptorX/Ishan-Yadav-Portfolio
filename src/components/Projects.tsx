@@ -2,13 +2,45 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 
-// Mockup / Visual frame with mouse parallax zoom
+// Mockup / Visual frame with mouse parallax zoom & 3D Tilt
 function ProjectVisual({ p }: { p: any }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [rotateX, setRotateX] = React.useState(0);
+  const [rotateY, setRotateY] = React.useState(0);
+  const [mousePos, setMousePos] = React.useState({ x: 150, y: 200 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Normalize coordinates to [-0.5, 0.5] range
+    const normX = (x / rect.width) - 0.5;
+    const normY = (y / rect.height) - 0.5;
+
+    // Apply rotation angles
+    setRotateX(-normY * 15);
+    setRotateY(normX * 15);
+    setMousePos({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
   
   return (
-    <div 
+    <motion.div 
       ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{
+        rotateX,
+        rotateY,
+        transformPerspective: 1000
+      }}
+      transition={{ type: 'spring', stiffness: 150, damping: 15 }}
       style={{
         width: '100%',
         borderRadius: '1.5rem',
@@ -21,6 +53,17 @@ function ProjectVisual({ p }: { p: any }) {
       }}
       className="project-visual-container"
     >
+      {/* Dynamic Cursor-follow Lighting */}
+      <div 
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(circle 200px at ${mousePos.x}px ${mousePos.y}px, rgba(52, 211, 153, 0.05), transparent 70%)`,
+          pointerEvents: 'none',
+          zIndex: 1
+        }}
+      />
+
       {/* Visual Canvas */}
       <div style={{ padding: '4rem 2rem', position: 'relative', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
         
@@ -30,8 +73,12 @@ function ProjectVisual({ p }: { p: any }) {
         {/* Soft centered ambient glow */}
         <div aria-hidden style={{ position: 'absolute', width: 250, height: 250, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%)', filter: 'blur(30px)' }} />
 
-        <div style={{ textAlign: 'center', position: 'relative', zIndex: 2 }}>
-          <span style={{ fontSize: '8rem', fontWeight: 900, fontFamily: 'var(--font-mono)', opacity: 0.03, color: '#fff', letterSpacing: '-0.05em', lineHeight: 1 }}>
+        <motion.div 
+          style={{ textAlign: 'center', position: 'relative', zIndex: 2 }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.4 }}
+        >
+          <span style={{ fontSize: '8rem', fontWeight: 900, fontFamily: 'var(--font-mono)', opacity: 0.03, color: '#fff', letterSpacing: '-0.05em', lineHeight: 1, display: 'block' }}>
             {p.num}
           </span>
           <h4 style={{ fontSize: '1.25rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: '#ffffff', marginTop: '-1.5rem' }}>
@@ -40,9 +87,9 @@ function ProjectVisual({ p }: { p: any }) {
           <p style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginTop: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {p.status}
           </p>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -1,10 +1,11 @@
 "use client";
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useSpring } from 'framer-motion';
 
 export default function ExperiencePage() {
   const [experienceList, setExperienceList] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     const FALLBACK_ROLES = [
@@ -125,9 +126,23 @@ export default function ExperiencePage() {
         </div>
 
         {/* Experience Timeline */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', position: 'relative', paddingLeft: '2rem' }}>
-          {/* Vertical timeline line */}
-          <div style={{ position: 'absolute', left: 0, top: '1rem', bottom: '1rem', width: '1px', background: 'rgba(255,255,255,0.04)' }} />
+        <div ref={containerRef} style={{ display: 'flex', flexDirection: 'column', gap: '2rem', position: 'relative', paddingLeft: '2rem' }}>
+          {/* Animated vertical timeline progress line */}
+          <motion.div 
+            style={{ 
+              position: 'absolute', 
+              left: 0, 
+              top: '1rem', 
+              bottom: '1rem', 
+              width: '1.5px', 
+              background: 'linear-gradient(to bottom, var(--accent-emerald) 50%, rgba(52, 211, 153, 0.05) 100%)',
+              originY: 0,
+              scaleY: useSpring(useScroll({ target: containerRef, offset: ["start center", "end center"] }).scrollYProgress, { stiffness: 80, damping: 20 }),
+              zIndex: 2
+            }} 
+          />
+          {/* Static vertical background line */}
+          <div style={{ position: 'absolute', left: 0, top: '1rem', bottom: '1rem', width: '1px', background: 'rgba(255,255,255,0.04)', zIndex: 1 }} />
 
           {experienceList.map((r, idx) => (
             <motion.div

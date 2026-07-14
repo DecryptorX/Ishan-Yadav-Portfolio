@@ -397,284 +397,510 @@ export default function Page() {
       });
   }, []);
 
-  return (
-    <div style={{ background: 'var(--bg)', color: 'var(--text)' }}>
-      {/* ─── Hero Section ─── */}
-      <Hero />
+  const [isMobile, setIsMobile] = useState(true);
 
-      {/* ─── Marquee Strip ─── */}
-      <MarqueeStrip />
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024 || window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-      {/* ─── Philosophy Statement ─── */}
-      <section style={{ padding: 'var(--section-pad) 2rem', position: 'relative', overflow: 'hidden' }}>
-        <div aria-hidden style={{ position: 'absolute', top: '50%', left: '50%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.02) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
-        <div style={{ maxWidth: 900, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            style={{ textAlign: 'center' }}
-          >
-            <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '2.5rem' }}>
-              // Philosophy
-            </p>
-            <blockquote style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.4rem)', fontWeight: 400, fontFamily: 'var(--font-editorial)', fontStyle: 'italic', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0, letterSpacing: '-0.01em' }}>
-              "Building secure systems requires a balance of defense engineering, local intelligence, and 
-              <span style={{ color: '#ffffff', fontWeight: 500 }}> obsessive attention to detail</span>. 
-              Every line of code is either a wall or a door."
-            </blockquote>
-            <div style={{ width: 40, height: 1, background: 'var(--accent-emerald)', margin: '2.5rem auto 0', opacity: 0.5 }} />
-          </motion.div>
-        </div>
-      </section>
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: scrollContainerRef,
+    offset: ["start start", "end end"]
+  });
 
-      {/* ─── Featured Projects Carousel ─── */}
-      <section style={{ padding: 'var(--section-pad) 2rem', borderTop: '1px solid rgba(255, 255, 255, 0.03)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          {/* Section header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem', flexWrap: 'wrap', gap: '1.5rem' }}>
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                // Featured Work
-              </p>
-              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: 0, fontFamily: 'var(--font-display)' }}>
-                Selected Projects
-              </h2>
-            </motion.div>
-            <Link href="/projects" className="btn-secondary" style={{ padding: '0.6rem 1.3rem', fontSize: '0.8rem' }}>
-              View All <ArrowUpRight size={14} />
-            </Link>
-          </div>
+  // Scene 1: Hero Transforms
+  const s1Opacity = useTransform(scrollYProgress, [0.0, 0.15, 0.2], [1, 1, 0]);
+  const s1Scale = useTransform(scrollYProgress, [0.0, 0.2], [1, 0.95]);
+  const s1Y = useTransform(scrollYProgress, [0.0, 0.2], [0, -80]);
 
-          <FeaturedCarousel projects={featuredProjects} />
-        </div>
-      </section>
+  // Scene 2: Philosophy & Cybersecurity Expertise
+  const s2Opacity = useTransform(scrollYProgress, [0.15, 0.2, 0.35, 0.4], [0, 1, 1, 0]);
+  const s2Scale = useTransform(scrollYProgress, [0.15, 0.2, 0.35, 0.4], [1.05, 1, 1, 0.95]);
+  const s2Y = useTransform(scrollYProgress, [0.15, 0.2, 0.35, 0.4], [80, 0, 0, -80]);
 
-      {/* ─── Cybersecurity Expertise ─── */}
-      <section style={{ padding: 'var(--section-pad) 2rem', borderTop: '1px solid rgba(255, 255, 255, 0.03)', position: 'relative', overflow: 'hidden' }}>
-        <div aria-hidden style={{ position: 'absolute', top: 0, right: 0, width: 500, height: 500, background: 'radial-gradient(circle, rgba(52, 211, 153, 0.015) 0%, transparent 60%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div className="expertise-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '6rem', alignItems: 'center' }}>
-            
-            {/* Left — Title & Description */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                // Core Domain
-              </p>
-              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '1.5rem', fontFamily: 'var(--font-display)' }}>
-                Cybersecurity<br />Expertise
-              </h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.8, marginBottom: '2.5rem' }}>
-                Specializing in threat detection, incident log automation, and mapping attack patterns to the MITRE ATT&CK framework. Building tools that turn raw security data into actionable intelligence.
-              </p>
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <Link href="/about" className="btn-primary" style={{ padding: '0.7rem 1.8rem', fontSize: '0.82rem' }}>
-                  About Me
-                </Link>
-                <Link href="/journey" className="btn-secondary" style={{ padding: '0.7rem 1.8rem', fontSize: '0.82rem' }}>
-                  My Journey
+  // Scene 3: Featured Projects
+  const s3Opacity = useTransform(scrollYProgress, [0.35, 0.4, 0.55, 0.6], [0, 1, 1, 0]);
+  const s3Scale = useTransform(scrollYProgress, [0.35, 0.4, 0.55, 0.6], [1.05, 1, 1, 0.95]);
+  const s3Y = useTransform(scrollYProgress, [0.35, 0.4, 0.55, 0.6], [80, 0, 0, -80]);
+
+  // Scene 4: Experience & Skills
+  const s4Opacity = useTransform(scrollYProgress, [0.55, 0.6, 0.75, 0.8], [0, 1, 1, 0]);
+  const s4Scale = useTransform(scrollYProgress, [0.55, 0.6, 0.75, 0.8], [1.05, 1, 1, 0.95]);
+  const s4Y = useTransform(scrollYProgress, [0.55, 0.6, 0.75, 0.8], [80, 0, 0, -80]);
+
+  // Scene 5: Contact
+  const s5Opacity = useTransform(scrollYProgress, [0.75, 0.8, 1.0], [0, 1, 1]);
+  const s5Scale = useTransform(scrollYProgress, [0.75, 0.8, 1.0], [1.05, 1, 1]);
+  const s5Y = useTransform(scrollYProgress, [0.75, 0.8, 1.0], [80, 0, 0]);
+
+  const renderContent = () => {
+    if (isMobile) {
+      return (
+        <div style={{ background: 'var(--bg)', color: 'var(--text)' }}>
+          {/* Hero Section */}
+          <Hero />
+
+          {/* Marquee Strip */}
+          <MarqueeStrip />
+
+          {/* Philosophy Statement */}
+          <section style={{ padding: 'var(--section-pad) 2rem', position: 'relative', overflow: 'hidden' }}>
+            <div aria-hidden style={{ position: 'absolute', top: '50%', left: '50%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.02) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+            <div style={{ maxWidth: 900, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                style={{ textAlign: 'center' }}
+              >
+                <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '2.5rem' }}>
+                  // Philosophy
+                </p>
+                <blockquote style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.4rem)', fontWeight: 400, fontFamily: 'var(--font-editorial)', fontStyle: 'italic', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0, letterSpacing: '-0.01em' }}>
+                  "Building secure systems requires a balance of defense engineering, local intelligence, and 
+                  <span style={{ color: '#ffffff', fontWeight: 500 }}> obsessive attention to detail</span>. 
+                  Every line of code is either a wall or a door."
+                </blockquote>
+                <div style={{ width: 40, height: 1, background: 'var(--accent-emerald)', margin: '2.5rem auto 0', opacity: 0.5 }} />
+              </motion.div>
+            </div>
+          </section>
+
+          {/* Featured Projects Carousel */}
+          <section style={{ padding: 'var(--section-pad) 2rem', borderTop: '1px solid rgba(255, 255, 255, 0.03)' }}>
+            <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem', flexWrap: 'wrap', gap: '1.5rem' }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                    // Featured Work
+                  </p>
+                  <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: 0, fontFamily: 'var(--font-display)' }}>
+                    Selected Projects
+                  </h2>
+                </motion.div>
+                <Link href="/projects" className="btn-secondary" style={{ padding: '0.6rem 1.3rem', fontSize: '0.8rem' }}>
+                  View All <ArrowUpRight size={14} />
                 </Link>
               </div>
-            </motion.div>
 
-            {/* Right — Capability Cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-              style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
-            >
-              {[
-                { label: 'MITRE ATT&CK', desc: 'Automated threat mapping', num: '01' },
-                { label: 'SOC Analysis', desc: 'Log monitoring & triage', num: '02' },
-                { label: 'Incident Response', desc: 'Automated report generation', num: '03' },
-                { label: 'Penetration Testing', desc: 'Vulnerability assessment', num: '04' },
-              ].map((item, i) => (
-                <div
-                  key={item.label}
-                  className="card-editorial"
-                  style={{ padding: '1.75rem' }}
+              <FeaturedCarousel projects={featuredProjects} />
+            </div>
+          </section>
+
+          {/* Cybersecurity Expertise */}
+          <section style={{ padding: 'var(--section-pad) 2rem', borderTop: '1px solid rgba(255, 255, 255, 0.03)', position: 'relative', overflow: 'hidden' }}>
+            <div aria-hidden style={{ position: 'absolute', top: 0, right: 0, width: 500, height: 500, background: 'radial-gradient(circle, rgba(52, 211, 153, 0.015) 0%, transparent 60%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+            <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+              <div className="expertise-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '6rem', alignItems: 'center' }}>
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <span style={{ fontSize: '0.6rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', display: 'block', marginBottom: '1rem' }}>{item.num}</span>
-                  <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: '0 0 0.35rem' }}>{item.label}</h4>
-                  <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
+                  <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                    // Core Domain
+                  </p>
+                  <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '1.5rem', fontFamily: 'var(--font-display)' }}>
+                    Cybersecurity<br />Expertise
+                  </h2>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.8, marginBottom: '2.5rem' }}>
+                    Specializing in threat detection, incident log automation, and mapping attack patterns to the MITRE ATT&CK framework. Building tools that turn raw security data into actionable intelligence.
+                  </p>
+                  <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                    <Link href="/about" className="btn-primary" style={{ padding: '0.7rem 1.8rem', fontSize: '0.82rem' }}>
+                      About Me
+                    </Link>
+                    <Link href="/journey" className="btn-secondary" style={{ padding: '0.7rem 1.8rem', fontSize: '0.82rem' }}>
+                      My Journey
+                    </Link>
+                  </div>
+                </motion.div>
 
-        <style>{`
-          @media (max-width: 820px) {
-            .expertise-grid {
-              grid-template-columns: 1fr !important;
-              gap: 3rem !important;
-            }
-          }
-        `}</style>
-      </section>
-
-      {/* ─── Selected Experience ─── */}
-      <section style={{ padding: 'var(--section-pad) 2rem', borderTop: '1px solid rgba(255, 255, 255, 0.03)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem', flexWrap: 'wrap', gap: '1.5rem' }}>
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                // History
-              </p>
-              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: 0, fontFamily: 'var(--font-display)' }}>
-                Experience
-              </h2>
-            </motion.div>
-            <Link href="/experience" className="btn-secondary" style={{ padding: '0.6rem 1.3rem', fontSize: '0.8rem' }}>
-              Full History <ArrowUpRight size={14} />
-            </Link>
-          </div>
-
-          {/* Horizontal experience timeline */}
-          <div style={{ display: 'flex', gap: '1.5rem', overflowX: 'auto', paddingBottom: '1rem', scrollbarWidth: 'none' }} className="experience-scroll">
-            {[
-              { period: '2025 — Present', role: 'Freelance Developer & Security Consultant', org: 'Self-Employed', brief: 'Building security tools, full-stack dashboards, and advising clients on threat protocols.' },
-              { period: '2024 — Present', role: 'Social Media Sub Head', org: 'ACM Bennett University', brief: 'Managing digital channels, event media, and mentoring a junior content core team.' },
-              { period: '2024 — Present', role: 'Academic Researcher', org: 'Bennett University', brief: 'ML integration with web security, emergency SOS platform, SOC threat simulation.' },
-            ].map((exp, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="card-editorial"
-                style={{ minWidth: '340px', flexShrink: 0, padding: '2rem' }}
-              >
-                <span style={{ fontSize: '0.65rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-emerald)', marginBottom: '1rem', display: 'block' }}>
-                  {exp.period}
-                </span>
-                <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: '0 0 0.3rem' }}>
-                  {exp.role}
-                </h4>
-                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', margin: '0 0 1rem' }}>
-                  {exp.org}
-                </p>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>
-                  {exp.brief}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-          <style>{`
-            .experience-scroll::-webkit-scrollbar { display: none; }
-          `}</style>
-        </div>
-      </section>
-
-      {/* ─── Technologies ─── */}
-      <section style={{ padding: 'var(--section-pad) 2rem', borderTop: '1px solid rgba(255, 255, 255, 0.03)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem', flexWrap: 'wrap', gap: '1.5rem' }}>
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-                // Stack
-              </p>
-              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: 0, fontFamily: 'var(--font-display)' }}>
-                Technologies
-              </h2>
-            </motion.div>
-            <Link href="/skills" className="btn-secondary" style={{ padding: '0.6rem 1.3rem', fontSize: '0.8rem' }}>
-              All Skills <ArrowUpRight size={14} />
-            </Link>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.25rem' }}>
-            {SKILLS.slice(0, 5).map((group, gi) => (
-              <motion.div
-                key={group.category}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: gi * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="card-editorial"
-                style={{ padding: '1.75rem' }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.25rem' }}>
-                  <span style={{ fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)' }}>0{gi + 1}</span>
-                  <h3 style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.88rem', fontFamily: 'var(--font-display)', margin: 0 }}>{group.category}</h3>
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                  {group.items.slice(0, 4).map(skill => (
-                    <span key={skill} style={{
-                      padding: '0.25rem 0.65rem', borderRadius: '9999px', fontSize: '0.72rem', fontWeight: 500,
-                      background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', color: 'var(--text-muted)',
-                    }}>
-                      {skill}
-                    </span>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+                  style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
+                >
+                  {[
+                    { label: 'MITRE ATT&CK', desc: 'Automated threat mapping', num: '01' },
+                    { label: 'SOC Analysis', desc: 'Log monitoring & triage', num: '02' },
+                    { label: 'Incident Response', desc: 'Automated report generation', num: '03' },
+                    { label: 'Penetration Testing', desc: 'Vulnerability assessment', num: '04' },
+                  ].map((item, i) => (
+                    <div
+                      key={item.label}
+                      className="card-editorial"
+                      style={{ padding: '1.75rem' }}
+                    >
+                      <span style={{ fontSize: '0.6rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', display: 'block', marginBottom: '1rem' }}>{item.num}</span>
+                      <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: '0 0 0.35rem' }}>{item.label}</h4>
+                      <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+                    </div>
                   ))}
-                  {group.items.length > 4 && (
-                    <span style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', padding: '0.25rem 0.35rem' }}>
-                      +{group.items.length - 4}
+                </motion.div>
+              </div>
+            </div>
+          </section>
+
+          {/* Selected Experience */}
+          <section style={{ padding: 'var(--section-pad) 2rem', borderTop: '1px solid rgba(255, 255, 255, 0.03)' }}>
+            <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem', flexWrap: 'wrap', gap: '1.5rem' }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                    // History
+                  </p>
+                  <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: 0, fontFamily: 'var(--font-display)' }}>
+                    Experience
+                  </h2>
+                </motion.div>
+                <Link href="/experience" className="btn-secondary" style={{ padding: '0.6rem 1.3rem', fontSize: '0.8rem' }}>
+                  Full History <ArrowUpRight size={14} />
+                </Link>
+              </div>
+
+              <div style={{ display: 'flex', gap: '1.5rem', overflowX: 'auto', paddingBottom: '1rem', scrollbarWidth: 'none' }} className="experience-scroll">
+                {[
+                  { period: '2025 — Present', role: 'Freelance Developer & Security Consultant', org: 'Self-Employed', brief: 'Building security tools, full-stack dashboards, and advising clients on threat protocols.' },
+                  { period: '2024 — Present', role: 'Social Media Sub Head', org: 'ACM Bennett University', brief: 'Managing digital channels, event media, and mentoring a junior content core team.' },
+                  { period: '2024 — Present', role: 'Academic Researcher', org: 'Bennett University', brief: 'ML integration with web security, emergency SOS platform, SOC threat simulation.' },
+                ].map((exp, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                    className="card-editorial"
+                    style={{ minWidth: '340px', flexShrink: 0, padding: '2rem' }}
+                  >
+                    <span style={{ fontSize: '0.65rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-emerald)', marginBottom: '1rem', display: 'block' }}>
+                      {exp.period}
                     </span>
-                  )}
+                    <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: '0 0 0.3rem' }}>
+                      {exp.role}
+                    </h4>
+                    <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', margin: '0 0 1rem' }}>
+                      {exp.org}
+                    </p>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>
+                      {exp.brief}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Technologies */}
+          <section style={{ padding: 'var(--section-pad) 2rem', borderTop: '1px solid rgba(255, 255, 255, 0.03)' }}>
+            <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem', flexWrap: 'wrap', gap: '1.5rem' }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 25 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                    // Stack
+                  </p>
+                  <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: 0, fontFamily: 'var(--font-display)' }}>
+                    Technologies
+                  </h2>
+                </motion.div>
+                <Link href="/skills" className="btn-secondary" style={{ padding: '0.6rem 1.3rem', fontSize: '0.8rem' }}>
+                  All Skills <ArrowUpRight size={14} />
+                </Link>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.25rem' }}>
+                {SKILLS.slice(0, 5).map((group, gi) => (
+                  <motion.div
+                    key={group.category}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: gi * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                    className="card-editorial"
+                    style={{ padding: '1.75rem' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.25rem' }}>
+                      <span style={{ fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)' }}>0{gi + 1}</span>
+                      <h3 style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.88rem', fontFamily: 'var(--font-display)', margin: 0 }}>{group.category}</h3>
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                      {group.items.slice(0, 4).map(skill => (
+                        <span key={skill} style={{
+                          padding: '0.25rem 0.65rem', borderRadius: '9999px', fontSize: '0.72rem', fontWeight: 500,
+                          background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', color: 'var(--text-muted)',
+                        }}>
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Contact CTA */}
+          <section style={{ padding: 'clamp(8rem, 15vh, 12rem) 2rem', borderTop: '1px solid rgba(255, 255, 255, 0.03)', position: 'relative', overflow: 'hidden', textAlign: 'center' }}>
+            <div aria-hidden style={{ position: 'absolute', top: '50%', left: '50%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.03) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
+            <div style={{ maxWidth: 700, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+                  // Let's Connect
+                </p>
+                <h2 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '1.25rem', fontFamily: 'var(--font-display)' }}>
+                  Let's build secure<br />solutions together.
+                </h2>
+                <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '3rem' }}>
+                  Looking for a Cybersecurity Analyst, SOC Intern, or Software Engineer? Let's discuss how I can contribute to your team.
+                </p>
+                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+                  <Link href="/contact" className="btn-primary">
+                    Get In Touch
+                  </Link>
+                  <Link href="/journey" className="btn-secondary">
+                    Explore My Journey
+                  </Link>
                 </div>
               </motion.div>
-            ))}
-          </div>
+            </div>
+          </section>
         </div>
-      </section>
+      );
+    }
 
-      {/* ─── Contact CTA ─── */}
-      <section style={{ padding: 'clamp(8rem, 15vh, 12rem) 2rem', borderTop: '1px solid rgba(255, 255, 255, 0.03)', position: 'relative', overflow: 'hidden', textAlign: 'center' }}>
-        {/* Ambient glow */}
-        <div aria-hidden style={{ position: 'absolute', top: '50%', left: '50%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.03) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
-        
-        <div style={{ maxWidth: 700, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+    return (
+      <div ref={scrollContainerRef} className="scroll-scene-container" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
+        <div className="scroll-scene-viewport moving-grid">
+          
+          {/* Volumetric center backing lights */}
+          <div aria-hidden style={{ position: 'absolute', top: '50%', left: '50%', width: 800, height: 800, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.02) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(100px)', pointerEvents: 'none', zIndex: 0 }} />
+
+          {/* Scene 1: Hero */}
+          <motion.div 
+            className="scroll-scene-slide"
+            style={{ opacity: s1Opacity, scale: s1Scale, y: s1Y, zIndex: 5 }}
           >
-            <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
-              // Let's Connect
-            </p>
-            <h2 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '1.25rem', fontFamily: 'var(--font-display)' }}>
-              Let's build secure<br />solutions together.
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '3rem' }}>
-              Looking for a Cybersecurity Analyst, SOC Intern, or Software Engineer? Let's discuss how I can contribute to your team.
-            </p>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-              <Link href="/contact" className="btn-primary">
-                Get In Touch
-              </Link>
-              <Link href="/journey" className="btn-secondary">
-                Explore My Journey
-              </Link>
+            <Hero />
+          </motion.div>
+
+          {/* Scene 2: Philosophy & Cybersecurity */}
+          <motion.div 
+            className="scroll-scene-slide"
+            style={{ opacity: s2Opacity, scale: s2Scale, y: s2Y, zIndex: 4 }}
+          >
+            <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }} className="hero-grid">
+                <div>
+                  <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+                    // Philosophy
+                  </p>
+                  <blockquote style={{ fontSize: '1.45rem', fontWeight: 400, fontFamily: 'var(--font-editorial)', fontStyle: 'italic', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 2.5rem', letterSpacing: '-0.01em' }}>
+                    "Building secure systems requires a balance of defense engineering, local intelligence, and 
+                    <span style={{ color: '#ffffff', fontWeight: 500 }}> obsessive attention to detail</span>. 
+                    Every line of code is either a wall or a door."
+                  </blockquote>
+                  
+                  <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                    // Domain Expertise
+                  </p>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.94rem', lineHeight: 1.8, margin: '0 0 2rem' }}>
+                    Specializing in threat detection, incident log automation, and mapping attack patterns to the MITRE ATT&CK framework. Building tools that turn raw security data into actionable intelligence.
+                  </p>
+                  <div style={{ display: 'flex', gap: '0.75rem' }}>
+                    <Link href="/about" className="btn-primary" style={{ padding: '0.7rem 1.8rem', fontSize: '0.82rem' }}>
+                      About Me
+                    </Link>
+                  </div>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  {[
+                    { label: 'MITRE ATT&CK', desc: 'Automated threat mapping', num: '01' },
+                    { label: 'SOC Analysis', desc: 'Log monitoring & triage', num: '02' },
+                    { label: 'Incident Response', desc: 'Automated report generation', num: '03' },
+                    { label: 'Penetration Testing', desc: 'Vulnerability assessment', num: '04' },
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className="card-editorial"
+                      style={{ padding: '1.5rem' }}
+                    >
+                      <span style={{ fontSize: '0.6rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', display: 'block', marginBottom: '0.75rem' }}>{item.num}</span>
+                      <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: '0 0 0.35rem' }}>{item.label}</h4>
+                      <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, lineHeight: 1.4 }}>{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </motion.div>
+
+          {/* Scene 3: Featured Projects */}
+          <motion.div 
+            className="scroll-scene-slide"
+            style={{ opacity: s3Opacity, scale: s3Scale, y: s3Y, zIndex: 3 }}
+          >
+            <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
+                <div>
+                  <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                    // Featured Work
+                  </p>
+                  <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: 0, fontFamily: 'var(--font-display)' }}>
+                    Selected Projects
+                  </h2>
+                </div>
+                <Link href="/projects" className="btn-secondary" style={{ padding: '0.6rem 1.3rem', fontSize: '0.8rem' }}>
+                  View All <ArrowUpRight size={14} />
+                </Link>
+              </div>
+              <FeaturedCarousel projects={featuredProjects} />
+            </div>
+          </motion.div>
+
+          {/* Scene 4: Experience & Skills */}
+          <motion.div 
+            className="scroll-scene-slide"
+            style={{ opacity: s4Opacity, scale: s4Scale, y: s4Y, zIndex: 2 }}
+          >
+            <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto', padding: '0 2rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '4rem', alignItems: 'start' }}>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem' }}>
+                    <div>
+                      <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                        // History
+                      </p>
+                      <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: 0, fontFamily: 'var(--font-display)' }}>
+                        Experience
+                      </h2>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {[
+                      { period: '2025 — Present', role: 'Freelance Developer & Security Consultant', org: 'Self-Employed', brief: 'Building security tools, full-stack dashboards, and advising clients on threat protocols.' },
+                      { period: '2024 — Present', role: 'Social Media Sub Head', org: 'ACM Bennett University', brief: 'Managing digital channels, event media, and mentoring a junior content core team.' },
+                      { period: '2024 — Present', role: 'Academic Researcher', org: 'Bennett University', brief: 'ML integration with web security, emergency SOS platform, SOC threat simulation.' },
+                    ].map((exp, i) => (
+                      <div
+                        key={i}
+                        className="card-editorial"
+                        style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: '120px 1fr', gap: '1.5rem', alignItems: 'center' }}
+                      >
+                        <span style={{ fontSize: '0.72rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-emerald)' }}>
+                          {exp.period}
+                        </span>
+                        <div>
+                          <h4 style={{ fontSize: '0.94rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: '0 0 0.2rem' }}>
+                            {exp.role}
+                          </h4>
+                          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', margin: 0 }}>
+                            {exp.org} — {exp.brief}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem' }}>
+                    <div>
+                      <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
+                        // Stack
+                      </p>
+                      <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: 0, fontFamily: 'var(--font-display)' }}>
+                        Technologies
+                      </h2>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    {SKILLS.slice(0, 3).map((group, gi) => (
+                      <div
+                        key={group.category}
+                        className="card-editorial"
+                        style={{ padding: '1.25rem' }}
+                      >
+                        <h4 style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.8rem', fontFamily: 'var(--font-display)', margin: '0 0 0.75rem' }}>{group.category}</h4>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
+                          {group.items.slice(0, 4).map(skill => (
+                            <span key={skill} style={{
+                              padding: '0.2rem 0.55rem', borderRadius: '9999px', fontSize: '0.68rem', fontWeight: 500,
+                              background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)', color: 'var(--text-muted)',
+                            }}>
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Scene 5: Contact */}
+          <motion.div 
+            className="scroll-scene-slide"
+            style={{ opacity: s5Opacity, scale: s5Scale, y: s5Y, zIndex: 1 }}
+          >
+            <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center', padding: '0 2rem' }}>
+              <p style={{ fontSize: '0.68rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
+                // Let's Connect
+              </p>
+              <h2 style={{ fontSize: 'clamp(2.2rem, 5vw, 3.5rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '1.25rem', fontFamily: 'var(--font-display)' }}>
+                Let's build secure<br />solutions together.
+              </h2>
+              <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '3rem' }}>
+                Looking for a Cybersecurity Analyst, SOC Intern, or Software Engineer? Let's discuss how I can contribute to your team.
+              </p>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <Link href="/contact" className="btn-primary">
+                  Get In Touch
+                </Link>
+                <Link href="/journey" className="btn-secondary">
+                  Explore My Journey
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+
         </div>
-      </section>
-    </div>
-  );
+      </div>
+    );
+  };
+
+  return renderContent();
 }

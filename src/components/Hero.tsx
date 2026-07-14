@@ -340,33 +340,10 @@ export default function Hero() {
               animation: 'glow-pulse 6s infinite ease-in-out'
             }} />
 
-            {/* Portrait Frame */}
-            <div style={{
-              width: 300,
-              height: 400,
-              borderRadius: '2rem',
-              padding: 1,
-              background: 'linear-gradient(160deg, rgba(52, 211, 153, 0.12) 0%, rgba(255,255,255,0.04) 50%, rgba(52, 211, 153, 0.06) 100%)',
-              boxShadow: '0 40px 80px rgba(0, 0, 0, 0.5)',
-              animation: 'float-gentle 10s infinite ease-in-out',
-              overflow: 'hidden'
-            }}>
-              <Image
-                src={heroData?.avatarUrl || "/profile-ishan-v2.jpg"}
-                alt={heroData?.title || "Ishan Yadav"}
-                width={300}
-                height={400}
-                priority
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
-                  objectFit: 'cover', 
-                  display: 'block',
-                  borderRadius: 'calc(2rem - 1px)',
-                  filter: 'grayscale(20%) contrast(1.05) saturate(0.85)'
-                }}
-              />
-            </div>
+            <PremiumPortrait 
+              avatarUrl={heroData?.avatarUrl || "/profile-ishan-v2.jpg"} 
+              title={heroData?.title || "Ishan Yadav"} 
+            />
 
             {/* Floating badge */}
             <motion.div 
@@ -448,5 +425,106 @@ export default function Hero() {
         }
       `}</style>
     </section>
+  );
+}
+
+function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: string }) {
+  const [mousePos, setMousePos] = useState({ x: 150, y: 200, isHovering: false });
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+      isHovering: true
+    });
+  };
+  
+  const handleMouseLeave = () => {
+    setMousePos(prev => ({ ...prev, isHovering: false }));
+  };
+  
+  return (
+    <div 
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        width: 300,
+        height: 400,
+        borderRadius: '2rem',
+        padding: 1,
+        background: 'linear-gradient(160deg, rgba(52, 211, 153, 0.25) 0%, rgba(255,255,255,0.04) 50%, rgba(52, 211, 153, 0.1) 100%)',
+        boxShadow: '0 40px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
+        animation: 'float-gentle 10s infinite ease-in-out',
+        position: 'relative',
+        overflow: 'hidden',
+        cursor: 'none'
+      }}
+    >
+      {/* Base Layer: Dotted Halftone Background */}
+      <div className="halftone-dots" style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none', opacity: 0.25 }} />
+      
+      {/* Grain Layer */}
+      <div className="noise-overlay" style={{ position: 'absolute', inset: 0, zIndex: 4, pointerEvents: 'none' }} />
+
+      {/* Emerald Edge Glow Border Shadow */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        borderRadius: '2rem',
+        border: '1.5px solid rgba(52, 211, 153, 0.25)',
+        boxShadow: 'inset 0 0 20px rgba(52, 211, 153, 0.15)',
+        pointerEvents: 'none',
+        zIndex: 5
+      }} />
+
+      {/* Base grayscale blurred image */}
+      <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 1 }}>
+        <Image
+          src={avatarUrl}
+          alt={title}
+          width={300}
+          height={400}
+          priority
+          style={{ 
+            width: '100%', 
+            height: '100%', 
+            objectFit: 'cover', 
+            filter: 'grayscale(100%) contrast(0.9) opacity(0.35) blur(3px)',
+            transition: 'filter 0.3s ease'
+          }}
+        />
+      </div>
+
+      {/* Top full-color masked image */}
+      <div style={{ 
+        width: '100%', 
+        height: '100%', 
+        position: 'absolute', 
+        inset: 0, 
+        zIndex: 2,
+        opacity: mousePos.isHovering ? 1 : 0,
+        transition: 'opacity 0.4s ease',
+        WebkitMaskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
+        maskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`
+      }}>
+        <Image
+          src={avatarUrl}
+          alt={title}
+          width={300}
+          height={400}
+          priority
+          style={{ 
+            width: '100%', 
+            height: '100%', 
+            objectFit: 'cover',
+            filter: 'contrast(1.15) saturate(1.1)'
+          }}
+        />
+      </div>
+    </div>
   );
 }
