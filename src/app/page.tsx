@@ -543,10 +543,9 @@ export default function Page() {
         <motion.div
           key={activeScene}
           custom={direction}
-          variants={slideVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
+          initial={slideVariants.enter(direction)}
+          animate={slideVariants.center}
+          exit={slideVariants.exit(direction)}
           style={{
             position: 'absolute',
             inset: 0,
