@@ -316,8 +316,8 @@ export default function Hero() {
  
           {/* RIGHT: Sophisticated Asymmetric Portrait */}
           <motion.div 
-            initial={{ opacity: 0, y: -10, scale: 0.95 }} 
-            animate={{ opacity: 1, y: -50, scale: 1 }} 
+            initial={{ opacity: 0, y: 0, scale: 0.95 }} 
+            animate={{ opacity: 1, y: -60, scale: 1 }} 
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.7 }}
             style={{ justifySelf: 'center', position: 'relative' }}
           >
@@ -406,7 +406,8 @@ export default function Hero() {
           font-family: var(--font-display), Cabinet Grotesk, Clash Display, sans-serif !important;
           position: relative;
           display: inline-block;
-          animation: glitch-main 7s infinite steps(1);
+          animation: glitch-main 7s infinite linear;
+          will-change: transform, filter, clip-path;
         }
         .cinematic-glitch::before {
           content: attr(data-text);
@@ -415,12 +416,14 @@ export default function Hero() {
           left: 0;
           width: 100%;
           height: 100%;
-          background: var(--bg);
-          text-shadow: -2px 0 #ff00c1;
+          background: transparent;
+          color: #34F5A3;
+          text-shadow: -3px 0 0 #000000;
           clip-path: inset(0 0 0 0);
           animation: glitch-anim-1 7s infinite linear;
           opacity: 0;
           z-index: -1;
+          will-change: transform, clip-path, opacity;
         }
         .cinematic-glitch::after {
           content: attr(data-text);
@@ -429,42 +432,107 @@ export default function Hero() {
           left: 0;
           width: 100%;
           height: 100%;
-          background: var(--bg);
-          text-shadow: 2px 0 #00fff0;
+          background: transparent;
+          color: #000000;
+          text-shadow: 3px 0 0 #34F5A3;
           clip-path: inset(0 0 0 0);
           animation: glitch-anim-2 7s infinite linear;
           opacity: 0;
           z-index: -2;
+          will-change: transform, clip-path, opacity;
         }
         @keyframes glitch-anim-1 {
-          0% { clip-path: inset(40% 0 61% 0); transform: skew(0.3deg); opacity: 1; }
-          4% { clip-path: inset(92% 0 1% 0); transform: skew(-0.5deg) translate3d(-2px, 0, 0); opacity: 1; }
-          8% { clip-path: inset(15% 0 80% 0); transform: skew(0.8deg) translate3d(2px, 0, 0); opacity: 0.85; }
-          12% { clip-path: inset(5% 0 15% 0); transform: skew(-0.8deg); opacity: 0.95; }
-          16% { clip-path: inset(80% 0 5% 0); transform: skew(0.3deg) translate3d(-1px, 0, 0); opacity: 1; }
-          20% { clip-path: inset(30% 0 60% 0); transform: skew(0deg) translate3d(1px, 0, 0); opacity: 0.9; }
-          24% { clip-path: inset(65% 0 25% 0); transform: skew(0.5deg) translate3d(-2px, 0, 0); opacity: 1; }
-          28.5%, 100% { clip-path: inset(0% 0 0% 0); transform: none; opacity: 0; }
+          0% { clip-path: inset(10% 0 85% 0); transform: translate3d(-35px, 10px, 0) skewX(-25deg); opacity: 1; }
+          3% { clip-path: inset(75% 0 15% 0); transform: translate3d(45px, -5px, 0) skewX(20deg); opacity: 1; }
+          6% { clip-path: inset(30% 0 45% 0); transform: translate3d(-55px, -15px, 0) skewX(-35deg); opacity: 0.9; }
+          9% { clip-path: inset(85% 0 5% 0); transform: translate3d(60px, 8px, 0) skewX(30deg); opacity: 1; }
+          12% { clip-path: inset(5% 0 90% 0); transform: translate3d(-50px, -8px, 0) skewX(-45deg); opacity: 0.8; }
+          15% { clip-path: inset(50% 0 20% 0); transform: translate3d(35px, 15px, 0) skewX(20deg); opacity: 0.95; }
+          18% { clip-path: inset(20% 0 70% 0); transform: translate3d(-40px, -20px, 0) skewX(-30deg); opacity: 1; }
+          21% { clip-path: inset(60% 0 10% 0); transform: translate3d(55px, 5px, 0) skewX(40deg); opacity: 0.85; }
+          24% { clip-path: inset(40% 0 35% 0); transform: translate3d(-30px, -10px, 0) skewX(-15deg); opacity: 1; }
+          27% { clip-path: inset(80% 0 2% 0); transform: translate3d(40px, 12px, 0) skewX(10deg); opacity: 0.9; }
+          28.5%, 100% { clip-path: inset(0 0 0 0); transform: none; opacity: 0; }
         }
         @keyframes glitch-anim-2 {
-          0% { clip-path: inset(25% 0 58% 0); transform: skew(-0.3deg); opacity: 1; }
-          4% { clip-path: inset(70% 0 10% 0); transform: skew(0.5deg) translate3d(2px, 0, 0); opacity: 1; }
-          8% { clip-path: inset(50% 0 30% 0); transform: skew(-0.8deg) translate3d(-2px, 0, 0); opacity: 0.9; }
-          12% { clip-path: inset(10% 0 85% 0); transform: skew(0.8deg); opacity: 0.95; }
-          16% { clip-path: inset(60% 0 20% 0); transform: skew(-0.3deg) translate3d(1px, 0, 0); opacity: 1; }
-          20% { clip-path: inset(45% 0 45% 0); transform: skew(0deg) translate3d(-1px, 0, 0); opacity: 0.85; }
-          24% { clip-path: inset(20% 0 75% 0); transform: skew(-0.5deg) translate3d(2px, 0, 0); opacity: 1; }
-          28.5%, 100% { clip-path: inset(0% 0 0% 0); transform: none; opacity: 0; }
+          0% { clip-path: inset(65% 0 10% 0); transform: translate3d(35px, -15px, 0) skewX(30deg); opacity: 1; }
+          3% { clip-path: inset(15% 0 70% 0); transform: translate3d(-45px, 8px, 0) skewX(-20deg); opacity: 0.95; }
+          6% { clip-path: inset(45% 0 30% 0); transform: translate3d(60px, 12px, 0) skewX(35deg); opacity: 1; }
+          9% { clip-path: inset(5% 0 85% 0); transform: translate3d(-50px, -10px, 0) skewX(-30deg); opacity: 0.85; }
+          12% { clip-path: inset(80% 0 5% 0); transform: translate3d(55px, -5px, 0) skewX(45deg); opacity: 1; }
+          15% { clip-path: inset(30% 0 50% 0); transform: translate3d(-35px, 20px, 0) skewX(-15deg); opacity: 0.9; }
+          18% { clip-path: inset(70% 0 20% 0); transform: translate3d(45px, -12px, 0) skewX(25deg); opacity: 1; }
+          21% { clip-path: inset(10% 0 80% 0); transform: translate3d(-60px, -5px, 0) skewX(-40deg); opacity: 0.8; }
+          24% { clip-path: inset(50% 0 45% 0); transform: translate3d(25px, 10px, 0) skewX(15deg); opacity: 0.95; }
+          27% { clip-path: inset(25% 0 60% 0); transform: translate3d(-40px, -15px, 0) skewX(-25deg); opacity: 1; }
+          28.5%, 100% { clip-path: inset(0 0 0 0); transform: none; opacity: 0; }
         }
         @keyframes glitch-main {
-          0% { text-shadow: 2px 0 0 rgba(255, 0, 193, 0.4), -2px 0 0 rgba(0, 255, 240, 0.4); transform: translate3d(1px, 0, 0); }
-          4% { text-shadow: -2px 0 0 rgba(255, 0, 193, 0.4), 2px 0 0 rgba(0, 255, 240, 0.4); transform: translate3d(-1px, 0, 0); }
-          8% { text-shadow: 2px 0 0 rgba(255, 0, 193, 0.4), -2px 0 0 rgba(0, 255, 240, 0.4); transform: skew(0.5deg); }
-          12% { text-shadow: none; transform: none; }
-          16% { text-shadow: 1px 0 0 rgba(255, 0, 193, 0.3), -1px 0 0 rgba(0, 255, 240, 0.3); transform: translate3d(-2px, 0, 0); }
-          20% { text-shadow: none; transform: none; }
-          24% { text-shadow: 2px 0 0 rgba(255, 0, 193, 0.4), -2px 0 0 rgba(0, 255, 240, 0.4); transform: translate3d(2px, 0, 0) skew(-0.5deg); }
-          28.5%, 100% { text-shadow: none; transform: none; }
+          0% {
+            filter: blur(14px) contrast(1.5) brightness(1.3);
+            transform: translate3d(25px, -10px, 0) skewX(15deg) scaleY(1.2);
+            text-shadow: 8px 0 0 #34F5A3, -8px 0 0 #000000;
+          }
+          3% {
+            filter: blur(0px);
+            transform: translate3d(-35px, 15px, 0) skewX(-25deg);
+            text-shadow: -15px 0 0 #34F5A3, 10px 0 0 #000000;
+            clip-path: inset(20% 0 40% 0);
+          }
+          6% {
+            filter: blur(16px) contrast(2) brightness(1.5);
+            transform: translate3d(50px, -20px, 0) skewX(35deg) scaleX(1.5);
+            text-shadow: 25px 0 0 #34F5A3, -20px 0 0 #000000;
+            clip-path: inset(0 0 0 0);
+          }
+          9% {
+            filter: blur(2px);
+            transform: translate3d(-60px, 5px, 0) skewX(-30deg) scaleX(0.7);
+            text-shadow: -40px 0 0 #34F5A3, 20px 0 0 #000000;
+            clip-path: inset(50% 0 10% 0);
+          }
+          12% {
+            filter: blur(20px) contrast(2.5) brightness(1.8);
+            transform: translate3d(45px, 20px, 0) skewX(20deg) scaleY(0.5);
+            text-shadow: 30px 0 0 #34F5A3, -30px 0 0 #000000;
+            clip-path: inset(0 0 0 0);
+          }
+          15% {
+            filter: blur(4px);
+            transform: translate3d(-40px, -15px, 0) skewX(-15deg);
+            text-shadow: -20px 0 0 #34F5A3, 15px 0 0 #000000;
+            clip-path: inset(10% 0 80% 0);
+          }
+          18% {
+            filter: blur(15px) contrast(3.0) brightness(2.0);
+            transform: translate3d(30px, -5px, 0) skewX(-5deg) scaleX(1.4);
+            text-shadow: 15px 0 0 #34F5A3, -15px 0 0 #000000;
+            clip-path: inset(0 0 0 0);
+          }
+          21% {
+            filter: blur(24px) contrast(1.2) brightness(0.6);
+            transform: translate3d(-55px, -25px, 0) skewX(-40deg) scaleY(1.3);
+            text-shadow: -50px 0 0 #34F5A3, 30px 0 0 #000000;
+            clip-path: inset(30% 0 30% 0);
+          }
+          24% {
+            filter: blur(0px);
+            transform: translate3d(40px, 15px, 0) skewX(25deg);
+            text-shadow: 20px 0 0 #34F5A3, -20px 0 0 #000000;
+            clip-path: inset(0 0 0 0);
+          }
+          27% {
+            filter: blur(8px) contrast(2);
+            transform: translate3d(-20px, -8px, 0) skewX(10deg) scaleX(1.1);
+            text-shadow: -10px 0 0 #34F5A3, 5px 0 0 #000000;
+            clip-path: inset(70% 0 5% 0);
+          }
+          28.5%, 100% {
+            filter: blur(0px) contrast(1) brightness(1);
+            transform: none;
+            text-shadow: none;
+            clip-path: inset(0 0 0 0);
+          }
         }
         @media (max-width: 768px) {
           .hero-name-heading {
