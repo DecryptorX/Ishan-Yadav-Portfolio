@@ -397,9 +397,11 @@ export default function Page() {
       });
   }, []);
 
-  const [isMobile, setIsMobile] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024 || window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     };
@@ -440,6 +442,12 @@ export default function Page() {
   const s5Y = useTransform(scrollYProgress, [0.75, 0.8, 1.0], [80, 0, 0]);
 
   const renderContent = () => {
+    if (!mounted) {
+      return (
+        <div style={{ background: 'var(--bg)', minHeight: '100vh' }} />
+      );
+    }
+
     if (isMobile) {
       return (
         <div style={{ background: 'var(--bg)', color: 'var(--text)' }}>
