@@ -69,8 +69,48 @@ const SKILL_GROUPS: SkillGroup[] = [
 ];
 
 export default function SkillsPage() {
-  const [selectedSkill, setSelectedSkill] = useState<Skill>(SKILL_GROUPS[0].skills[0]);
-  const [groupColor, setGroupColor] = useState<string>(SKILL_GROUPS[0].color);
+  const [skillsList, setSkillsList] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedSkill, setSelectedSkill] = useState<any>(null);
+  const [groupColor, setGroupColor] = useState<string>('#00ff88');
+
+  React.useEffect(() => {
+    fetch('/api/content/skills')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          const parsed = data.map(cat => ({
+            category: cat.name,
+            color: cat.color,
+            skills: (cat.skills || []).map((s: any) => ({
+              name: s.name,
+              level: s.level,
+              exp: s.exp,
+              projects: s.projects ? s.projects.split(',').map((p: any) => p.trim()).filter(Boolean) : [],
+              desc: s.desc,
+            })),
+          }));
+          setSkillsList(parsed);
+          if (parsed[0]?.skills?.length > 0) {
+            setSelectedSkill(parsed[0].skills[0]);
+            setGroupColor(parsed[0].color);
+          }
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#09090b', color: '#00ff88', fontFamily: 'monospace' }}>
+        Loading skills dashboard...
+      </div>
+    );
+  }
 
   return (
     <div className="skills-page-container" style={{ minHeight: '100vh', background: 'var(--bg)' }}>
@@ -95,7 +135,7 @@ export default function SkillsPage() {
           
           {/* LEFT: Category Matrices */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            {SKILL_GROUPS.map((group, gi) => (
+            {skillsList.map((group, gi) => (
               <motion.div
                 key={group.category}
                 initial={{ opacity: 0, y: 20 }}
@@ -113,7 +153,7 @@ export default function SkillsPage() {
 
                 {/* Badge layout */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  {group.skills.map((s) => {
+                  {group.skills.map((s: any) => {
                     const isSelected = selectedSkill.name === s.name;
                     return (
                       <button
@@ -186,7 +226,7 @@ export default function SkillsPage() {
                   <div>
                     <h3 style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.4)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: '0.75rem' }}>Core Integrations</h3>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                      {selectedSkill.projects.map(p => (
+                      {selectedSkill.projects.map((p: string) => (
                         <span key={p} style={{
                           padding: '0.2rem 0.6rem', borderRadius: 6, fontSize: '0.75rem', fontWeight: 600,
                           background: `${groupColor}10`, border: `1px solid ${groupColor}20`, color: groupColor

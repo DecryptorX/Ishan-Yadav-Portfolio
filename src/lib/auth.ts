@@ -1,6 +1,7 @@
 import { NextAuthOptions, DefaultSession } from 'next-auth';
 import LinkedInProvider from 'next-auth/providers/linkedin';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { prisma } from './db';
 
 declare module 'next-auth' {
   interface Session {
@@ -73,8 +74,6 @@ export function getAuthOptions(): NextAuthOptions {
         authorization: {
           params: { scope: 'openid profile email' },
         },
-        // LinkedIn OIDC returns { sub, name, email, picture } instead of
-        // the legacy { id, localizedFirstName, ... }. Map sub → id.
         profile(profile: any) {
           return {
             id: profile.sub,
@@ -116,21 +115,61 @@ export function getAuthOptions(): NextAuthOptions {
     session: { strategy: 'jwt' },
     callbacks: {
       async jwt({ token, account, user }) {
-        if (account) {
-          token.linkedinId = account.providerAccountId ?? undefined;
-          token.id = account.providerAccountId || user?.id;
-        }
-        if (user?.id && !token.linkedinId) {
-          token.linkedinId = user.id;
-          token.id = user.id;
-        }
+        // Run on sign-in
+        if (account && user) {
+          const providerAccountId = account.providerAccountId || user.id;
+          const provider = account.provider || 'credentials';
+          const name = user.name || 'Guest User';
+          const email = user.email || '';
+          const image = user.image || null;
 
-        // Assign admin role by matching LinkedIn providerAccountId
-        const lId = (token.linkedinId as string | undefined) ?? '';
-        if (adminLinkedinId && lId && lId === adminLinkedinId) {
-          token.role = 'admin';
-        } else {
-          token.role = 'user';
+          const isMatchedAdmin = adminLinkedinId && providerAccountId === adminLinkedinId;
+          const role = isMatchedAdmin ? 'ADMIN' : 'USER';
+
+          try {
+            // Database operations: Upsert user record
+            const dbUser = await prisma.user.upsert({
+              where: { providerAccountId },
+              update: {
+                name,
+                email,
+                image,
+                role, // Keep updated matching env variable
+                lastLogin: new Date(),
+              },
+              create: {
+                provider,
+                providerAccountId,
+                name,
+                email,
+                image,
+                role,
+                lastLogin: new Date(),
+              },
+            });
+
+            // Enforce account suspension check
+            if (dbUser.isDeactivated) {
+              throw new Error('SUSPENDED');
+            }
+
+            // Log activity event
+            await prisma.activity.create({
+              data: {
+                userId: dbUser.id,
+                userEmail: dbUser.email,
+                action: dbUser.role === 'ADMIN' ? 'ADMIN_LOGIN' : 'USER_SIGN_IN',
+                details: `Authenticated via ${provider}.`,
+              },
+            });
+
+            token.id = dbUser.id;
+            token.linkedinId = dbUser.providerAccountId;
+            token.role = dbUser.role;
+          } catch (dbErr: any) {
+            console.error('Error during authentication user upsert:', dbErr);
+            throw dbErr;
+          }
         }
 
         return token;
@@ -140,7 +179,7 @@ export function getAuthOptions(): NextAuthOptions {
         if (session.user) {
           session.user.id = (token.linkedinId || token.id || token.sub || '') as string;
           session.user.role = (token.role as string) || 'user';
-          session.user.isAdmin = token.role === 'admin';
+          session.user.isAdmin = token.role === 'ADMIN';
         }
         return session;
       },

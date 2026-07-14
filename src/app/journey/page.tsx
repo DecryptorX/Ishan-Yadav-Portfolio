@@ -117,7 +117,44 @@ export default function JourneyPage() {
     restDelta: 0.001
   });
 
+  const [milestonesList, setMilestonesList] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
   const [activeYear, setActiveYear] = useState('2006');
+
+  React.useEffect(() => {
+    fetch('/api/content/journey')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const colors = ['#00e5ff', '#f59e0b', '#ec4899', '#a855f7', '#6366f1', '#10b981', '#3b82f6'];
+          const icons = ['👶', '💻', '🎨', '🤖', '🎓', '🛡️', '🚀'];
+          const parsed = data.map((m, idx) => ({
+            ...m,
+            color: colors[idx % colors.length],
+            icon: icons[idx % icons.length],
+            achievements: typeof m.achievements === 'string' ? m.achievements.split('\n').map((a: any) => a.trim()).filter(Boolean) : m.achievements,
+            tech: typeof m.tech === 'string' ? m.tech.split(',').map((t: any) => t.trim()).filter(Boolean) : m.tech || []
+          }));
+          setMilestonesList(parsed);
+          if (parsed[0]?.year) {
+            setActiveYear(parsed[0].year);
+          }
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#09090b', color: '#00ff88', fontFamily: 'monospace' }}>
+        Loading journey milestones...
+      </div>
+    );
+  }
 
   // Monitor scroll to update active year indicator
   useEffect(() => {
@@ -225,7 +262,7 @@ export default function JourneyPage() {
 
           {/* Right Side: Milestones List */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8rem' }}>
-            {MILESTONES.map((m, idx) => (
+            {milestonesList.map((m, idx) => (
               <div 
                 key={m.year} 
                 data-year-section={m.year}
@@ -271,7 +308,7 @@ export default function JourneyPage() {
                     <div style={{ marginBottom: '2rem' }}>
                       <h3 style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.4)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: '0.85rem' }}>Key Milestones</h3>
                       <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                        {m.achievements.map((ach, ai) => (
+                        {m.achievements.map((ach: string, ai: number) => (
                           <li key={ai} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', color: 'rgba(226, 232, 240, 0.85)', fontSize: '0.88rem', lineHeight: 1.6 }}>
                             <span style={{ color: m.color, flexShrink: 0, marginTop: '0.2rem', fontSize: '0.8rem' }}>✔</span>
                             <span>{ach}</span>
@@ -284,7 +321,7 @@ export default function JourneyPage() {
                     <div>
                       <h3 style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.4)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: '0.75rem' }}>Skills &amp; Concepts Acquired</h3>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                        {m.tech.map(t => (
+                        {m.tech.map((t: string) => (
                           <span key={t} style={{
                             padding: '0.25rem 0.65rem', borderRadius: 999, fontSize: '0.75rem', fontWeight: 500,
                             background: `${m.color}10`, border: `1px solid ${m.color}25`, color: m.color

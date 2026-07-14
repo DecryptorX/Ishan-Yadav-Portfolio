@@ -1,0 +1,176 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                String     @id @default(uuid())
+  provider          String
+  providerAccountId String     @unique
+  name              String
+  email             String
+  image             String?
+  role              String     @default("USER") // "ADMIN" or "USER"
+  isDeactivated     Boolean    @default(false)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  lastLogin         DateTime   @default(now())
+  activities        Activity[]
+}
+
+model Activity {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userEmail String?
+  action    String
+  details   String?
+  createdAt DateTime @default(now())
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  num         String
+  title       String
+  tagline     String
+  role        String   // comma-separated roles
+  description String   @db.Text
+  features    String   @db.Text // newline-separated list
+  tech        String   @db.Text // comma-separated list
+  highlights  String   @db.Text
+  github      String?
+  demo        String?
+  status      String
+  color       String
+  accent      String
+  gradFrom    String
+  gradTo      String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Experience {
+  id          String   @id @default(uuid())
+  role        String
+  company     String
+  logo        String?
+  period      String
+  description String?  @db.Text
+  points      String   @db.Text // newline-separated points
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SkillCategory {
+  id        String   @id @default(uuid())
+  name      String
+  color     String
+  order     Int      @default(0)
+  skills    Skill[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Skill {
+  id         String        @id @default(uuid())
+  name       String
+  categoryId String
+  category   SkillCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  level      String        @default("Amateur")
+  exp        String        @default("1 Year")
+  projects   String        @default("") // comma-separated projects list
+  desc       String        @default("") @db.Text
+  order      Int           @default(0)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+model JourneyMilestone {
+  id           String   @id @default(uuid())
+  year         String
+  title        String
+  subtitle     String?
+  description  String   @db.Text
+  achievements String   @db.Text // newline-separated list
+  tech         String   @default("") // comma-separated tech/skills list
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Certificate {
+  id        String   @id @default(uuid())
+  name      String
+  issuer    String
+  date      String
+  image     String?
+  link      String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SocialLink {
+  id        String   @id @default(uuid())
+  platform  String
+  url       String
+  icon      String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ContactInfo {
+  id        String   @id @default(uuid())
+  email     String
+  phone     String?
+  location  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HeroSection {
+  id        String   @id @default(uuid())
+  title     String
+  subtitle  String
+  bio       String   @db.Text
+  roles     String   // comma-separated list
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SeoMetadata {
+  id          String   @id @default(uuid())
+  page        String   @unique // e.g. "home", "about", "projects", "skills", "experience", "journey", "resume"
+  title       String
+  description String   @db.Text
+  keywords    String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

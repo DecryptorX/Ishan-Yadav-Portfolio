@@ -13,6 +13,7 @@ import CommandPalette from '../components/CommandPalette';
 import KonamiListener from '../components/KonamiListener';
 import AnalyticsTracker from '../components/AnalyticsTracker';
 import GlobalLayoutWrapper from '../components/GlobalLayoutWrapper';
+import LenisProvider from '../components/LenisProvider';
 
 export const metadata = {
   title: 'Ishan Yadav — Portfolio',
@@ -27,26 +28,28 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SessionWrapper>
           <ModalProvider>
             <ThemeProvider attribute="class" defaultTheme="dark">
-              <GlobalLayoutWrapper>
-                <FallingPattern
-                  className="fixed inset-0 z-0 pointer-events-none"
-                  color="#00ff88"
-                  duration={55}
-                  density={2}
-                  blurIntensity="2px"
-                  opacity={0.05}
-                />
-                <Header />
-                <main className="relative z-10">
-                  <PageTransition>{children}</PageTransition>
-                </main>
-                <Footer />
-                <CVModal />
-                <Cursor />
-                <CommandPalette />
-                <KonamiListener />
-                <AnalyticsTracker />
-              </GlobalLayoutWrapper>
+              <LenisProvider>
+                <GlobalLayoutWrapper>
+                  <FallingPattern
+                    className="fixed inset-0 z-0 pointer-events-none"
+                    color="#ffffff"
+                    duration={80}
+                    density={1}
+                    blurIntensity="3px"
+                    opacity={0.015}
+                  />
+                  <Header />
+                  <main className="relative z-10">
+                    <PageTransition>{children}</PageTransition>
+                  </main>
+                  <Footer />
+                  <CVModal />
+                  <Cursor />
+                  <CommandPalette />
+                  <KonamiListener />
+                  <AnalyticsTracker />
+                </GlobalLayoutWrapper>
+              </LenisProvider>
             </ThemeProvider>
           </ModalProvider>
         </SessionWrapper>
@@ -54,4 +57,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-

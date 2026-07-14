@@ -70,6 +70,41 @@ const ROLES = [
 ];
 
 export default function ExperiencePage() {
+  const [experienceList, setExperienceList] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetch('/api/content/experience')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const colors = ['#00e5ff', '#f59e0b', '#ec4899', '#10b981'];
+          const parsed = data.map((exp, idx) => ({
+            ...exp,
+            organization: exp.company,
+            title: exp.role,
+            color: colors[idx % colors.length],
+            type: exp.description || 'Experience',
+            responsibilities: exp.points ? exp.points.split('\n').map((p: any) => p.trim()).filter(Boolean) : []
+          }));
+          setExperienceList(parsed);
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#09090b', color: '#00ff88', fontFamily: 'monospace' }}>
+        Loading experience history...
+      </div>
+    );
+  }
+
   return (
     <div style={{ minHeight: '100vh', padding: '8rem 2rem 6rem', background: 'var(--bg)' }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
@@ -90,7 +125,7 @@ export default function ExperiencePage() {
 
         {/* Experience Timeline */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem', position: 'relative' }}>
-          {ROLES.map((r, idx) => (
+          {experienceList.map((r, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 40 }}
@@ -136,7 +171,7 @@ export default function ExperiencePage() {
                 <div>
                   <h3 style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.4)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, marginBottom: '0.85rem' }}>Responsibilities &amp; Impact</h3>
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    {r.responsibilities.map((resp, ri) => (
+                    {r.responsibilities.map((resp: string, ri: number) => (
                       <li key={ri} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', color: 'rgba(148, 163, 184, 0.85)', fontSize: '0.86rem', lineHeight: 1.6 }}>
                         <span style={{ color: r.color, flexShrink: 0, marginTop: '0.15rem' }}>▹</span>
                         <span>{resp}</span>

@@ -1,108 +1,228 @@
 "use client";
 import React, { useRef, useState } from 'react';
-import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
 
 const LINKS = [
-  { label: 'GitHub', href: 'https://github.com/DecryptorX', icon: '⌥', sub: 'github.com/DecryptorX', color: '#f1f5f9' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ishan-yadav-a22251325', icon: '🔗', sub: 'linkedin.com/in/ishan-yadav', color: '#0a66c2' },
-  { label: 'Email', href: 'mailto:ishanyadav09@outlook.com', icon: '✉', sub: 'ishanyadav09@outlook.com', color: '#00e5ff' },
-  { label: 'Phone', href: 'tel:+919717432895', icon: '📱', sub: '+91 97174 32895', color: '#10b981' },
+  { label: 'GitHub', href: 'https://github.com/DecryptorX', sub: 'github.com/DecryptorX' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ishan-yadav-a22251325', sub: 'linkedin.com/in/ishan-yadav' },
+  { label: 'Email', href: 'mailto:ishanyadav09@outlook.com', sub: 'ishanyadav09@outlook.com' },
+  { label: 'Phone', href: 'tel:+919717432895', sub: '+91 97174 32895' },
 ];
 
-const inputStyle: React.CSSProperties = {
-  width: '100%', padding: '0.75rem 1rem', borderRadius: '0.6rem',
-  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-  color: '#f1f5f9', fontSize: '0.9rem', outline: 'none',
-  transition: 'border-color 0.2s',
+const formInputStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '1.25rem 0.5rem',
+  background: 'transparent',
+  border: 'none',
+  borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+  color: '#ffffff',
+  fontSize: '0.94rem',
+  outline: 'none',
+  fontFamily: 'var(--font-sans)',
+  transition: 'border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
 };
 
 export default function Contact() {
   const formRef = useRef<HTMLFormElement | null>(null);
-  const [status, setStatus] = useState<'idle'|'sending'|'sent'|'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formRef.current) return;
     setStatus('sending');
+
+    const formData = new FormData(formRef.current);
+    const data = {
+      name: formData.get('from_name'),
+      email: formData.get('reply_to'),
+      subject: 'Portfolio Contact Form Submission',
+      message: formData.get('message'),
+    };
+
     try {
-      await emailjs.sendForm(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
-        formRef.current,
-        process.env.NEXT_PUBLIC_EMAILJS_KEY || ''
-      );
+      const response = await fetch('/api/contact/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit message');
+      }
+
       setStatus('sent');
       formRef.current.reset();
-    } catch {
+    } catch (err) {
+      console.error(err);
       setStatus('error');
     }
   };
 
   return (
-    <section id="contact" style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+    <section id="contact" style={{ background: 'var(--bg)', borderTop: '1px solid rgba(255,255,255,0.03)' }}>
       <div className="section-container">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-          <p style={{ fontSize: '0.8rem', color: '#00e5ff', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Say Hello</p>
-          <h2 style={{ fontSize: 'clamp(1.8rem,4vw,2.5rem)', fontWeight: 800, color: '#f1f5f9', marginBottom: '0.5rem', letterSpacing: '-0.03em' }}>Get In Touch</h2>
-          <p style={{ color: 'rgba(148,163,184,0.8)', fontSize: '0.95rem', marginBottom: '3rem', maxWidth: 500 }}>Have a project in mind or just want to chat? I&apos;m always open to interesting conversations.</p>
+        
+        {/* Asymmetrical Editorial Header */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3rem', marginBottom: '6.5rem', alignItems: 'start' }}>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+              // Say Hello
+            </p>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.8rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', fontFamily: 'var(--font-display)', margin: 0 }}>
+              Initiate Contact
+            </h2>
+          </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
-            {/* Form */}
-            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '1.25rem', padding: '1.75rem' }}>
-              <h3 style={{ fontWeight: 700, color: '#f1f5f9', fontSize: '1rem', marginBottom: '1.25rem' }}>Send a message</h3>
-              <form ref={formRef} onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
-                <input name="from_name" required placeholder="Your name" style={inputStyle}
-                  onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,229,255,0.4)'; }}
-                  onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }} />
-                <input name="reply_to" required type="email" placeholder="Your email" style={inputStyle}
-                  onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,229,255,0.4)'; }}
-                  onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }} />
-                <textarea name="message" required placeholder="Your message..." style={{ ...inputStyle, minHeight: 130, resize: 'vertical' }}
-                  onFocus={e => { e.currentTarget.style.borderColor = 'rgba(0,229,255,0.4)'; }}
-                  onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }} />
-                <button type="submit" disabled={status === 'sending'} style={{
-                  padding: '0.75rem', borderRadius: '0.6rem', fontWeight: 700, fontSize: '0.9rem',
-                  background: status === 'sent' ? '#10b981' : '#00e5ff',
-                  color: '#000', border: 'none', cursor: status === 'sending' ? 'not-allowed' : 'pointer',
-                  transition: 'all 0.2s', opacity: status === 'sending' ? 0.7 : 1,
-                }}>
-                  {status === 'sending' ? 'Sending…' : status === 'sent' ? '✓ Message Sent!' : status === 'error' ? 'Try again' : 'Send Message'}
-                </button>
-                {status === 'error' && <p style={{ color: '#f87171', fontSize: '0.8rem' }}>Something went wrong. Email me directly at ishanyadav09@outlook.com</p>}
-              </form>
-            </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            style={{ paddingTop: '1.25rem' }}
+          >
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.8, fontFamily: 'var(--font-sans)', fontWeight: 400, margin: 0 }}>
+              Have an opening, an interesting security challenge, or a software system to build? Reach out using the form below or standard directory pathways.
+            </p>
+          </motion.div>
+        </div>
 
-            {/* Links */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '1.25rem', padding: '1.5rem', marginBottom: '0.5rem' }}>
-                <p style={{ color: 'rgba(148,163,184,0.8)', fontSize: '0.85rem', lineHeight: 1.7 }}>
-                  Open to internship opportunities, freelance projects, and interesting conversations about cybersecurity and software engineering.
-                </p>
+        {/* Content Columns: Form & Directories */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '6rem', alignItems: 'start' }} className="contact-grid">
+          
+          {/* Minimal Form Column */}
+          <motion.div 
+            initial={{ opacity: 0, y: 35 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <form ref={formRef} onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              
+              <div style={{ position: 'relative' }}>
+                <input 
+                  name="from_name" 
+                  required 
+                  placeholder="Your Name" 
+                  style={formInputStyle}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#ffffff'; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)'; }} 
+                />
               </div>
-              {LINKS.map(l => (
-                <a key={l.label} href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined}
-                  rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+
+              <div style={{ position: 'relative' }}>
+                <input 
+                  name="reply_to" 
+                  required 
+                  type="email" 
+                  placeholder="Your Email" 
+                  style={formInputStyle}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#ffffff'; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)'; }} 
+                />
+              </div>
+
+              <div style={{ position: 'relative' }}>
+                <textarea 
+                  name="message" 
+                  required 
+                  placeholder="Tell me about your project..." 
+                  style={{ ...formInputStyle, minHeight: 120, resize: 'vertical' }}
+                  onFocus={e => { e.currentTarget.style.borderColor = '#ffffff'; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)'; }} 
+                />
+              </div>
+
+              {/* Submit button */}
+              <div style={{ paddingTop: '1.5rem' }}>
+                <motion.button 
+                  type="submit" 
+                  disabled={status === 'sending'} 
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.98 }}
                   style={{
-                    display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.9rem 1.1rem',
-                    background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-                    borderRadius: '0.75rem', transition: 'border-color 0.2s, background 0.2s',
-                    color: 'inherit',
+                    padding: '1rem 3rem', 
+                    borderRadius: '9999px', 
+                    fontWeight: 700, 
+                    fontSize: '0.85rem',
+                    background: '#ffffff',
+                    color: '#070708', 
+                    border: 'none', 
+                    cursor: status === 'sending' ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)', 
+                    opacity: status === 'sending' ? 0.7 : 1,
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(0,229,255,0.2)'; e.currentTarget.style.background = 'rgba(0,229,255,0.03)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}>
-                  <span style={{ fontSize: '1.2rem' }}>{l.icon}</span>
-                  <div>
-                    <p style={{ fontWeight: 600, color: '#f1f5f9', fontSize: '0.88rem' }}>{l.label}</p>
-                    <p style={{ color: 'rgba(148,163,184,0.7)', fontSize: '0.78rem' }}>{l.sub}</p>
-                  </div>
-                  <span style={{ marginLeft: 'auto', color: 'rgba(148,163,184,0.4)', fontSize: '0.9rem' }}>↗</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </motion.div>
+                >
+                  {status === 'sending' ? 'TRANSMITTING…' : status === 'sent' ? 'MESSAGE SECURED ✓' : status === 'error' ? 'RETRY SEND' : 'SEND TRANSMISSION'}
+                </motion.button>
+              </div>
+
+              {status === 'error' && (
+                <p style={{ color: '#ff6b6b', fontSize: '0.78rem', fontFamily: 'var(--font-mono)' }}>
+                  Error encountered. Direct pathway: ishanyadav09@outlook.com
+                </p>
+              )}
+            </form>
+          </motion.div>
+
+          {/* Directory Listings Column */}
+          <motion.div 
+            initial={{ opacity: 0, y: 35 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+          >
+            {LINKS.map((l, index) => (
+              <a 
+                key={l.label} 
+                href={l.href} 
+                target={l.href.startsWith('http') ? '_blank' : undefined}
+                rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                style={{
+                  display: 'flex', 
+                  justifyContent: 'space-between',
+                  alignItems: 'center', 
+                  padding: '1.5rem 0',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                  transition: 'border-color 0.3s'
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; }}
+              >
+                <div>
+                  <p style={{ fontWeight: 650, color: '#ffffff', fontSize: '0.94rem', fontFamily: 'var(--font-display)', margin: 0 }}>
+                    {l.label}
+                  </p>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.76rem', fontFamily: 'var(--font-mono)', margin: '0.35rem 0 0' }}>
+                    {l.sub}
+                  </p>
+                </div>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>↗</span>
+              </a>
+            ))}
+          </motion.div>
+
+        </div>
+
       </div>
+
+      <style>{`
+        @media (max-width: 820px) {
+          .contact-grid {
+            grid-template-columns: 1fr !important;
+            gap: 4rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

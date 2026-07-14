@@ -25,9 +25,9 @@ export default function Header() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 30);
     };
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -43,51 +43,51 @@ export default function Header() {
           zIndex: 50,
           display: 'flex',
           justifyContent: 'center',
-          padding: scrolled ? '1rem 0' : '0',
-          transition: 'padding 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-          pointerEvents: 'none' // Let mouse events pass through empty space
+          padding: scrolled ? '1.25rem 0' : '1.75rem 0',
+          transition: 'padding 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+          pointerEvents: 'none'
         }}
       >
         <motion.header
           animate={{
-            width: scrolled ? '75%' : '95%',
-            borderRadius: scrolled ? '9999px' : '0px',
-            backgroundColor: scrolled ? 'rgba(9, 9, 11, 0.6)' : 'rgba(9, 9, 11, 0)',
-            borderColor: scrolled ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0)',
-            boxShadow: scrolled ? '0 8px 32px rgba(0, 0, 0, 0.4)' : 'none',
-            scale: scrolled ? 0.98 : 1,
-            y: scrolled ? 4 : 0
+            width: scrolled ? '70%' : '90%',
+            borderRadius: scrolled ? '9999px' : '1rem',
+            backgroundColor: scrolled ? 'rgba(7, 7, 8, 0.4)' : 'rgba(7, 7, 8, 0.1)',
+            borderColor: scrolled ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.02)',
+            boxShadow: scrolled ? '0 20px 50px rgba(0, 0, 0, 0.3)' : 'none',
+            scale: scrolled ? 0.99 : 1,
+            y: scrolled ? 2 : 0
           }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           style={{
             maxWidth: '1200px',
             borderWidth: '1px',
             borderStyle: 'solid',
-            backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
-            WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            height: scrolled ? 54 : 68,
-            padding: scrolled ? '0 2rem' : '0 1.5rem',
-            pointerEvents: 'auto', // Enable pointer events for header items
-            transition: 'height 0.4s, padding 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+            height: scrolled ? 54 : 64,
+            padding: scrolled ? '0 2.5rem' : '0 2rem',
+            pointerEvents: 'auto',
+            transition: 'height 0.5s, padding 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
           className="header-nav-pill"
         >
           {/* LEFT: Branding Logo */}
           <motion.div
-            whileHover={{ scale: 1.06, rotate: 1.5 }}
-            transition={{ type: "spring", stiffness: 400, damping: 12 }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Link href="/" onClick={() => setMobileOpen(false)} style={{ fontWeight: 850, fontSize: '1.2rem', color: '#fff', letterSpacing: '-0.04em', textDecoration: 'none' }}>
-              Ishan<span className="blinking-dot" style={{ color: '#00ff88', display: 'inline-block', transformOrigin: 'bottom' }}>.</span>
+            <Link href="/" onClick={() => setMobileOpen(false)} style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.15rem', color: '#fff', letterSpacing: '-0.03em', textDecoration: 'none' }}>
+              Ishan<span className="blinking-dot" style={{ color: '#fff', display: 'inline-block', transformOrigin: 'bottom' }}>.</span>
             </Link>
           </motion.div>
 
           {/* CENTER: Navigation Links */}
           <nav className="desktop-links" aria-label="Primary navigation" style={{ display: 'flex', alignItems: 'center' }}>
-            <ul style={{ display: 'flex', alignItems: 'center', gap: scrolled ? '0.35rem' : '0.6rem', listStyle: 'none', margin: 0, padding: 0, transition: 'gap 0.4s' }}>
+            <ul style={{ display: 'flex', alignItems: 'center', gap: scrolled ? '0.5rem' : '0.8rem', listStyle: 'none', margin: 0, padding: 0, transition: 'gap 0.5s' }}>
               {NAV_ITEMS.map(({ href, label }) => {
                 const isActive = pathname === href;
                 return (
@@ -95,46 +95,45 @@ export default function Header() {
                     <Link
                       href={href}
                       style={{
-                        color: isActive ? '#fafafa' : 'rgba(226, 232, 240, 0.55)',
-                        fontSize: '0.82rem',
-                        fontWeight: 550,
+                        color: isActive ? '#ffffff' : 'var(--text-muted)',
+                        fontSize: '0.78rem',
+                        fontFamily: 'var(--font-sans)',
+                        fontWeight: isActive ? 600 : 500,
                         textDecoration: 'none',
-                        transition: 'color 0.25s, background 0.25s',
-                        padding: '0.4rem 0.7rem',
-                        borderRadius: '0.5rem',
+                        transition: 'color 0.3s, background-color 0.3s',
+                        padding: '0.4rem 0.8rem',
+                        borderRadius: '9999px',
                         display: 'block'
                       }}
                       onMouseEnter={e => {
                         if (!isActive) {
-                          e.currentTarget.style.color = '#fafafa';
-                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                          e.currentTarget.style.color = '#ffffff';
+                          e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
                         }
                       }}
                       onMouseLeave={e => {
                         if (!isActive) {
-                          e.currentTarget.style.color = 'rgba(226, 232, 240, 0.55)';
-                          e.currentTarget.style.background = 'transparent';
+                          e.currentTarget.style.color = 'var(--text-muted)';
+                          e.currentTarget.style.backgroundColor = 'transparent';
                         }
                       }}
                     >
                       {label}
                     </Link>
 
-                    {/* Sliding underline active highlight — soft, low glow */}
+                    {/* Sliding active indicator — luxurious, clean */}
                     {isActive && (
                       <motion.div
-                        layoutId="activeUnderline"
+                        layoutId="activeIndicator"
                         style={{
                           position: 'absolute',
-                          bottom: '-4px',
-                          left: '0.7rem',
-                          right: '0.7rem',
-                          height: '2px',
-                          background: '#00ff88',
-                          borderRadius: '2px',
-                          boxShadow: '0 0 6px rgba(0, 255, 136, 0.35)'
+                          inset: 0,
+                          backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                          borderRadius: '9999px',
+                          zIndex: -1,
+                          border: '1px solid rgba(255, 255, 255, 0.03)'
                         }}
-                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                       />
                     )}
                   </li>
@@ -144,19 +143,18 @@ export default function Header() {
           </nav>
 
           {/* RIGHT: Social links + Resume + User Avatar */}
-          <div className="desktop-links" style={{ alignItems: 'center', gap: scrolled ? '1rem' : '1.25rem', transition: 'gap 0.4s' }}>
-            
+          <div className="desktop-links" style={{ alignItems: 'center', gap: '1.25rem' }}>
             {/* GitHub */}
             <a 
               href="https://github.com/DecryptorX" 
               target="_blank" 
               rel="noopener noreferrer" 
               aria-label="GitHub Profile"
-              style={{ color: 'rgba(226, 232, 240, 0.6)', display: 'flex', transition: 'all 0.2s' }}
-              onMouseEnter={e => { e.currentTarget.style.color = '#00ff88'; }}
-              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(226, 232, 240, 0.6)'; }}
+              style={{ color: 'var(--text-muted)', display: 'flex', transition: 'color 0.3s' }}
+              onMouseEnter={e => { e.currentTarget.style.color = '#ffffff'; }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; }}
             >
-              <svg viewBox="0 0 24 24" width="17" height="17" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
               </svg>
             </a>
@@ -167,11 +165,11 @@ export default function Header() {
               target="_blank" 
               rel="noopener noreferrer" 
               aria-label="LinkedIn Profile"
-              style={{ color: 'rgba(226, 232, 240, 0.6)', display: 'flex', transition: 'all 0.2s' }}
-              onMouseEnter={e => { e.currentTarget.style.color = '#00ff88'; }}
-              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(226, 232, 240, 0.6)'; }}
+              style={{ color: 'var(--text-muted)', display: 'flex', transition: 'color 0.3s' }}
+              onMouseEnter={e => { e.currentTarget.style.color = '#ffffff'; }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-muted)'; }}
             >
-              <svg viewBox="0 0 24 24" width="17" height="17" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                 <rect x="2" y="9" width="4" height="12" />
                 <circle cx="4" cy="4" r="2" />
@@ -179,31 +177,31 @@ export default function Header() {
             </a>
 
             {/* Separator line */}
-            <div style={{ width: '1px', height: '14px', background: 'rgba(255,255,255,0.08)' }} />
+            <div style={{ width: '1px', height: '12px', background: 'rgba(255,255,255,0.06)' }} />
 
             {/* Resume Button */}
             <motion.button 
               onClick={openModal} 
-              whileHover={{ scale: 1.04, y: -0.5 }}
-              whileTap={{ scale: 0.96 }}
+              whileHover={{ y: -1 }}
+              whileTap={{ scale: 0.98 }}
               style={{
                 padding: '0.4rem 1.1rem',
                 borderRadius: '9999px',
-                border: '1px solid rgba(0, 229, 255, 0.22)',
-                color: '#00e5ff',
-                fontSize: '0.78rem',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                color: '#ffffff',
+                fontSize: '0.75rem',
                 fontWeight: 600,
-                background: 'rgba(0, 229, 255, 0.02)',
+                background: 'rgba(255, 255, 255, 0.02)',
                 cursor: 'pointer',
-                transition: 'all 0.2s',
+                transition: 'all 0.3s',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.35rem'
               }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(0, 229, 255, 0.08)'; e.currentTarget.style.borderColor = 'rgba(0, 229, 255, 0.45)'; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(0, 229, 255, 0.02)'; e.currentTarget.style.borderColor = 'rgba(0, 229, 255, 0.22)'; }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)'; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.02)'; e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)'; }}
             >
-              <FileText size={13} />
+              <FileText size={12} />
               Resume
             </motion.button>
 
@@ -229,12 +227,11 @@ export default function Header() {
                 padding: '0.2rem'
               }}
             >
-              {/* Morphing Hamburger Menu icon with simple animate tag */}
               <motion.div
                 animate={{ rotate: mobileOpen ? 90 : 0 }}
                 transition={{ duration: 0.2 }}
               >
-                {mobileOpen ? <X size={22} style={{ color: '#00ff88' }} /> : <Menu size={22} />}
+                {mobileOpen ? <X size={20} style={{ color: '#fff' }} /> : <Menu size={20} />}
               </motion.div>
             </button>
           </div>
@@ -249,23 +246,23 @@ export default function Header() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position: 'fixed',
               top: 76,
               left: '1rem',
               right: '1rem',
-              background: 'rgba(9, 9, 11, 0.94)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              background: 'rgba(7, 7, 8, 0.85)',
+              backdropFilter: 'blur(30px)',
+              WebkitBackdropFilter: 'blur(30px)',
+              border: '1px solid rgba(255, 255, 255, 0.04)',
               borderRadius: '1.5rem',
               padding: '1.75rem 2rem',
               zIndex: 49,
               display: 'flex',
               flexDirection: 'column',
               gap: '1.25rem',
-              boxShadow: '0 20px 45px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 255, 136, 0.02)'
+              boxShadow: '0 30px 60px rgba(0, 0, 0, 0.5)'
             }}
           >
             {/* Page Links list */}
@@ -278,15 +275,16 @@ export default function Header() {
                       href={href}
                       onClick={() => setMobileOpen(false)}
                       style={{
-                        color: isActive ? '#00ff88' : 'rgba(226, 232, 240, 0.85)',
-                        fontSize: '1rem',
-                        fontWeight: 650,
+                        color: isActive ? '#ffffff' : 'var(--text-muted)',
+                        fontSize: '0.92rem',
+                        fontFamily: 'var(--font-sans)',
+                        fontWeight: isActive ? 600 : 500,
                         textDecoration: 'none',
                         display: 'block',
                         padding: '0.2rem 0'
                       }}
                     >
-                      <span style={{ marginRight: '0.5rem', color: isActive ? '#00ff88' : 'rgba(255,255,255,0.1)' }}>//</span>
+                      <span style={{ marginRight: '0.5rem', color: isActive ? '#ffffff' : 'rgba(255,255,255,0.05)' }}>//</span>
                       {label}
                     </Link>
                   </li>
@@ -294,20 +292,20 @@ export default function Header() {
               })}
             </ul>
 
-            <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)', margin: '0.25rem 0' }} />
+            <div style={{ height: '1px', background: 'rgba(255,255,255,0.04)', margin: '0.25rem 0' }} />
 
             {/* Resume button inside Mobile drawer */}
             <button
               onClick={() => { setMobileOpen(false); openModal(); }}
               style={{
                 width: '100%',
-                padding: '0.75rem',
+                padding: '0.7rem',
                 borderRadius: '9999px',
-                background: 'rgba(0, 229, 255, 0.06)',
-                border: '1px solid rgba(0, 229, 255, 0.35)',
-                color: '#00e5ff',
-                fontSize: '0.88rem',
-                fontWeight: 750,
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                color: '#ffffff',
+                fontSize: '0.82rem',
+                fontWeight: 600,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -315,8 +313,8 @@ export default function Header() {
                 gap: '0.4rem'
               }}
             >
-              <FileText size={15} />
-              Curriculum Vitae ↗
+              <FileText size={14} />
+              Resume
             </button>
 
             {/* Social quick links inside Mobile drawer */}
@@ -325,9 +323,9 @@ export default function Header() {
                 href="https://github.com/DecryptorX" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                style={{ color: 'rgba(226, 232, 240, 0.65)', textDecoration: 'none', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+                style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
               >
-                <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
                 </svg> GitHub
               </a>
@@ -335,9 +333,9 @@ export default function Header() {
                 href="https://www.linkedin.com/in/ishan-yadav-a22251325" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                style={{ color: 'rgba(226, 232, 240, 0.65)', textDecoration: 'none', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+                style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
               >
-                <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                   <rect x="2" y="9" width="4" height="12" />
                   <circle cx="4" cy="4" r="2" />
@@ -359,15 +357,15 @@ export default function Header() {
             display: flex !important;
           }
           .header-nav-pill {
-            width: 95% !important;
+            width: 92% !important;
             border-radius: 9999px !important;
-            background-color: rgba(9, 9, 11, 0.7) !important;
-            border-color: rgba(255, 255, 255, 0.05) !important;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
-            height: 52px !important;
-            padding: 0 1.25rem !important;
-            backdrop-filter: blur(20px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+            background-color: rgba(7, 7, 8, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.04) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+            height: 50px !important;
+            padding: 0 1.5rem !important;
+            backdrop-filter: blur(24px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
             margin-top: 4px !important;
           }
         }
@@ -382,19 +380,19 @@ export default function Header() {
         @keyframes blink-blur {
           0%, 100% {
             opacity: 1;
-            transform: scale(1.1);
+            transform: scale(1.05);
             filter: blur(0px);
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
           }
           50% {
-            opacity: 0.15;
-            transform: scale(0.75);
-            filter: blur(2px);
-            text-shadow: 0 0 0px rgba(0, 255, 136, 0);
+            opacity: 0.3;
+            transform: scale(0.95);
+            filter: blur(0.5px);
+            text-shadow: 0 0 0px rgba(255, 255, 255, 0);
           }
         }
         .blinking-dot {
-          animation: blink-blur 1.8s infinite ease-in-out;
+          animation: blink-blur 2.2s infinite ease-in-out;
         }
       `}</style>
     </>

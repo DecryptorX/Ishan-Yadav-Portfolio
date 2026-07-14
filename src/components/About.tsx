@@ -2,89 +2,178 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const INTERESTS = ['Cybersecurity','Software Development','Artificial Intelligence','Basketball','Photography','Video Editing'];
-
-const card: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.03)',
-  border: '1px solid rgba(255,255,255,0.07)',
-  borderRadius: '1rem',
-  padding: '1.5rem',
-};
+const INTERESTS = ['Cybersecurity', 'Software Development', 'Artificial Intelligence', 'Basketball', 'Photography', 'Video Editing'];
 
 export default function About() {
   return (
-    <section id="about" style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+    <section id="about" style={{ borderTop: '1px solid rgba(255,255,255,0.03)', background: 'var(--bg)' }}>
       <div className="section-container">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-          <p style={{ fontSize: '0.8rem', color: '#00e5ff', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Who I Am</p>
-          <h2 style={{ fontSize: 'clamp(1.8rem,4vw,2.5rem)', fontWeight: 800, color: '#f1f5f9', marginBottom: '0.5rem', letterSpacing: '-0.03em' }}>About Me</h2>
-          <p style={{ color: 'rgba(148,163,184,0.8)', fontSize: '0.95rem', marginBottom: '3rem', maxWidth: 500 }}>A little bit about who I am and what I do.</p>
+        
+        {/* Header Block - Editorial Asymmetric layout */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3rem', marginBottom: '6rem', alignItems: 'start' }}>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+              // Who I Am
+            </p>
+            <h2 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.8rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', fontFamily: 'var(--font-display)', margin: 0 }}>
+              Philosophy & Biography
+            </h2>
+          </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
-            {/* Bio */}
-            <div style={{ ...card, gridColumn: 'span 1' }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', marginBottom: '1rem' }}>Bio</h3>
-              <p style={{ color: 'rgba(148,163,184,0.9)', fontSize: '0.9rem', lineHeight: 1.8 }}>
-                I&apos;m Ishan Yadav — a Cybersecurity Enthusiast and Software Developer from Gurgaon, Haryana, India. I love building secure, scalable systems and exploring the intersection of AI and cybersecurity.
-              </p>
-              <p style={{ color: 'rgba(148,163,184,0.9)', fontSize: '0.9rem', lineHeight: 1.8, marginTop: '0.75rem' }}>
-                Currently pursuing my B.Tech in Computer Science & Engineering at Bennett University (graduating 2028). I build practical AI-powered applications and security tools in my spare time.
-              </p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            style={{ paddingTop: '1.25rem' }}
+          >
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.8, fontFamily: 'var(--font-sans)', fontWeight: 400, margin: 0 }}>
+              Building secure systems requires a balance of defense engineering and local intelligence. My approach focuses on creating robust backend solutions backed by threat modeling and practical research.
+            </p>
+          </motion.div>
+        </div>
 
-              <div style={{ marginTop: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        {/* Content Layout - Asymmetrical Blocks */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '5rem', alignItems: 'start' }} className="about-grid">
+          
+          {/* Bio column */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}
+          >
+            <div>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: '#ffffff', marginBottom: '1.25rem' }}>Biography</h3>
+              <p style={{ color: 'var(--text)', fontSize: '0.94rem', lineHeight: 1.8, marginBottom: '1.25rem' }}>
+                I am Ishan Yadav, a B.Tech Computer Science student currently residing in Gurgaon, Haryana. My passion lies in constructing high-performance software architectures while embedding proactive security mechanisms.
+              </p>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.8 }}>
+                Currently in my studies at Bennett University (graduating 2028), I specialize in incident log automation mapping to the MITRE ATT&CK framework and crafting AI-driven tools.
+              </p>
+            </div>
+
+            {/* Quick specifications */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem', padding: '2rem', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '1.5rem', background: 'rgba(255,255,255,0.01)' }}>
+              {[
+                ['Location', 'Gurgaon, Haryana, India'],
+                ['Academics', 'Bennett University — B.Tech CSE (CGPA: 6.7)'],
+                ['Contact', 'ishanyadav09@outlook.com'],
+                ['Languages', 'English • Hindi'],
+              ].map(([title, val]) => (
+                <div key={title} style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: '1.5rem', fontSize: '0.82rem' }}>
+                  <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{title}</span>
+                  <span style={{ color: '#ffffff', fontWeight: 550 }}>{val}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Education & Timeline column */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}
+          >
+            <div>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: '#ffffff', marginBottom: '1.5rem' }}>Timeline</h3>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', position: 'relative', paddingLeft: '1.5rem' }}>
+                {/* Timeline vertical rule */}
+                <div style={{ position: 'absolute', left: 0, top: '0.4rem', bottom: '0.4rem', width: '1px', background: 'rgba(255, 255, 255, 0.06)' }} />
+                
                 {[
-                  ['📍', 'Gurgaon, Haryana, India'],
-                  ['🎓', 'Bennett University — B.Tech CSE | CGPA 6.7/10'],
-                  ['📧', 'ishanyadav09@outlook.com'],
-                  ['🗣️', 'English • Hindi'],
-                ].map(([icon, text]) => (
-                  <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'rgba(148,163,184,0.8)', fontSize: '0.85rem' }}>
-                    <span>{icon}</span><span>{text}</span>
+                  {
+                    title: 'B.Tech — Computer Science & Engineering',
+                    sub: 'Bennett University',
+                    period: '2024 — 2028',
+                    desc: 'Focusing on distributed systems, network security architectures, threat simulation, and custom automation models.'
+                  },
+                  {
+                    title: 'Class XII — Mathematics',
+                    sub: 'St. Xavier\'s High School (CBSE / NIOS)',
+                    period: 'Completed',
+                    desc: 'Core science foundation focused on logic, computing sciences, and advanced math frameworks.'
+                  },
+                  {
+                    title: 'Class X',
+                    sub: 'St. Xavier\'s High School (CBSE)',
+                    period: 'Completed',
+                    desc: 'Secondary school education focusing on science foundations.'
+                  }
+                ].map((item, idx) => (
+                  <div key={item.title} style={{ position: 'relative' }}>
+                    {/* Node dot */}
+                    <div style={{
+                      position: 'absolute',
+                      left: 'calc(-1.5rem - 4.5px)',
+                      top: '0.4rem',
+                      width: '10px',
+                      height: '10px',
+                      borderRadius: '50%',
+                      background: '#ffffff',
+                      border: '2.5px solid var(--bg)',
+                      boxShadow: '0 0 10px rgba(255,255,255,0.15)'
+                    }} />
+                    
+                    <h4 style={{ fontSize: '0.94rem', fontWeight: 650, color: '#ffffff', margin: 0 }}>{item.title}</h4>
+                    <p style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', margin: '0.25rem 0' }}>
+                      {item.sub} &nbsp;·&nbsp; {item.period}
+                    </p>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0.4rem 0 0' }}>
+                      {item.desc}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Education */}
-            <div style={card}>
-              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', marginBottom: '1.25rem' }}>Education</h3>
-              <div style={{ position: 'relative', paddingLeft: '1.5rem' }}>
-                <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 1, background: 'linear-gradient(to bottom, #00e5ff, transparent)' }} />
-                <div style={{ position: 'absolute', left: -4, top: 4, width: 9, height: 9, borderRadius: '50%', background: '#00e5ff', boxShadow: '0 0 8px rgba(0,229,255,0.6)' }} />
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <p style={{ color: '#f1f5f9', fontWeight: 600, fontSize: '0.95rem' }}>B.Tech — Computer Science &amp; Engineering</p>
-                  <p style={{ color: '#00e5ff', fontSize: '0.82rem', fontWeight: 500, marginTop: '0.2rem' }}>Bennett University</p>
-                  <p style={{ color: 'rgba(148,163,184,0.7)', fontSize: '0.8rem', marginTop: '0.2rem' }}>2024 — 2028 &nbsp;·&nbsp; CGPA: 6.7 / 10</p>
-                  <p style={{ color: 'rgba(148,163,184,0.7)', fontSize: '0.82rem', marginTop: '0.5rem', lineHeight: 1.6 }}>
-                    Focused on systems security, software engineering, and artificial intelligence.
-                  </p>
-
-                  <div style={{ marginTop: '1.5rem', position: 'absolute', left: -4, top: 80, width: 9, height: 9, borderRadius: '50%', background: '#6366f1', boxShadow: '0 0 8px rgba(99,102,241,0.5)' }} />
-                  <div style={{ marginTop: '1rem' }}>
-                    <p style={{ color: '#f1f5f9', fontWeight: 600, fontSize: '0.95rem' }}>Class XII — Mathematics (NIOS)</p>
-                    <p style={{ color: '#6366f1', fontSize: '0.82rem', fontWeight: 500, marginTop: '0.2rem' }}>St. Xavier&apos;s High School</p>
-                    <p style={{ color: 'rgba(148,163,184,0.7)', fontSize: '0.8rem', marginTop: '0.2rem' }}>CBSE &nbsp;·&nbsp; 69.2%</p>
-                  </div>
-                  <div style={{ marginTop: '1rem' }}>
-                    <p style={{ color: '#f1f5f9', fontWeight: 600, fontSize: '0.95rem' }}>Class X</p>
-                    <p style={{ color: '#6366f1', fontSize: '0.82rem', fontWeight: 500, marginTop: '0.2rem' }}>St. Xavier&apos;s High School</p>
-                    <p style={{ color: 'rgba(148,163,184,0.7)', fontSize: '0.8rem', marginTop: '0.2rem' }}>CBSE &nbsp;·&nbsp; 82%</p>
-                  </div>
-                </div>
-              </div>
-
-              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff', margin: '1.25rem 0 0.75rem' }}>Interests</h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            {/* Interests details */}
+            <div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, fontFamily: 'var(--font-display)', color: '#ffffff', marginBottom: '1.25rem' }}>Focus Interests</h3>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
                 {INTERESTS.map(i => (
-                  <span key={i} style={{ padding: '0.3rem 0.75rem', borderRadius: 999, background: 'rgba(0,229,255,0.06)', border: '1px solid rgba(0,229,255,0.15)', color: 'rgba(226,232,240,0.8)', fontSize: '0.78rem' }}>
+                  <span 
+                    key={i} 
+                    style={{ 
+                      padding: '0.4rem 1.1rem', 
+                      borderRadius: '9999px', 
+                      background: 'rgba(255, 255, 255, 0.02)', 
+                      border: '1px solid rgba(255, 255, 255, 0.04)', 
+                      color: 'var(--text)', 
+                      fontSize: '0.78rem',
+                      fontWeight: 500,
+                      transition: 'border-color 0.3s, background-color 0.3s'
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)'; e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)'; e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.02)'; }}
+                  >
                     {i}
                   </span>
                 ))}
               </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
+
       </div>
+
+      <style>{`
+        @media (max-width: 820px) {
+          .about-grid {
+            grid-template-columns: 1fr !important;
+            gap: 4rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

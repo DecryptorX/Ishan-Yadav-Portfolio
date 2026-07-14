@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Skill" ADD COLUMN     "desc" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "exp" TEXT NOT NULL DEFAULT '1 Year',
+ADD COLUMN     "level" TEXT NOT NULL DEFAULT 'Amateur',
+ADD COLUMN     "projects" TEXT NOT NULL DEFAULT '';
