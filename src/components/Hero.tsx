@@ -92,11 +92,11 @@ export default function Hero() {
         aria-hidden
         style={{ 
           position: 'absolute', 
-          width: 600, 
-          height: 600, 
+          width: 800, 
+          height: 800, 
           borderRadius: '50%', 
-          background: 'radial-gradient(circle, rgba(52, 211, 153, 0.03) 0%, rgba(255, 255, 255, 0.015) 40%, transparent 70%)', 
-          filter: 'blur(60px)', 
+          background: 'radial-gradient(circle, rgba(52, 211, 153, 0.04) 0%, rgba(255, 255, 255, 0.015) 30%, transparent 60%)', 
+          filter: 'blur(80px)', 
           pointerEvents: 'none',
           left: springX,
           top: springY,
@@ -145,7 +145,7 @@ export default function Hero() {
             <motion.div 
               initial={{ opacity: 0, y: 15 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }} 
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }} 
               style={{ marginBottom: '3rem', display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}
             >
               <span style={{
@@ -195,8 +195,8 @@ export default function Hero() {
             >
               <motion.h1 
                 initial={{ y: 80, opacity: 0 }}
-                animate={{ y: 0 }} 
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+                animate={{ y: 0, opacity: 1 }} 
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
                 style={{ 
                   position: 'absolute',
                   top: 0,
@@ -215,8 +215,8 @@ export default function Hero() {
               </motion.h1>
               <motion.h1 
                 initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0 }} 
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                animate={{ y: 0, opacity: 1 }} 
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
                 style={{ 
                   position: 'absolute',
                   top: '0.45em',
@@ -243,7 +243,7 @@ export default function Hero() {
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -30, opacity: 0 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
                   style={{
                     position: 'absolute', 
                     top: 0, 
@@ -277,7 +277,7 @@ export default function Hero() {
             <motion.p 
               initial={{ opacity: 0, y: 15 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
               style={{ 
                 fontSize: '1rem', 
                 color: 'var(--text-muted)', 
@@ -295,7 +295,7 @@ export default function Hero() {
             <motion.div 
               initial={{ opacity: 0, y: 15 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
               style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '4rem' }}
             >
               <button onClick={openModal} className="btn-primary">
@@ -318,7 +318,7 @@ export default function Hero() {
             <motion.div 
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }} 
-              transition={{ duration: 1.2, delay: 0.6 }}
+              transition={{ duration: 1.2, delay: 0.8 }}
               style={{ display: 'flex', gap: '3.5rem', paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.04)' }}
             >
               {STATS.map(s => (
@@ -338,7 +338,7 @@ export default function Hero() {
           <motion.div 
             initial={{ opacity: 0, y: 40, scale: 0.95 }} 
             animate={{ opacity: 1, y: 0, scale: 1 }} 
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.7 }}
             style={{ justifySelf: 'center', position: 'relative' }}
           >
             {/* Ambient glow backing */}
@@ -394,7 +394,7 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
+        transition={{ delay: 1.8, duration: 1 }}
         style={{
           position: 'absolute',
           bottom: '2rem',
@@ -464,48 +464,51 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        width: 300,
-        height: 400,
-        borderRadius: '2rem',
+        width: 350,
+        height: 350,
+        borderRadius: '50%',
         padding: 1,
-        background: 'linear-gradient(160deg, rgba(52, 211, 153, 0.25) 0%, rgba(255,255,255,0.04) 50%, rgba(52, 211, 153, 0.1) 100%)',
-        boxShadow: '0 40px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
+        background: 'linear-gradient(160deg, rgba(52, 211, 153, 0.3) 0%, rgba(255,255,255,0.06) 50%, rgba(52, 211, 153, 0.15) 100%)',
+        boxShadow: '0 40px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.1)',
         animation: 'float-gentle 10s infinite ease-in-out',
         position: 'relative',
         overflow: 'hidden',
         cursor: 'none'
       }}
     >
-      {/* Base Layer: Dotted Halftone Background */}
-      <div className="halftone-dots" style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none', opacity: 0.25 }} />
+      {/* Ambient Inner Glow */}
+      <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 0%, transparent 60%)', zIndex: 3, pointerEvents: 'none' }} />
+
+      {/* Particles behind but inside circle */}
+      <div className="halftone-dots" style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none', opacity: 0.15 }} />
       
       {/* Grain Layer */}
-      <div className="noise-overlay" style={{ position: 'absolute', inset: 0, zIndex: 4, pointerEvents: 'none' }} />
+      <div className="noise-overlay" style={{ position: 'absolute', inset: 0, zIndex: 4, pointerEvents: 'none', borderRadius: '50%', overflow: 'hidden' }} />
 
       {/* Emerald Edge Glow Border Shadow */}
       <div style={{
         position: 'absolute',
         inset: 0,
-        borderRadius: '2rem',
-        border: '1.5px solid rgba(52, 211, 153, 0.25)',
-        boxShadow: 'inset 0 0 20px rgba(52, 211, 153, 0.15)',
+        borderRadius: '50%',
+        border: '1.5px solid rgba(52, 211, 153, 0.3)',
+        boxShadow: 'inset 0 0 30px rgba(52, 211, 153, 0.2)',
         pointerEvents: 'none',
         zIndex: 5
       }} />
 
       {/* Base grayscale blurred image */}
-      <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 1 }}>
+      <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 1, borderRadius: '50%', overflow: 'hidden' }}>
         <Image
           src={avatarUrl}
           alt={title}
-          width={300}
-          height={400}
+          width={350}
+          height={350}
           priority
           style={{ 
             width: '100%', 
             height: '100%', 
             objectFit: 'cover', 
-            filter: 'grayscale(100%) contrast(0.9) opacity(0.35) blur(3px)',
+            filter: 'grayscale(100%) contrast(0.9) opacity(0.4) blur(4px)',
             transition: 'filter 0.3s ease'
           }}
         />
@@ -518,16 +521,18 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
         position: 'absolute', 
         inset: 0, 
         zIndex: 2,
+        borderRadius: '50%',
+        overflow: 'hidden',
         opacity: mousePos.isHovering ? 1 : 0,
         transition: 'opacity 0.4s ease',
-        WebkitMaskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
-        maskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`
+        WebkitMaskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
+        maskImage: `radial-gradient(circle 120px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`
       }}>
         <Image
           src={avatarUrl}
           alt={title}
-          width={300}
-          height={400}
+          width={350}
+          height={350}
           priority
           style={{ 
             width: '100%', 
