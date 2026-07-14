@@ -229,42 +229,47 @@ export default function Hero() {
             </h1>
 
             {/* Animated role transition */}
-            <div style={{ height: 40, position: 'relative', overflow: 'hidden', marginBottom: '2.5rem' }}>
-              <AnimatePresence mode="wait">
-                <motion.div 
-                  key={cycleList[idx]}
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -30, opacity: 0 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-                  style={{
-                    position: 'absolute', 
-                    top: 0, 
-                    left: 0,
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem'
-                  }}
-                >
-                  <span style={{ 
-                    width: 24, 
-                    height: 1, 
-                    background: 'var(--accent-emerald)',
-                    display: 'inline-block',
-                    flexShrink: 0
-                  }} />
-                  <span style={{
-                    fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', 
-                    fontWeight: 400,
-                    fontStyle: 'italic',
-                    fontFamily: 'var(--font-editorial)',
-                    color: 'var(--text-muted)'
-                  }}>
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+              style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', height: 40, marginBottom: '2.5rem' }}
+            >
+              {/* Fixed emerald accent line */}
+              <span style={{ 
+                width: 24, 
+                height: 1, 
+                background: 'var(--accent-emerald)',
+                display: 'inline-block',
+                flexShrink: 0
+              }} />
+
+              {/* Text cycling container */}
+              <div style={{ height: '100%', position: 'relative', overflow: 'hidden', flexGrow: 1 }}>
+                <AnimatePresence mode="wait">
+                  <motion.span 
+                    key={cycleList[idx]}
+                    initial={{ y: 30, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -30, opacity: 0 }}
+                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    style={{
+                      position: 'absolute', 
+                      top: 0, 
+                      left: 0,
+                      fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', 
+                      fontWeight: 400,
+                      fontStyle: 'italic',
+                      fontFamily: 'var(--font-editorial)',
+                      color: 'var(--text-muted)',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
                     {cycleList[idx]}
-                  </span>
-                </motion.div>
-              </AnimatePresence>
-            </div>
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+            </motion.div>
 
             {/* Bio */}
             <motion.p 

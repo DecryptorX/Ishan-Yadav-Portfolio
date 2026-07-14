@@ -386,33 +386,30 @@ function Slide6Journey() {
 
 function Slide7Contact() {
   return (
-    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '6rem', alignItems: 'center' }} className="hero-grid">
-        <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.9, delay: 0.2 }}>
+    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
+      {/* Top connect grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '6rem', alignItems: 'center', marginBottom: '3.5rem' }} className="hero-grid">
+        <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
           <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
             // Let's Connect
           </p>
-          <h2 style={{ fontSize: 'clamp(2.4rem, 4.5vw, 4.2rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '2rem', fontFamily: 'var(--font-display)' }}>
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', marginBottom: '2rem', fontFamily: 'var(--font-display)', lineHeight: 1.15 }}>
             Let's build secure solutions together.
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.15rem', lineHeight: 1.8, marginBottom: '3rem' }}>
-            Looking for a Cybersecurity Analyst, SOC Intern, or Software Engineer? Let's discuss how I can contribute to your team.
-          </p>
           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            <Link href="/contact" className="btn-primary" style={{ padding: '0.9rem 2.2rem', fontSize: '0.9rem' }}>
+            <Link href="/contact" className="btn-primary" style={{ padding: '0.8rem 2rem', fontSize: '0.85rem' }}>
               Get In Touch
             </Link>
-            <Link href="/journey" className="btn-secondary" style={{ padding: '0.9rem 2.2rem', fontSize: '0.9rem' }}>
-              Explore My Journey
+            <Link href="/journey" className="btn-secondary" style={{ padding: '0.8rem 2rem', fontSize: '0.85rem' }}>
+              Explore Journey
             </Link>
           </div>
         </motion.div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {[
             { label: 'Email', value: 'ishanyadav09@outlook.com', href: 'mailto:ishanyadav09@outlook.com' },
             { label: 'LinkedIn', value: 'ishan-yadav-a22251325', href: 'https://www.linkedin.com/in/ishan-yadav-a22251325' },
-            { label: 'GitHub', value: 'DecryptorX', href: 'https://github.com/DecryptorX' },
           ].map((c, i) => (
             <motion.a
               key={c.label}
@@ -421,18 +418,93 @@ function Slide7Contact() {
               rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 + (i * 0.15) }}
+              transition={{ duration: 0.7, delay: 0.3 + (i * 0.15) }}
               className="card-editorial"
-              style={{ padding: '2rem 2.5rem', display: 'block', textDecoration: 'none', transition: 'all 0.3s' }}
+              style={{ padding: '1.5rem 2rem', display: 'block', textDecoration: 'none', transition: 'all 0.3s' }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(52, 211, 153, 0.3)'; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)'; }}
             >
-              <span style={{ fontSize: '0.68rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase' }}>{c.label}</span>
-              <h4 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: 0, wordBreak: 'break-all' }}>{c.value}</h4>
+              <span style={{ fontSize: '0.65rem', fontFamily: 'var(--font-mono)', color: 'var(--text-subtle)', display: 'block', marginBottom: '0.35rem', textTransform: 'uppercase' }}>{c.label}</span>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-display)', margin: 0 }}>{c.value}</h4>
             </motion.a>
           ))}
         </div>
       </div>
+
+      {/* Integrated footer links */}
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6 }}
+        style={{ borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '2.5rem', display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '3rem' }}
+        className="footer-grid"
+      >
+        <div>
+          <p style={{ fontWeight: 800, fontSize: '1rem', color: '#fff', marginBottom: '0.5rem', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
+            Ishan Yadav<span style={{ color: 'var(--accent-emerald)' }}>.</span>
+          </p>
+          <p style={{ color: 'var(--text-subtle)', fontSize: '0.78rem', lineHeight: 1.6, margin: 0, maxWidth: 220 }}>
+            Building secure software & AI-driven platforms.
+          </p>
+        </div>
+
+        <div>
+          <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem', fontWeight: 600 }}>
+            Navigation
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            {[
+              { label: 'Uses / Setup', href: '/uses' },
+              { label: 'Asset Gallery', href: '/gallery' },
+              { label: 'Technical Blog', href: '/blog' },
+            ].map(l => (
+              <Link key={l.label} href={l.href} style={{ color: 'var(--text-subtle)', fontSize: '0.78rem', transition: 'color 0.3s', textDecoration: 'none' }}
+                onMouseEnter={e => { e.currentTarget.style.color = '#ffffff'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-subtle)'; }}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem', fontWeight: 600 }}>
+            Connect
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            {[
+              { label: 'GitHub', href: 'https://github.com/DecryptorX' },
+              { label: 'LinkedIn', href: 'https://www.linkedin.com/in/ishan-yadav-a22251325' },
+              { label: 'Email', href: 'mailto:ishanyadav09@outlook.com' },
+            ].map(l => (
+              <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-subtle)', fontSize: '0.78rem', transition: 'color 0.3s', textDecoration: 'none' }}
+                onMouseEnter={e => { e.currentTarget.style.color = '#ffffff'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-subtle)'; }}>
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.75rem', fontWeight: 600 }}>
+            Legal
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            {[
+              { label: 'Privacy Policy', href: '/privacy' },
+              { label: 'Terms of Use', href: '/terms' },
+              { label: 'Admin Panel', href: '/admin' },
+            ].map(l => (
+              <Link key={l.label} href={l.href} style={{ color: 'var(--text-subtle)', fontSize: '0.78rem', transition: 'color 0.3s', textDecoration: 'none' }}
+                onMouseEnter={e => { e.currentTarget.style.color = '#ffffff'; }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-subtle)'; }}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }
@@ -446,9 +518,9 @@ export default function Page() {
   const [mounted, setMounted] = useState(false);
   const [activeScene, setActiveScene] = useState(1);
   const [direction, setDirection] = useState(1);
-  const [isExited, setIsExited] = useState(false);
   const transitionLock = useRef(false);
   const touchStartY = useRef<number | null>(null);
+  const lastTransitionTime = useRef(0);
   
   const TOTAL_SCENES = 7;
 
@@ -503,25 +575,20 @@ export default function Page() {
     setDirection(nextScene > activeScene ? 1 : -1);
     setActiveScene(nextScene);
     
-    // Lock duration matches animation duration (850ms)
-    window.setTimeout(() => { transitionLock.current = false; }, 850);
+    // Lock duration matches kinetic scrolling threshold (1000ms)
+    window.setTimeout(() => { transitionLock.current = false; }, 1000);
   }, [activeScene]);
 
-  // Scroll lock effect using body class
+  // Lock scroll globally when mounted
   useEffect(() => {
     if (!mounted) return;
-    if (isExited) {
-      document.documentElement.classList.remove('lock-scroll');
-      document.body.classList.remove('lock-scroll');
-    } else {
-      document.documentElement.classList.add('lock-scroll');
-      document.body.classList.add('lock-scroll');
-    }
+    document.documentElement.classList.add('lock-scroll');
+    document.body.classList.add('lock-scroll');
     return () => {
       document.documentElement.classList.remove('lock-scroll');
       document.body.classList.remove('lock-scroll');
     };
-  }, [isExited, mounted]);
+  }, [mounted]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -531,48 +598,39 @@ export default function Page() {
     const onWheel = (event: WheelEvent) => {
       if (isInteractive(event.target)) return;
 
-      if (isExited) {
-        if (window.scrollY === 0 && event.deltaY < 0) {
-          event.preventDefault();
-          setIsExited(false);
-          goToScene(TOTAL_SCENES);
-        }
+      const now = Date.now();
+      // Throttle wheel events strictly by 1200ms to ignore inertial kinetic scrolls
+      if (now - lastTransitionTime.current < 1200) {
+        event.preventDefault();
         return;
       }
 
-      if (Math.abs(event.deltaY) < 20) return; // Ignore tiny scroll bumps
+      if (Math.abs(event.deltaY) < 30) return; // ignore subtle trackpad events
       event.preventDefault();
       
-      if (!transitionLock.current) {
-        const next = activeScene + (event.deltaY > 0 ? 1 : -1);
-        if (next > TOTAL_SCENES) {
-          setIsExited(true);
-        } else {
-          goToScene(next);
-        }
+      const dir = event.deltaY > 0 ? 1 : -1;
+      const next = activeScene + dir;
+      if (next >= 1 && next <= TOTAL_SCENES) {
+        lastTransitionTime.current = now;
+        goToScene(next);
       }
     };
     
     const onKeyDown = (event: KeyboardEvent) => {
       if (isInteractive(event.target)) return;
 
-      if (isExited) {
-        if (window.scrollY === 0 && (event.key === 'ArrowUp' || event.key === 'PageUp')) {
-          event.preventDefault();
-          setIsExited(false);
-          goToScene(TOTAL_SCENES);
-        }
-        return;
-      }
-
       const forward = ['ArrowDown', 'PageDown', ' '];
       const backward = ['ArrowUp', 'PageUp'];
       if (forward.includes(event.key) || backward.includes(event.key)) {
         event.preventDefault();
-        const next = activeScene + (forward.includes(event.key) ? 1 : -1);
-        if (next > TOTAL_SCENES) {
-          setIsExited(true);
-        } else {
+        
+        const now = Date.now();
+        if (now - lastTransitionTime.current < 900) return;
+
+        const dir = forward.includes(event.key) ? 1 : -1;
+        const next = activeScene + dir;
+        if (next >= 1 && next <= TOTAL_SCENES) {
+          lastTransitionTime.current = now;
           goToScene(next);
         }
       }
@@ -585,19 +643,14 @@ export default function Page() {
       const distance = touchStartY.current - (event.changedTouches[0]?.clientY ?? touchStartY.current);
       touchStartY.current = null;
 
-      if (isExited) {
-        if (window.scrollY === 0 && distance < -50) {
-          setIsExited(false);
-          goToScene(TOTAL_SCENES);
-        }
-        return;
-      }
-
       if (Math.abs(distance) > 50) {
-        const next = activeScene + (distance > 0 ? 1 : -1);
-        if (next > TOTAL_SCENES) {
-          setIsExited(true);
-        } else {
+        const now = Date.now();
+        if (now - lastTransitionTime.current < 900) return;
+
+        const dir = distance > 0 ? 1 : -1;
+        const next = activeScene + dir;
+        if (next >= 1 && next <= TOTAL_SCENES) {
+          lastTransitionTime.current = now;
           goToScene(next);
         }
       }
@@ -614,7 +667,7 @@ export default function Page() {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchend', onTouchEnd);
     };
-  }, [activeScene, goToScene, mounted, isExited]);
+  }, [activeScene, goToScene, mounted]);
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -672,15 +725,15 @@ export default function Page() {
   }
 
   return (
-    <div style={{ background: 'var(--bg)', color: 'var(--text)', position: 'relative', minHeight: '100vh' }}>
+    <div style={{ background: 'var(--bg)', color: 'var(--text)', position: 'relative', height: '100vh', overflow: 'hidden' }}>
       {/* Background Ambience */}
       <div className="moving-grid" style={{ position: 'fixed', inset: 0, zIndex: 0, opacity: 0.5, pointerEvents: 'none' }} />
       <div aria-hidden style={{ position: 'fixed', top: '50%', left: '50%', width: 800, height: 800, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.02) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(100px)', pointerEvents: 'none', zIndex: 0 }} />
 
       {/* Cinematic Slide Carousel */}
       <div style={{ 
-        position: isExited ? 'relative' : 'fixed', 
-        inset: isExited ? 'auto' : 0, 
+        position: 'fixed', 
+        inset: 0, 
         height: '100vh', 
         width: '100%', 
         overflow: 'hidden',
@@ -709,32 +762,25 @@ export default function Page() {
       </div>
 
       {/* Navigation Indicators */}
-      {!isExited && (
-        <nav style={{
-          position: 'fixed', right: '2rem', top: '50%', transform: 'translateY(-50%)',
-          display: 'flex', flexDirection: 'column', gap: '0.8rem', zIndex: 50
-        }}>
-          {Array.from({ length: TOTAL_SCENES }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goToScene(i + 1)}
-              aria-label={`Go to slide ${i + 1}`}
-              style={{
-                width: 8, height: 8, borderRadius: '50%', padding: 0, border: 'none', cursor: 'pointer',
-                background: activeScene === i + 1 ? 'var(--accent-emerald)' : 'rgba(255, 255, 255, 0.15)',
-                boxShadow: activeScene === i + 1 ? '0 0 10px rgba(52, 211, 153, 0.5)' : 'none',
-                transform: activeScene === i + 1 ? 'scale(1.3)' : 'scale(1)',
-                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
-              }}
-            />
-          ))}
-        </nav>
-      )}
-
-      {/* Vertical offset spacing to push footer below absolute carousel when exited */}
-      {isExited && (
-        <div style={{ paddingTop: '100vh' }} />
-      )}
+      <nav style={{
+        position: 'fixed', right: '2rem', top: '50%', transform: 'translateY(-50%)',
+        display: 'flex', flexDirection: 'column', gap: '0.8rem', zIndex: 50
+      }}>
+        {Array.from({ length: TOTAL_SCENES }).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goToScene(i + 1)}
+            aria-label={`Go to slide ${i + 1}`}
+            style={{
+              width: 8, height: 8, borderRadius: '50%', padding: 0, border: 'none', cursor: 'pointer',
+              background: activeScene === i + 1 ? 'var(--accent-emerald)' : 'rgba(255, 255, 255, 0.15)',
+              boxShadow: activeScene === i + 1 ? '0 0 10px rgba(52, 211, 153, 0.5)' : 'none',
+              transform: activeScene === i + 1 ? 'scale(1.3)' : 'scale(1)',
+              transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+            }}
+          />
+        ))}
+      </nav>
     </div>
   );
 }

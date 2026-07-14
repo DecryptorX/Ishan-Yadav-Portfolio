@@ -51,7 +51,7 @@ export default function GlobalLayoutWrapper({ children }: { children: React.Reac
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             {children}
           </div>
-          <Footer />
+          {pathname !== '/' && <Footer />}
         </motion.div>
       )}
     </AnimatePresence>
