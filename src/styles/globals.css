@@ -647,16 +647,41 @@ html.lenis, html.lenis body {
   }
 }
 
+@keyframes portrait-glitch-shake {
+  0% { transform: translateZ(0) translate(0, 0) scale(1); filter: url(#glitch-svg-filter) hue-rotate(0deg) contrast(1.5); }
+  20% { transform: translateZ(0) translate(-4px, 3px) scale(1.02); filter: url(#glitch-svg-filter) hue-rotate(90deg) contrast(2) brightness(1.2); }
+  40% { transform: translateZ(0) translate(4px, -3px) scale(0.98); filter: url(#glitch-svg-filter) hue-rotate(-90deg) contrast(1.5) blur(2px); }
+  60% { transform: translateZ(0) translate(-2px, -2px) scale(1.03); filter: url(#glitch-svg-filter) hue-rotate(180deg) contrast(2.5) drop-shadow(4px 0 0 #34F5A3) drop-shadow(-4px 0 0 #000); }
+  80% { transform: translateZ(0) translate(3px, 4px) scale(0.99); filter: url(#glitch-svg-filter) hue-rotate(45deg) contrast(1.8); }
+  100% { transform: translateZ(0) translate(0, 0) scale(1); filter: url(#glitch-svg-filter) hue-rotate(0deg) contrast(1.5); }
+}
+
 @media (max-width: 768px) {
   .slide-content-container {
     padding: 0 1.25rem;
   }
   
+  .is-glitching-portrait {
+    animation: portrait-glitch-shake 0.2s infinite linear;
+    mix-blend-mode: hard-light;
+  }
+  
+  .is-glitching-portrait::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(52, 211, 153, 0.2) 2px, rgba(52, 211, 153, 0.2) 4px);
+    z-index: 10;
+    pointer-events: none;
+    animation: scanline-scroll 4s linear infinite;
+  }
+  
   /* When on mobile, allow slides to scroll internally if they overflow 100vh */
   .scene-wrapper, .hero-section-root {
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
     width: 100%;
-    overflow-y: auto;
+    overflow-y: visible;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     padding: 6rem 0; /* padding to avoid header/footer overlap */

@@ -407,9 +407,12 @@ export default function Hero() {
       `}</style>
     </section>
   );
-}function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: string }) {
+}
+
+function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: string }) {
   const [mousePos, setMousePos] = useState({ x: 150, y: 150, isHovering: false });
   const containerRef = useRef<HTMLDivElement>(null);
+  const reqRef = useRef<number | null>(null);
   
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
@@ -424,6 +427,30 @@ export default function Hero() {
   const handleMouseLeave = () => {
     setMousePos(prev => ({ ...prev, isHovering: false }));
   };
+
+  useEffect(() => {
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile) return;
+
+    const loop = () => {
+      const t = Date.now() % 7000;
+      const isGlitching = t < 2000;
+      
+      if (containerRef.current) {
+        if (isGlitching) {
+          containerRef.current.classList.add('is-glitching-portrait');
+        } else {
+          containerRef.current.classList.remove('is-glitching-portrait');
+        }
+      }
+      reqRef.current = requestAnimationFrame(loop);
+    };
+
+    reqRef.current = requestAnimationFrame(loop);
+    return () => {
+      if (reqRef.current) cancelAnimationFrame(reqRef.current);
+    };
+  }, []);
   
   return (
     <div 
@@ -433,6 +460,7 @@ export default function Hero() {
       style={{
         width: 300,
         height: 300,
+        flexShrink: 0,
         borderRadius: '50%',
         padding: 1,
         background: 'linear-gradient(160deg, rgba(52, 211, 153, 0.25) 0%, rgba(255,255,255,0.04) 50%, rgba(52, 211, 153, 0.1) 100%)',
@@ -440,7 +468,9 @@ export default function Hero() {
         animation: 'float-gentle 10s infinite ease-in-out',
         position: 'relative',
         overflow: 'hidden',
-        cursor: 'none'
+        cursor: 'none',
+        transform: 'translateZ(0)',
+        WebkitMaskImage: '-webkit-radial-gradient(white, black)'
       }}
     >
       {/* Base Layer: Dotted Halftone Background */}

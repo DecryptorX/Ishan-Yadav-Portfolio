@@ -385,17 +385,17 @@ function Slide6Journey() {
   );
 }
 
-function Slide7Contact({ subScene, footerRef, footerHeight }: { subScene: number; footerRef: React.RefObject<HTMLDivElement | null>; footerHeight: number }) {
+function Slide7Contact({ subScene, footerRef, footerHeight, isMobile }: { subScene: number; footerRef: React.RefObject<HTMLDivElement | null>; footerHeight: number; isMobile?: boolean }) {
   return (
-    <div style={{ width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden', position: 'relative' }}>
+    <div style={{ width: '100%', height: isMobile ? 'auto' : '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: isMobile ? 'visible' : 'hidden', position: 'relative' }}>
       <div 
         style={{
           display: 'flex',
           flexDirection: 'column',
           height: '100%',
-          transform: `translate3d(0, ${subScene === 1 ? `-${footerHeight}px` : '0px'}, 0)`,
-          transition: 'transform 0.85s cubic-bezier(0.76, 0, 0.24, 1)',
-          willChange: 'transform'
+          transform: isMobile ? 'none' : `translate3d(0, ${subScene === 1 ? `-${footerHeight}px` : '0px'}, 0)`,
+          transition: isMobile ? 'none' : 'transform 0.85s cubic-bezier(0.76, 0, 0.24, 1)',
+          willChange: isMobile ? 'auto' : 'transform'
         }}
       >
         {/* Contact area */}
@@ -443,6 +443,7 @@ export default function Page() {
   const [activeScene, setActiveScene] = useState(1);
   const [direction, setDirection] = useState(1);
   const [subScene, setSubScene] = useState(0); // 0 = Contact, 1 = Footer
+  const [isMobile, setIsMobile] = useState(false);
   
   const footerRef = useRef<HTMLDivElement>(null);
   const [footerHeight, setFooterHeight] = useState(320);
@@ -490,11 +491,19 @@ export default function Page() {
           setFeaturedProjects(FALLBACK_PROJECTS);
         }
       })
-      .catch(() => setFeaturedProjects(FALLBACK_PROJECTS));
-  }, []);
+      .catch(err => {
+        console.error('Failed to load projects', err);
+        setFeaturedProjects(FALLBACK_PROJECTS);
+      });
 
-  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
     setMounted(true);
+    
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
@@ -517,19 +526,23 @@ export default function Page() {
     window.setTimeout(() => { transitionLock.current = false; }, 1000);
   }, [activeScene]);
 
-  // Lock scroll globally when mounted
+  // Lock scroll globally when mounted, but NOT on mobile
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || isMobile) {
+      document.documentElement.classList.remove('lock-scroll');
+      document.body.classList.remove('lock-scroll');
+      return;
+    }
     document.documentElement.classList.add('lock-scroll');
     document.body.classList.add('lock-scroll');
     return () => {
       document.documentElement.classList.remove('lock-scroll');
       document.body.classList.remove('lock-scroll');
     };
-  }, [mounted]);
+  }, [mounted, isMobile]);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || isMobile) return;
     
     const isInteractive = (target: EventTarget | null) => target instanceof Element && Boolean(target.closest('a, button, input, textarea, select, [data-carousel]'));
     
@@ -713,7 +726,7 @@ export default function Page() {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchend', onTouchEnd);
     };
-  }, [activeScene, subScene, goToScene, mounted]);
+  }, [mounted, activeScene, subScene, goToScene, isMobile]);
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -761,13 +774,41 @@ export default function Page() {
       case 4: return <Slide4Experience />;
       case 5: return <Slide5Skills />;
       case 6: return <Slide6Journey />;
-      case 7: return <Slide7Contact subScene={subScene} footerRef={footerRef} footerHeight={footerHeight} />;
+      case 7: return <Slide7Contact subScene={subScene} footerRef={footerRef} footerHeight={footerHeight} isMobile={false} />;
       default: return null;
     }
   };
 
   if (!mounted) {
     return <div style={{ background: 'var(--bg)', minHeight: '100vh' }} />;
+  }
+
+  if (isMobile) {
+    return (
+      <div style={{ background: 'var(--bg)', color: 'var(--text)', minHeight: '100vh', overflowX: 'hidden' }}>
+        {/* Background Ambience */}
+        <div className="moving-grid" style={{ position: 'fixed', inset: 0, zIndex: 0, opacity: 0.5, pointerEvents: 'none' }} />
+        <div aria-hidden style={{ position: 'fixed', top: '50%', left: '50%', width: 800, height: 800, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.02) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(100px)', pointerEvents: 'none', zIndex: 0 }} />
+
+        {/* Render all scenes natively */}
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <Hero />
+          <Slide2About />
+          <div className="slide-content-container scene-wrapper" style={{ padding: '6rem 1.25rem', height: 'auto', overflow: 'visible' }}>
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
+              <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>// Featured Work</p>
+              <h2 style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: '0 0 3.5rem', fontFamily: 'var(--font-display)' }}>Selected Projects</h2>
+            </motion.div>
+            <FeaturedCarousel projects={featuredProjects} />
+          </div>
+          <Slide4Experience />
+          <Slide5Skills />
+          <Slide6Journey />
+          {/* Footer sits at bottom naturally on mobile */}
+          <Slide7Contact subScene={0} footerRef={footerRef} footerHeight={footerHeight} isMobile={true} />
+        </div>
+      </div>
+    );
   }
 
   return (
