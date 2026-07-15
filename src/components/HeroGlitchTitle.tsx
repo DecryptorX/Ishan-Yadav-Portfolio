@@ -13,7 +13,7 @@ export function HeroGlitchTitle({ text, className, style }: HeroGlitchTitleProps
   const containerRef = useRef<HTMLHeadingElement>(null);
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const displacementRef = useRef<SVGFEDisplacementMapElement>(null);
-  const reqRef = useRef<number>();
+  const reqRef = useRef<number | null>(null);
 
   useEffect(() => {
     let lastUpdate = 0;
