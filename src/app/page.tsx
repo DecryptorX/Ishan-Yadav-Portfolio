@@ -548,7 +548,7 @@ export default function Page() {
       const dir = event.deltaY > 0 ? 1 : -1;
 
       if (event.target instanceof Element) {
-        const wrapper = event.target.closest('.scene-wrapper');
+        const wrapper = event.target.closest('.scene-wrapper, .hero-section-root');
         if (wrapper) {
           const isScrollable = wrapper.scrollHeight > wrapper.clientHeight;
           if (isScrollable) {
@@ -645,7 +645,7 @@ export default function Page() {
       const dir = distance > 0 ? 1 : -1;
 
       if (event.target instanceof Element) {
-        const wrapper = event.target.closest('.scene-wrapper');
+        const wrapper = event.target.closest('.scene-wrapper, .hero-section-root');
         if (wrapper) {
           const isScrollable = wrapper.scrollHeight > wrapper.clientHeight;
           if (isScrollable) {

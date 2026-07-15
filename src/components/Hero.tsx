@@ -75,16 +75,7 @@ export default function Hero() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       id="home" 
-      style={{ 
-        minHeight: '100vh', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'center',
-        position: 'relative', 
-        overflow: 'hidden', 
-        padding: '6rem 2rem 2rem',
-        background: 'var(--bg)'
-      }}
+      className="hero-section-root"
     >
       {/* Volumetric cursor-tracking spotlight */}
       <motion.div 

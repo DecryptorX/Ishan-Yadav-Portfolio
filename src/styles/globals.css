@@ -604,6 +604,18 @@ html.lenis, html.lenis body {
   padding: 0 4rem;
 }
 
+/* Base Hero Root config */
+.hero-section-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 6rem 2rem 2rem;
+  background: var(--bg);
+}
+
 @media (max-width: 1024px) {
   .slide-grid-2,
   .slide-grid-3,
@@ -623,6 +635,11 @@ html.lenis, html.lenis body {
     order: -1;
   }
   
+  /* Make Hero portrait stack on top */
+  .hero-grid-main > div:last-child {
+    order: -1;
+  }
+  
   /* Timeline Journey items scale */
   .slide-grid-journey .card-editorial {
     padding: 1.5rem !important;
@@ -636,19 +653,20 @@ html.lenis, html.lenis body {
   }
   
   /* When on mobile, allow slides to scroll internally if they overflow 100vh */
-  .scene-wrapper {
+  .scene-wrapper, .hero-section-root {
     height: 100vh;
     width: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     padding: 6rem 0; /* padding to avoid header/footer overlap */
   }
   
   /* Hide scrollbar for internal scene wrapper but keep functionality */
-  .scene-wrapper::-webkit-scrollbar {
+  .scene-wrapper::-webkit-scrollbar, .hero-section-root::-webkit-scrollbar {
     display: none;
   }
-  .scene-wrapper {
+  .scene-wrapper, .hero-section-root {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
