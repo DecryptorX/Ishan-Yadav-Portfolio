@@ -558,4 +558,98 @@ html.lenis, html.lenis body {
   height: 100vh !important;
 }
 
+/* ============================================
+   RESPONSIVE SCENE LAYOUTS (MOBILE)
+   ============================================ */
+.slide-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
 
+.slide-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.slide-grid-carousel {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 6rem;
+  align-items: center;
+  min-height: 520px;
+}
+
+.hero-grid-main {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  gap: 8rem;
+  align-items: center;
+}
+
+.slide-grid-journey {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+/* Base slide container config */
+.slide-content-container {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+@media (max-width: 1024px) {
+  .slide-grid-2,
+  .slide-grid-3,
+  .slide-grid-carousel,
+  .hero-grid-main,
+  .slide-grid-journey {
+    grid-template-columns: 1fr !important;
+    gap: 4rem !important;
+  }
+  
+  .slide-content-container {
+    padding: 0 2rem;
+  }
+  
+  /* Make carousel image stack on top */
+  .slide-grid-carousel > div:first-child {
+    order: -1;
+  }
+  
+  /* Timeline Journey items scale */
+  .slide-grid-journey .card-editorial {
+    padding: 1.5rem !important;
+    gap: 1rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .slide-content-container {
+    padding: 0 1.25rem;
+  }
+  
+  /* When on mobile, allow slides to scroll internally if they overflow 100vh */
+  .scene-wrapper {
+    height: 100vh;
+    width: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 6rem 0; /* padding to avoid header/footer overlap */
+  }
+  
+  /* Hide scrollbar for internal scene wrapper but keep functionality */
+  .scene-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+  .scene-wrapper {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

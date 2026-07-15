@@ -39,7 +39,7 @@ function FeaturedCarousel({ projects }: { projects: any[] }) {
       onMouseLeave={() => setIsPaused(false)}
       style={{ position: 'relative' }}
     >
-      <div className="carousel-layout" style={{ display: 'grid', gridTemplateColumns: '1.25fr 0.75fr', gap: '6rem', alignItems: 'center', minHeight: '520px' }}>
+      <div className="slide-grid-carousel">
         {/* Visual side */}
         <AnimatePresence mode="wait">
           <motion.div
@@ -180,8 +180,8 @@ function FeaturedCarousel({ projects }: { projects: any[] }) {
 
 function Slide2About() {
   return (
-    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6rem', alignItems: 'center' }} className="hero-grid">
+    <div className="slide-content-container scene-wrapper">
+      <div className="slide-grid-2">
         <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.9, delay: 0.2 }}>
           <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '2rem' }}>
             // Philosophy
@@ -205,7 +205,7 @@ function Slide2About() {
           </div>
         </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+        <div className="slide-grid-2" style={{ gap: '1.5rem' }}>
           {[
             { label: 'MITRE ATT&CK', desc: 'Automated threat mapping and signature verification.', num: '01' },
             { label: 'SOC Analysis', desc: 'Real-time log monitoring, alert analysis, and triage workflows.', num: '02' },
@@ -240,7 +240,7 @@ function Slide4Experience() {
     { period: '2024 — Present', role: 'Academic Projects Researcher', org: 'Bennett University', brief: 'Researching machine learning integrations with web security and building women safety SOS dispatcher architectures.' },
   ];
   return (
-    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
+    <div className="slide-content-container scene-wrapper">
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.2 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem' }}>
           <div>
@@ -256,7 +256,7 @@ function Slide4Experience() {
           </Link>
         </div>
         
-        <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}>
+        <div className="slide-grid-3" style={{ position: 'relative' }}>
           {/* Connecting line */}
           <div style={{ position: 'absolute', top: '-1.5rem', left: '1rem', right: '1rem', height: '1px', background: 'rgba(255,255,255,0.06)', zIndex: 0 }} />
 
@@ -296,7 +296,7 @@ function Slide4Experience() {
 
 function Slide5Skills() {
   return (
-    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
+    <div className="slide-content-container scene-wrapper">
       <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.2 }}>
         <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
           // Stack
@@ -305,7 +305,7 @@ function Slide5Skills() {
           Technologies & Expertise
         </h2>
       </motion.div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem' }}>
+      <div className="slide-grid-3">
         {SKILLS.slice(0, 6).map((group, gi) => (
           <motion.div
             key={group.category}
@@ -341,8 +341,8 @@ function Slide6Journey() {
     { year: '2025', label: 'Startups & Production', desc: 'Co-founded backend operations, building custom threat intelligence log parsers and consulting on local infrastructure.' },
   ];
   return (
-    <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '0.8fr 1.2fr', gap: '6rem', alignItems: 'center' }} className="hero-grid">
+    <div className="slide-content-container scene-wrapper">
+      <div className="slide-grid-journey">
         <motion.div initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.9, delay: 0.2 }}>
           <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1.5rem' }}>
             // Path
@@ -543,10 +543,26 @@ export default function Page() {
         return;
       }
 
-      if (Math.abs(event.deltaY) < 30) return; // ignore subtle trackpad events
-      event.preventDefault();
-      
+      if (Math.abs(event.deltaY) < 30) return;
+
       const dir = event.deltaY > 0 ? 1 : -1;
+
+      if (event.target instanceof Element) {
+        const wrapper = event.target.closest('.scene-wrapper');
+        if (wrapper) {
+          const isScrollable = wrapper.scrollHeight > wrapper.clientHeight;
+          if (isScrollable) {
+            if (dir > 0) {
+              if (Math.ceil(wrapper.scrollTop + wrapper.clientHeight) < wrapper.scrollHeight) return;
+            } else {
+              if (wrapper.scrollTop > 0) return;
+            }
+          }
+        }
+      }
+
+      event.preventDefault();
+
       if (dir > 0) {
         // Scroll Down
         if (activeScene === 7) {
@@ -624,13 +640,34 @@ export default function Page() {
     
     const onTouchEnd = (event: TouchEvent) => {
       if (touchStartY.current === null || isInteractive(event.target)) return;
+      
       const distance = touchStartY.current - (event.changedTouches[0]?.clientY ?? touchStartY.current);
+      const dir = distance > 0 ? 1 : -1;
+
+      if (event.target instanceof Element) {
+        const wrapper = event.target.closest('.scene-wrapper');
+        if (wrapper) {
+          const isScrollable = wrapper.scrollHeight > wrapper.clientHeight;
+          if (isScrollable) {
+            if (dir > 0) {
+              if (Math.ceil(wrapper.scrollTop + wrapper.clientHeight) < wrapper.scrollHeight) {
+                touchStartY.current = null;
+                return;
+              }
+            } else {
+              if (wrapper.scrollTop > 0) {
+                touchStartY.current = null;
+                return;
+              }
+            }
+          }
+        }
+      }
+
       touchStartY.current = null;
 
       if (Math.abs(distance) > 50) {
         const now = Date.now();
-        const dir = distance > 0 ? 1 : -1;
-
         if (dir > 0) {
           // Swipe Up / Scroll Down
           if (activeScene === 7) {
@@ -713,7 +750,7 @@ export default function Page() {
       case 1: return <Hero />;
       case 2: return <Slide2About />;
       case 3: return (
-        <div style={{ maxWidth: 1400, width: '100%', margin: '0 auto', padding: '0 4rem' }}>
+        <div className="slide-content-container scene-wrapper">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
             <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>// Featured Work</p>
             <h2 style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: '0 0 3.5rem', fontFamily: 'var(--font-display)' }}>Selected Projects</h2>
