@@ -676,6 +676,18 @@ html.lenis, html.lenis body {
     animation: scanline-scroll 4s linear infinite;
   }
   
+  /* Make the top crisp image fully visible on mobile during the 5s rest period */
+  .premium-portrait-top {
+    opacity: 1 !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+  
+  /* Hide the crisp image during the 2s glitch period so the distorted grayscale base shows */
+  .is-glitching-portrait .premium-portrait-top {
+    opacity: 0 !important;
+  }
+  
   /* When on mobile, allow slides to scroll internally if they overflow 100vh */
   .scene-wrapper, .hero-section-root {
     height: auto;

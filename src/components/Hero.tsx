@@ -509,7 +509,7 @@ function PremiumPortrait({ avatarUrl, title }: { avatarUrl: string; title: strin
       </div>
  
       {/* Top full-color masked image */}
-      <div style={{ 
+      <div className="premium-portrait-top" style={{ 
         width: '100%', 
         height: '100%', 
         position: 'absolute', 
