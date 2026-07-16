@@ -507,7 +507,7 @@ html.lenis, html.lenis body {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: clamp(120px, 16vh, 180px);
+  padding-top: clamp(90px, 12vh, 140px);
   will-change: transform, opacity, filter;
 }
 
@@ -613,7 +613,7 @@ html.lenis, html.lenis body {
   justify-content: flex-start;
   position: relative;
   overflow: hidden;
-  padding: clamp(120px, 16vh, 180px) 2rem 2rem;
+  padding: clamp(90px, 12vh, 140px) 2rem 2rem;
   background: var(--bg);
 }
 
