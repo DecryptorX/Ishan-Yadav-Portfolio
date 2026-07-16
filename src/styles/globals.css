@@ -496,8 +496,8 @@ html.lenis, html.lenis body {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .scroll-scene-slide {
@@ -505,8 +505,9 @@ html.lenis, html.lenis body {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: clamp(120px, 16vh, 180px);
   will-change: transform, opacity, filter;
 }
 
@@ -609,10 +610,10 @@ html.lenis, html.lenis body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
   overflow: hidden;
-  padding: 6rem 2rem 2rem;
+  padding: clamp(120px, 16vh, 180px) 2rem 2rem;
   background: var(--bg);
 }
 
@@ -696,7 +697,8 @@ html.lenis, html.lenis body {
     overflow-y: visible;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    padding: 6rem 0; /* padding to avoid header/footer overlap */
+    padding-top: clamp(100px, 14vh, 140px);
+    padding-bottom: 6rem;
   }
   
   /* Hide scrollbar for internal scene wrapper but keep functionality */

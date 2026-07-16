@@ -399,7 +399,7 @@ function Slide7Contact({ subScene, footerRef, footerHeight, isMobile }: { subSce
         }}
       >
         {/* Contact area */}
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', minHeight: '100vh', paddingTop: isMobile ? 'clamp(100px, 14vh, 140px)' : 'clamp(120px, 16vh, 180px)' }}>
           <div style={{ maxWidth: 700, margin: '0 auto', textAlign: 'center', padding: '0 2rem' }}>
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}>
               <div aria-hidden style={{ position: 'absolute', top: '50%', left: '50%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(52, 211, 153, 0.05) 0%, transparent 60%)', transform: 'translate(-50%, -50%)', filter: 'blur(80px)', pointerEvents: 'none' }} />
@@ -794,7 +794,7 @@ export default function Page() {
         <div style={{ position: 'relative', zIndex: 1 }}>
           <Hero />
           <Slide2About />
-          <div className="slide-content-container scene-wrapper" style={{ padding: '6rem 1.25rem', height: 'auto', overflow: 'visible' }}>
+          <div className="slide-content-container scene-wrapper" style={{ height: 'auto', overflow: 'visible' }}>
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
               <p style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>// Featured Work</p>
               <h2 style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', fontWeight: 900, color: '#ffffff', letterSpacing: '-0.04em', margin: '0 0 3.5rem', fontFamily: 'var(--font-display)' }}>Selected Projects</h2>
