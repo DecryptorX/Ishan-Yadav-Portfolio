@@ -605,6 +605,11 @@ html.lenis, html.lenis body {
   padding: 0 4rem;
 }
 
+/* Base Scene Wrapper config */
+.scene-wrapper {
+  padding-top: clamp(60px, 8vh, 100px);
+}
+
 /* Base Hero Root config */
 .hero-section-root {
   min-height: 100vh;

@@ -837,7 +837,7 @@ export default function Page() {
               position: 'absolute',
               inset: 0,
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               justifyContent: 'center',
               zIndex: 1,
               willChange: 'transform, opacity'
