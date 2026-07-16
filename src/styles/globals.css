@@ -507,7 +507,7 @@ html.lenis, html.lenis body {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: clamp(90px, 12vh, 140px);
+  padding-top: clamp(60px, 8vh, 100px);
   will-change: transform, opacity, filter;
 }
 
@@ -613,7 +613,7 @@ html.lenis, html.lenis body {
   justify-content: flex-start;
   position: relative;
   overflow: hidden;
-  padding: clamp(90px, 12vh, 140px) 2rem 2rem;
+  padding: clamp(60px, 8vh, 100px) 2rem 2rem;
   background: var(--bg);
 }
 
@@ -697,7 +697,7 @@ html.lenis, html.lenis body {
     overflow-y: visible;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    padding-top: clamp(100px, 14vh, 140px);
+    padding-top: clamp(80px, 10vh, 120px);
     padding-bottom: 6rem;
   }
   
